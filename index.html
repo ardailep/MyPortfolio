@@ -33,14 +33,12 @@
             -webkit-backdrop-filter: blur(12px);
         }
 
-        /* Buton Hover ve Parlaklık Efektleri */
         .social-btn {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
         }
         
-        /* Parlak Metin Efekti */
         .glow-text {
             color: #ffffff !important;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
@@ -61,12 +59,15 @@
             pointer-events: none;
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        .tab-active {
+            background-color: rgb(37 99 235 / 0.1);
+            border-color: rgb(37 99 235 / 0.5);
+            color: rgb(37 99 235);
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .dark .tab-active {
+            background-color: rgb(59 130 246 / 0.1);
+            border-color: rgb(59 130 246 / 0.5);
+            color: rgb(96 165 250);
         }
     </style>
 </head>
@@ -89,73 +90,72 @@
         </button>
     </div>
 
-    <div class="relative z-10 max-w-2xl mx-auto px-6 py-16 md:py-24 flex flex-col gap-16">
+    <div class="relative z-10 max-w-2xl mx-auto px-6 py-16 md:py-24 flex flex-col gap-12">
 
         <!-- --- 1. HEADER & IDENTITY --- -->
-        <section class="flex flex-col gap-8 items-center">
-            <div class="flex flex-col justify-center items-center w-full gap-4 text-center">
-                <div class="w-full">
-                    <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">Swaxilep</h1>
-                    <h2 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-300">
-                        Game Developer
-                    </h2>
-                </div>
+        <section class="flex flex-col gap-8 items-center text-center">
+            <div class="w-full">
+                <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">Swaxilep</h1>
+                <h2 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-300">
+                    Game Developer
+                </h2>
             </div>
 
-            <div class="flex flex-col items-center">
-                <p class="text-slate-600 dark:text-zinc-400 text-lg leading-relaxed max-w-xl mb-8 font-medium">
-                    I am 19 years old and a graduate of Fine Arts. Currently specializing in 3D modeling and animation for leading game companies.
-                </p>
+            <p class="text-slate-600 dark:text-zinc-400 text-lg leading-relaxed max-w-xl font-medium">
+                I am 19 years old and a graduate of Fine Arts. Currently specializing in 3D modeling and animation for leading game companies.
+            </p>
+            
+            <!-- COMMISSIONS & SAAT BÖLÜMÜ -->
+            <div class="inline-flex items-center gap-4 bg-white/40 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800/50 rounded-2xl p-4 shadow-sm btn-glass mx-auto">
+                <div class="flex items-center gap-3 pr-4 border-r border-slate-200 dark:border-zinc-800/80">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
+                    <p class="text-sm text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">
+                        Commissions are OPEN
+                    </p>
+                </div>
                 
-                <!-- ORTALANMIŞ COMMISSIONS & SAAT BÖLÜMÜ -->
-                <div class="inline-flex items-center gap-4 bg-white/40 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800/50 rounded-2xl p-4 shadow-sm btn-glass mx-auto">
-                    <div class="flex items-center gap-3 pr-4 border-r border-slate-200 dark:border-zinc-800/80">
-                        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
-                        <p class="text-sm text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">
-                            Commissions are OPEN
-                        </p>
+                <div class="flex flex-col items-start gap-0.5">
+                    <div id="clock" class="text-xl font-mono font-bold text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none">
+                        00:00
                     </div>
-                    
-                    <div class="flex flex-col items-start gap-0.5">
-                        <div id="clock" class="text-xl font-mono font-bold text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none">
-                            00:00
-                        </div>
-                        <div class="text-[8px] text-blue-600 dark:text-blue-400 font-bold font-mono opacity-80 uppercase tracking-widest leading-none">
-                            UTC+3
-                        </div>
+                    <div class="text-[8px] text-blue-600 dark:text-blue-400 font-bold font-mono opacity-80 uppercase tracking-widest leading-none">
+                        UTC+3
                     </div>
                 </div>
-            </div>
-
-            <!-- ORTALANMIŞ SOSYAL BAĞLANTILAR -->
-            <div class="flex flex-wrap justify-center gap-2 py-2 w-full">
-                <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text opacity-100 whitespace-nowrap px-5 py-2.5 bg-black dark:bg-zinc-900 text-white rounded-xl font-bold text-[10px] border border-zinc-800/50 btn-glass uppercase tracking-wider shadow-lg">X (Twitter)</a>
-                
-                <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn glow-text opacity-90 whitespace-nowrap px-5 py-2.5 bg-blue-500/80 text-white rounded-xl font-bold text-[10px] border border-blue-400/20 btn-glass uppercase tracking-wider">ArtStation</a>
-                
-                <a href="https://github.com/ardailep" target="_blank" class="social-btn glow-text opacity-90 whitespace-nowrap px-5 py-2.5 bg-purple-600/80 text-white rounded-xl font-bold text-[10px] border border-purple-500/20 btn-glass uppercase tracking-wider">GitHub</a>
-                
-                <a href="https://www.youtube.com/@swaxdev" target="_blank" class="social-btn glow-text opacity-90 whitespace-nowrap px-5 py-2.5 bg-red-600/80 text-white rounded-xl font-bold text-[10px] border border-red-500/20 btn-glass uppercase tracking-wider">YouTube</a>
-                
-                <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text opacity-90 whitespace-nowrap px-5 py-2.5 bg-indigo-600/80 text-white rounded-xl font-bold text-[10px] border border-indigo-500/20 btn-glass uppercase tracking-wider">Discord</a>
             </div>
         </section>
 
-        <!-- --- 2. KULLANILAN PROGRAMLAR --- -->
-        <section>
-            <div class="flex items-center gap-4 mb-8">
-                <div class="h-[1px] flex-1 bg-slate-200 dark:bg-zinc-800"></div>
-                <h3 class="text-xs font-black tracking-[0.4em] text-slate-400 dark:text-zinc-600 uppercase">Programs I Use</h3>
-                <div class="h-[1px] flex-1 bg-slate-200 dark:bg-zinc-800"></div>
+        <!-- --- 2. INTERACTIVE TABS --- -->
+        <section class="flex flex-col gap-8">
+            <!-- TAB NAV -->
+            <div class="flex items-center justify-center gap-2 p-1 bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 rounded-2xl w-fit mx-auto btn-glass">
+                <button onclick="switchTab('links')" id="btn-links" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn tab-active">LINKS</button>
+                <button onclick="switchTab('programs')" id="btn-programs" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn">PROGRAMS</button>
+                <button onclick="switchTab('works')" id="btn-works" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn">WORKS</button>
             </div>
-            
-            <div id="programs-list" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+
+            <!-- TAB CONTENT: LINKS -->
+            <div id="tab-links" class="flex flex-wrap justify-center gap-2 w-full transition-all duration-300">
+                <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-black dark:bg-zinc-900 text-white rounded-xl font-bold text-[10px] border border-zinc-800/50 btn-glass uppercase tracking-wider shadow-lg">X (Twitter)</a>
+                <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-blue-500/80 text-white rounded-xl font-bold text-[10px] border border-blue-400/20 btn-glass uppercase tracking-wider">ArtStation</a>
+                <a href="https://github.com/ardailep" target="_blank" class="social-btn glow-text px-5 py-3 bg-purple-600/80 text-white rounded-xl font-bold text-[10px] border border-purple-500/20 btn-glass uppercase tracking-wider">GitHub</a>
+                <a href="https://www.youtube.com/@swaxdev" target="_blank" class="social-btn glow-text px-5 py-3 bg-red-600/80 text-white rounded-xl font-bold text-[10px] border border-red-500/20 btn-glass uppercase tracking-wider">YouTube</a>
+                <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text px-5 py-3 bg-indigo-600/80 text-white rounded-xl font-bold text-[10px] border border-indigo-500/20 btn-glass uppercase tracking-wider">Discord</a>
+            </div>
+
+            <!-- TAB CONTENT: PROGRAMS -->
+            <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 w-full transition-all duration-300">
                 <!-- JS ile doldurulacak -->
+            </div>
+
+            <!-- TAB CONTENT: WORKS -->
+            <div id="tab-works" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 w-full transition-all duration-300">
+                <!-- JS ile dinamik resimler doldurulacak -->
             </div>
         </section>
 
         <!-- --- 3. FOOTER --- -->
-        <footer class="mt-12 border-t border-slate-200 dark:border-zinc-900 pt-12 text-center pb-12">
+        <footer class="mt-8 border-t border-slate-200 dark:border-zinc-900 pt-12 text-center pb-12">
             <p class="text-slate-400 dark:text-zinc-600 text-[10px] font-mono font-bold uppercase tracking-[0.5em]">
                 COPYRIGHT © 2024 SWAXILEP • ALL RIGHTS RESERVED
             </p>
@@ -183,6 +183,18 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        // TAB SWITCH LOGIC
+        function switchTab(tabId) {
+            const tabs = ['links', 'programs', 'works'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`btn-${t}`).classList.remove('tab-active');
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.getElementById(`btn-${tabId}`).classList.add('tab-active');
+        }
+
+        // PROGRAMS RENDER
         const programs = [
             { name: "Blender", url: "https://www.blender.org/" },
             { name: "Substance Painter", url: "https://www.adobe.com/products/substance3d-painter.html" },
@@ -192,17 +204,34 @@
             { name: "Krita", url: "https://krita.org/" }
         ];
 
-        const listContainer = document.getElementById('programs-list');
+        const programsContainer = document.getElementById('tab-programs');
         programs.forEach(prog => {
             const a = document.createElement('a');
             a.href = prog.url;
             a.target = "_blank";
             a.className = "social-btn opacity-80 flex items-center justify-center p-4 rounded-2xl bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 hover:border-blue-400 dark:hover:border-blue-500 transition-all group shadow-sm btn-glass text-center";
-            a.innerHTML = `
-                <span class="text-sm font-bold text-slate-800 dark:text-zinc-100">${prog.name}</span>
-            `;
-            listContainer.appendChild(a);
+            a.innerHTML = `<span class="text-sm font-bold text-slate-800 dark:text-zinc-100">${prog.name}</span>`;
+            programsContainer.appendChild(a);
         });
+
+        // WORKS RENDER (MAX 25 IMAGES)
+        const worksContainer = document.getElementById('tab-works');
+        for (let i = 1; i <= 25; i++) {
+            const div = document.createElement('div');
+            div.className = "aspect-square overflow-hidden rounded-2xl bg-slate-200 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 social-btn group relative";
+            
+            // Image loading with fallback
+            const img = document.createElement('img');
+            img.src = `assets/works/${i}.png`;
+            img.alt = `Work ${i}`;
+            img.className = "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110";
+            img.onerror = function() {
+                this.parentElement.style.display = 'none';
+            };
+
+            div.appendChild(img);
+            worksContainer.appendChild(div);
+        }
     </script>
 </body>
 </html>
