@@ -20,7 +20,6 @@
         }
     </script>
     <style>
-        /* Yumuşak tema geçişi */
         .theme-transition {
             transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
         }
@@ -29,23 +28,34 @@
             font-feature-settings: "cv02", "cv03", "cv04", "cv11";
         }
 
-        /* Saydam butonlar için hover efekti */
         .btn-glass {
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
-        .btn-glow:hover {
-            box-shadow: 0 8px 25px -5px currentColor;
-            transform: translateY(-2px);
+        /* Buton Hover Efektleri */
+        .social-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .social-btn:hover {
+            transform: scale(1.1); /* Sadece buton büyür */
+            opacity: 1 !important;
         }
 
-        /* Arka plan animasyonu */
         .bg-blob {
             filter: blur(80px);
             z-index: 0;
             opacity: 0.12;
             pointer-events: none;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
@@ -58,7 +68,7 @@
 
     <!-- TEMA DEĞİŞTİRME BUTONU -->
     <div class="fixed top-6 right-6 z-50">
-        <button onclick="toggleTheme()" class="p-3 rounded-2xl bg-white/70 dark:bg-zinc-900/70 border border-slate-200 dark:border-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all text-slate-800 dark:text-yellow-400 btn-glass">
+        <button onclick="toggleTheme()" class="p-3 rounded-2xl bg-white/40 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all text-slate-800 dark:text-yellow-400 btn-glass">
             <span id="theme-icon-sun" class="hidden dark:block">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             </span>
@@ -73,14 +83,11 @@
         <!-- --- 1. HEADER & IDENTITY --- -->
         <section class="flex flex-col gap-8">
             <div class="flex justify-between items-start">
-                <div class="relative group">
-                    <div class="absolute -inset-1.5 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
-                    <div class="relative w-28 h-28 rounded-full bg-white dark:bg-zinc-900 border-4 border-white dark:border-zinc-800 shadow-2xl overflow-hidden transition-transform group-hover:scale-[1.02] duration-500">
-                        <img src="image_ca203b.png" alt="Swaxilep Avatar" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" onerror="this.src='https://ui-avatars.com/api/?name=S&background=0D0D0D&color=fff'">
-                    </div>
-                    <div class="absolute bottom-2 right-2 w-7 h-7 bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center border-2 border-slate-50 dark:border-zinc-950 shadow-lg">
-                        <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.6)]"></div>
-                    </div>
+                <div class="flex-1">
+                    <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">Swaxilep</h1>
+                    <h2 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-300 mb-6">
+                        Game Developer
+                    </h2>
                 </div>
 
                 <div class="text-right hidden sm:block">
@@ -88,21 +95,17 @@
                         00:00
                     </div>
                     <div class="text-[10px] text-blue-600 dark:text-blue-400 font-bold font-mono mt-1 flex items-center justify-end gap-1.5 opacity-80 uppercase tracking-widest">
-                        Istanbul (GMT+3)
+                        Europe/Istanbul (UTC+3)
                     </div>
                 </div>
             </div>
 
             <div>
-                <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">Swaxilep</h1>
-                <h2 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-300 mb-6">
-                    Game Developer
-                </h2>
                 <p class="text-slate-600 dark:text-zinc-400 text-lg leading-relaxed max-w-xl mb-6 font-medium">
                     I am 19 years old and a graduate of Fine Arts. Currently specializing in 3D modeling and animation for leading game companies.
                 </p>
                 
-                <div class="inline-flex items-center gap-4 bg-white/60 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800/50 rounded-2xl p-4 shadow-sm btn-glass">
+                <div class="inline-flex items-center gap-4 bg-white/40 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800/50 rounded-2xl p-4 shadow-sm btn-glass">
                     <div class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
                     <p class="text-sm text-slate-500 dark:text-zinc-400">
                         Commissions are <strong class="text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">OPEN</strong>
@@ -110,26 +113,24 @@
                 </div>
             </div>
 
-            <!-- SOSYAL BAĞLANTILAR -->
-            <div class="flex flex-wrap gap-3 items-center">
-                <a href="https://x.com/swaxilep" target="_blank" class="px-6 py-2.5 bg-slate-900/80 dark:bg-white/90 text-white dark:text-zinc-950 rounded-xl font-bold text-xs transition-all btn-glass btn-glow uppercase tracking-wider">X (Twitter)</a>
+            <!-- SOSYAL BAĞLANTILAR (Yarı Saydam & Hover Büyüme) -->
+            <div class="flex overflow-x-auto no-scrollbar gap-2 py-2 -mx-2 px-2 scroll-smooth items-center">
+                <a href="https://x.com/swaxilep" target="_blank" class="social-btn opacity-60 whitespace-nowrap px-5 py-2.5 bg-slate-900/80 dark:bg-white/80 text-white dark:text-zinc-950 rounded-xl font-bold text-[10px] btn-glass uppercase tracking-wider">X (Twitter)</a>
                 
-                <a href="https://www.roblox.com/users/940248004" target="_blank" class="px-6 py-2.5 bg-slate-200/60 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-200 rounded-xl font-bold text-xs transition-all border border-slate-300/50 dark:border-zinc-700/50 btn-glass btn-glow uppercase tracking-wider">Roblox</a>
+                <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn opacity-60 whitespace-nowrap px-5 py-2.5 bg-blue-500/60 text-white rounded-xl font-bold text-[10px] border border-blue-400/20 btn-glass uppercase tracking-wider">ArtStation</a>
                 
-                <a href="https://www.artstation.com/swaxilep" target="_blank" class="px-6 py-2.5 bg-blue-500/70 text-white rounded-xl font-bold text-xs transition-all border border-blue-400/30 btn-glass btn-glow uppercase tracking-wider">ArtStation</a>
+                <a href="https://github.com/ardailep" target="_blank" class="social-btn opacity-60 whitespace-nowrap px-5 py-2.5 bg-purple-600/60 text-white rounded-xl font-bold text-[10px] border border-purple-500/20 btn-glass uppercase tracking-wider">GitHub</a>
                 
-                <a href="https://github.com/ardailep" target="_blank" class="px-6 py-2.5 bg-purple-600/70 text-white rounded-xl font-bold text-xs transition-all border border-purple-500/30 btn-glass btn-glow uppercase tracking-wider">GitHub</a>
+                <a href="https://www.youtube.com/@swaxdev" target="_blank" class="social-btn opacity-60 whitespace-nowrap px-5 py-2.5 bg-red-600/60 text-white rounded-xl font-bold text-[10px] border border-red-500/20 btn-glass uppercase tracking-wider">YouTube</a>
                 
-                <a href="https://www.youtube.com/@swaxdev" target="_blank" class="px-6 py-2.5 bg-red-600/70 text-white rounded-xl font-bold text-xs transition-all border border-red-500/30 btn-glass btn-glow uppercase tracking-wider">YouTube</a>
-                
-                <a href="https://discord.com/users/454979640306696192" target="_blank" class="px-6 py-2.5 bg-indigo-600/70 text-white rounded-xl font-bold text-xs transition-all border border-indigo-500/30 btn-glass btn-glow uppercase tracking-wider">Discord</a>
+                <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn opacity-60 whitespace-nowrap px-5 py-2.5 bg-indigo-600/60 text-white rounded-xl font-bold text-[10px] border border-indigo-500/20 btn-glass uppercase tracking-wider">Discord</a>
             </div>
         </section>
 
         <!-- --- 2. KULLANILAN PROGRAMLAR --- -->
         <section>
             <div class="flex items-center gap-4 mb-8">
-                <h3 class="text-xs font-black tracking-[0.4em] text-slate-400 dark:text-zinc-600 uppercase">Tech Stack</h3>
+                <h3 class="text-xs font-black tracking-[0.4em] text-slate-400 dark:text-zinc-600 uppercase">Programs I Use</h3>
                 <div class="h-[1px] flex-1 bg-slate-200 dark:bg-zinc-800"></div>
             </div>
             
@@ -147,18 +148,15 @@
     </div>
 
     <script>
-        // Tema Yönetimi
         function toggleTheme() {
             const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
-        // Sayfa yüklendiğinde tercihi hatırla
         if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
 
-        // Saat Güncelleme
         function updateClock() {
             const now = new Date();
             const trTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
@@ -169,7 +167,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Programlar Listesi (Kategoriler kaldırıldı)
         const programs = [
             "Blender",
             "Substance Painter",
@@ -182,7 +179,8 @@
         const listContainer = document.getElementById('programs-list');
         programs.forEach(name => {
             const div = document.createElement('div');
-            div.className = "flex items-center justify-center p-4 rounded-2xl bg-white/40 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800 hover:border-blue-400 dark:hover:border-blue-500 transition-all group cursor-default shadow-sm btn-glass";
+            // Program kutuları için de benzer yarı saydamlık ve hover efekti ekledim
+            div.className = "social-btn opacity-60 flex items-center justify-center p-4 rounded-2xl bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 hover:border-blue-400 dark:hover:border-blue-500 transition-all group cursor-default shadow-sm btn-glass";
             div.innerHTML = `
                 <div class="flex items-center gap-2">
                     <div class="w-1.5 h-1.5 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-all scale-0 group-hover:scale-100"></div>
