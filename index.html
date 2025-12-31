@@ -56,7 +56,7 @@
             height: 100%;
             z-index: -2;
             overflow: hidden;
-            background-color: #09090b; /* Video yüklenene kadar siyah arka plan */
+            background-color: #000; /* Video yüklenene kadar tam siyah */
         }
 
         #bg-video {
@@ -69,6 +69,7 @@
             width: auto;
             height: auto;
             object-fit: cover;
+            opacity: 1;
         }
 
         .video-overlay {
@@ -84,12 +85,12 @@
 
         /* Açık Tema: Daha şeffaf ve beyaz ağırlıklı */
         .video-overlay {
-            background: rgba(248, 250, 252, 0.88);
+            background: rgba(248, 250, 252, 0.85);
         }
 
         /* Koyu Tema: Daha derin ve karanlık */
         .dark .video-overlay {
-            background: rgba(9, 9, 11, 0.92);
+            background: rgba(9, 9, 11, 0.9);
         }
 
         .tab-active {
@@ -122,7 +123,7 @@
 
     <!-- ARKA PLAN VİDEO KATMANI -->
     <div id="video-viewport">
-        <video id="bg-video" autoplay muted loop playsinline disablePictureInPicture>
+        <video id="bg-video" autoplay muted loop playsinline preload="auto">
             <source src="assets/background.mp4" type="video/mp4">
         </video>
     </div>
@@ -148,7 +149,7 @@
         <button onclick="prevImage()" class="absolute left-6 top-1/2 -translate-y-1/2 p-4 text-white hover:text-blue-400 transition-all hover:scale-110 z-[1010] bg-white/5 rounded-full btn-glass border border-white/10">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
-        <img id="lightbox-img" src="" class="max-w-[90%] max-h-[85vh] object-contain rounded-xl shadow-2xl transition-all duration-300 transform scale-95" alt="Önizleme">
+        <img id="lightbox-img" src="" class="max-w-[90%] max-h-[85vh] object-contain rounded-xl shadow-2xl transition-all duration-300 transform scale-95" alt="Onizleme">
         <button onclick="nextImage()" class="absolute right-6 top-1/2 -translate-y-1/2 p-4 text-white hover:text-blue-400 transition-all hover:scale-110 z-[1010] bg-white/5 rounded-full btn-glass border border-white/10">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
@@ -212,6 +213,16 @@
     </div>
 
     <script>
+        // Sayfa yuklendiginde videoyu zorla oynat
+        window.addEventListener('load', function() {
+            const video = document.getElementById('bg-video');
+            if (video) {
+                video.play().catch(error => {
+                    console.log("Video otomatik baslatilamadi:", error);
+                });
+            }
+        });
+
         function toggleTheme() {
             const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
@@ -234,11 +245,15 @@
 
         function switchTab(tabId) {
             ['links', 'programs', 'works'].forEach(t => {
-                document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`btn-${t}`).classList.remove('tab-active');
+                const el = document.getElementById(`tab-${t}`);
+                if(el) el.classList.add('hidden');
+                const btn = document.getElementById(`btn-${t}`);
+                if(btn) btn.classList.remove('tab-active');
             });
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            document.getElementById(`btn-${tabId}`).classList.add('tab-active');
+            const targetTab = document.getElementById(`tab-${tabId}`);
+            if(targetTab) targetTab.classList.remove('hidden');
+            const targetBtn = document.getElementById(`btn-${tabId}`);
+            if(targetBtn) targetBtn.classList.add('tab-active');
         }
 
         const programs = [
