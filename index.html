@@ -52,11 +52,41 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
 
-        .bg-blob {
-            filter: blur(80px);
-            z-index: 0;
-            opacity: 0.12;
-            pointer-events: none;
+        /* Video Arka Planı */
+        .video-bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-bg-container video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(248, 250, 252, 0.85); /* Light mode overlay */
+            transition: background 0.5s ease;
+        }
+
+        .dark .video-overlay {
+            background: rgba(9, 9, 11, 0.9); /* Dark mode overlay */
         }
 
         .tab-active {
@@ -88,10 +118,14 @@
 </head>
 <body class="theme-transition bg-slate-50 dark:bg-zinc-950 text-slate-700 dark:text-zinc-400 selection:bg-blue-500/30 overflow-x-hidden relative min-h-screen text-center">
 
-    <!-- ARKA PLAN EFEKTLERİ -->
-    <div class="fixed top-0 left-0 w-full h-[600px] bg-gradient-to-b from-blue-500/5 to-transparent dark:from-blue-900/10 pointer-events-none z-0"></div>
-    <div class="fixed top-[-100px] right-[-100px] w-[500px] h-[500px] bg-blue-400 dark:bg-blue-600 bg-blob rounded-full"></div>
-    <div class="fixed bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-indigo-400 dark:bg-indigo-900 bg-blob rounded-full"></div>
+    <!-- VIDEO ARKA PLAN -->
+    <div class="video-bg-container">
+        <video autoplay muted loop playsinline poster="assets/works/1.png">
+            <source src="assets/background.mp4" type="video/mp4">
+            Tarayıcınız video etiketini desteklemiyor.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
 
     <!-- TEMA DEĞİŞTİRME BUTONU -->
     <div class="fixed top-6 right-6 z-50">
