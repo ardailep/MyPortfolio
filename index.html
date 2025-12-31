@@ -35,58 +35,61 @@
 
         .social-btn {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
         }
         
         .glow-text {
             color: #ffffff !important;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
-            filter: brightness(1.2);
         }
 
         .social-btn:hover {
             transform: scale(1.02);
-            opacity: 1 !important;
-            filter: brightness(1.1) contrast(1.1);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            filter: brightness(1.1);
         }
 
-        /* Video Arka Planı */
-        .video-bg-container {
+        /* Video Arka Plan Konfigürasyonu */
+        #video-viewport {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            background-color: #09090b; /* Video yüklenene kadar siyah arka plan */
+        }
+
+        #bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .video-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            overflow: hidden;
-        }
-
-        .video-bg-container video {
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-        }
-
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(248, 250, 252, 0.85); /* Light mode overlay */
             transition: background 0.5s ease;
+            pointer-events: none;
         }
 
+        /* Açık Tema: Daha şeffaf ve beyaz ağırlıklı */
+        .video-overlay {
+            background: rgba(248, 250, 252, 0.88);
+        }
+
+        /* Koyu Tema: Daha derin ve karanlık */
         .dark .video-overlay {
-            background: rgba(9, 9, 11, 0.9); /* Dark mode overlay */
+            background: rgba(9, 9, 11, 0.92);
         }
 
         .tab-active {
@@ -100,7 +103,6 @@
             color: rgb(96 165 250);
         }
 
-        /* Lightbox Styles */
         #lightbox {
             display: none;
             position: fixed;
@@ -108,28 +110,27 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
         }
     </style>
 </head>
-<body class="theme-transition bg-slate-50 dark:bg-zinc-950 text-slate-700 dark:text-zinc-400 selection:bg-blue-500/30 overflow-x-hidden relative min-h-screen text-center">
+<body class="theme-transition text-slate-700 dark:text-zinc-400 selection:bg-blue-500/30 overflow-x-hidden relative min-h-screen text-center">
 
-    <!-- VIDEO ARKA PLAN -->
-    <div class="video-bg-container">
-        <video autoplay muted loop playsinline poster="assets/works/1.png">
+    <!-- ARKA PLAN VİDEO KATMANI -->
+    <div id="video-viewport">
+        <video id="bg-video" autoplay muted loop playsinline disablePictureInPicture>
             <source src="assets/background.mp4" type="video/mp4">
-            Tarayıcınız video etiketini desteklemiyor.
         </video>
-        <div class="video-overlay"></div>
     </div>
+    <div class="video-overlay"></div>
 
-    <!-- TEMA DEĞİŞTİRME BUTONU -->
+    <!-- TEMA BUTONU -->
     <div class="fixed top-6 right-6 z-50">
-        <button onclick="toggleTheme()" class="p-3 rounded-2xl bg-white/40 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all text-slate-800 dark:text-yellow-400 btn-glass">
+        <button onclick="toggleTheme()" class="p-3 rounded-2xl bg-white/20 dark:bg-zinc-900/20 border border-slate-200/50 dark:border-zinc-800/50 shadow-xl hover:scale-110 active:scale-95 transition-all text-slate-800 dark:text-yellow-400 btn-glass">
             <span id="theme-icon-sun" class="hidden dark:block">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             </span>
@@ -139,94 +140,72 @@
         </button>
     </div>
 
-    <!-- LIGHTBOX UI -->
+    <!-- LIGHTBOX -->
     <div id="lightbox" class="flex flex-col">
         <button onclick="closeLightbox()" class="absolute top-6 right-6 p-3 text-white hover:text-blue-400 transition-colors z-[1010]">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
-        
         <button onclick="prevImage()" class="absolute left-6 top-1/2 -translate-y-1/2 p-4 text-white hover:text-blue-400 transition-all hover:scale-110 z-[1010] bg-white/5 rounded-full btn-glass border border-white/10">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
-
-        <img id="lightbox-img" src="" class="max-w-[90%] max-h-[85vh] object-contain rounded-xl shadow-2xl transition-all duration-300 transform scale-95" alt="Preview">
-
+        <img id="lightbox-img" src="" class="max-w-[90%] max-h-[85vh] object-contain rounded-xl shadow-2xl transition-all duration-300 transform scale-95" alt="Önizleme">
         <button onclick="nextImage()" class="absolute right-6 top-1/2 -translate-y-1/2 p-4 text-white hover:text-blue-400 transition-all hover:scale-110 z-[1010] bg-white/5 rounded-full btn-glass border border-white/10">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
-
-        <div id="lightbox-counter" class="absolute bottom-10 px-4 py-2 bg-black/50 text-white/70 font-mono text-xs tracking-widest rounded-full border border-white/10 btn-glass uppercase">
-            0 / 0
-        </div>
+        <div id="lightbox-counter" class="absolute bottom-10 px-4 py-2 bg-black/50 text-white/70 font-mono text-xs tracking-widest rounded-full border border-white/10 btn-glass uppercase">0 / 0</div>
     </div>
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-16 md:py-24 flex flex-col gap-12">
 
-        <!-- --- 1. HEADER & IDENTITY --- -->
+        <!-- HEADER -->
         <section class="flex flex-col gap-8 items-center text-center">
             <div class="w-full">
-                <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">Swaxilep</h1>
+                <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3 drop-shadow-sm">Swaxilep</h1>
                 <h2 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-300">
                     Game Developer
                 </h2>
             </div>
 
-            <p class="text-slate-600 dark:text-zinc-400 text-lg leading-relaxed max-w-xl font-medium mx-auto">
+            <p class="text-slate-700 dark:text-zinc-300 text-lg leading-relaxed max-w-xl font-medium mx-auto bg-white/5 dark:bg-black/5 p-4 rounded-2xl btn-glass">
                 I am 19 years old and a graduate of Fine Arts. Currently specializing in 3D modeling and animation for leading game companies.
             </p>
             
-            <!-- COMMISSIONS & SAAT BÖLÜMÜ -->
-            <div class="inline-flex items-center gap-4 bg-white/40 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800/50 rounded-2xl p-4 shadow-sm btn-glass mx-auto">
-                <div class="flex items-center gap-3 pr-4 border-r border-slate-200 dark:border-zinc-800/80">
+            <div class="inline-flex items-center gap-4 bg-white/40 dark:bg-zinc-900/40 border border-slate-200/50 dark:border-zinc-800/50 rounded-2xl p-4 shadow-sm btn-glass mx-auto">
+                <div class="flex items-center gap-3 pr-4 border-r border-slate-200/50 dark:border-zinc-800/50">
                     <div class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
-                    <p class="text-sm text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">
-                        Commissions are OPEN
-                    </p>
+                    <p class="text-sm text-slate-600 dark:text-zinc-400 font-bold uppercase tracking-wider">Commissions OPEN</p>
                 </div>
-                
                 <div class="flex flex-col items-start gap-0.5">
-                    <div id="clock" class="text-xl font-mono font-bold text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none">
-                        00:00
-                    </div>
-                    <div class="text-[8px] text-blue-600 dark:text-blue-400 font-bold font-mono opacity-80 uppercase tracking-widest leading-none">
-                        UTC+3
-                    </div>
+                    <div id="clock" class="text-xl font-mono font-bold text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none">00:00</div>
+                    <div class="text-[8px] text-blue-600 dark:text-blue-400 font-bold font-mono opacity-80 uppercase tracking-widest leading-none">UTC+3</div>
                 </div>
             </div>
         </section>
 
-        <!-- --- 2. INTERACTIVE TABS --- -->
+        <!-- TABS -->
         <section class="flex flex-col gap-8">
-            <!-- TAB NAV -->
-            <div class="flex items-center justify-center gap-2 p-1 bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 rounded-2xl w-fit mx-auto btn-glass">
+            <div class="flex items-center justify-center gap-2 p-1 bg-white/20 dark:bg-zinc-900/20 border border-slate-200/50 dark:border-zinc-800/50 rounded-2xl w-fit mx-auto btn-glass">
                 <button onclick="switchTab('links')" id="btn-links" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn tab-active">LINKS</button>
                 <button onclick="switchTab('programs')" id="btn-programs" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn">PROGRAMS</button>
                 <button onclick="switchTab('works')" id="btn-works" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn">WORKS</button>
             </div>
 
-            <!-- TAB CONTENT: LINKS -->
-            <div id="tab-links" class="flex flex-wrap justify-center gap-2 w-full transition-all duration-300">
-                <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-black dark:bg-zinc-900 text-white rounded-xl font-bold text-[10px] border border-zinc-800/50 btn-glass uppercase tracking-wider shadow-lg">X (Twitter)</a>
+            <div id="tab-links" class="flex flex-wrap justify-center gap-2 w-full transition-all">
+                <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-black/80 dark:bg-zinc-900/80 text-white rounded-xl font-bold text-[10px] border border-zinc-800/50 btn-glass uppercase tracking-wider shadow-lg">X (Twitter)</a>
                 <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-blue-500/80 text-white rounded-xl font-bold text-[10px] border border-blue-400/20 btn-glass uppercase tracking-wider">ArtStation</a>
                 <a href="https://github.com/ardailep" target="_blank" class="social-btn glow-text px-5 py-3 bg-purple-600/80 text-white rounded-xl font-bold text-[10px] border border-purple-500/20 btn-glass uppercase tracking-wider">GitHub</a>
                 <a href="https://www.youtube.com/@swaxdev" target="_blank" class="social-btn glow-text px-5 py-3 bg-red-600/80 text-white rounded-xl font-bold text-[10px] border border-red-500/20 btn-glass uppercase tracking-wider">YouTube</a>
                 <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text px-5 py-3 bg-indigo-600/80 text-white rounded-xl font-bold text-[10px] border border-indigo-500/20 btn-glass uppercase tracking-wider">Discord</a>
             </div>
 
-            <!-- TAB CONTENT: PROGRAMS (3er 3er Düzen) -->
-            <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-4xl mx-auto w-full transition-all duration-300">
-                <!-- JS ile doldurulacak -->
-            </div>
+            <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-4xl mx-auto w-full transition-all"></div>
 
-            <!-- TAB CONTENT: WORKS -->
-            <div id="tab-works" class="hidden grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 w-full transition-all duration-300">
-                <!-- JS ile dinamik resimler doldurulacak -->
-            </div>
+            <div id="tab-works" class="hidden grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 w-full transition-all"></div>
         </section>
 
-        <!-- --- 3. FOOTER --- -->
-        <footer class="mt-8 border-t border-slate-200 dark:border-zinc-900 pt-12 text-center pb-12">
-            <p class="text-slate-400 dark:text-zinc-600 text-[10px] font-mono font-bold uppercase tracking-[0.5em]">
+        <!-- FOOTER -->
+        <footer class="mt-8 border-t border-slate-200/20 dark:border-zinc-800/20 pt-12 text-center pb-12">
+            <p class="text-slate-500 dark:text-zinc-600 text-[10px] font-mono font-bold uppercase tracking-[0.5em]">
                 COPYRIGHT © 2024 SWAXILEP • ALL RIGHTS RESERVED
             </p>
         </footer>
@@ -253,10 +232,8 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // TAB SWITCH LOGIC
         function switchTab(tabId) {
-            const tabs = ['links', 'programs', 'works'];
-            tabs.forEach(t => {
+            ['links', 'programs', 'works'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
                 document.getElementById(`btn-${t}`).classList.remove('tab-active');
             });
@@ -264,7 +241,6 @@
             document.getElementById(`btn-${tabId}`).classList.add('tab-active');
         }
 
-        // PROGRAMS RENDER (3er 3er)
         const programs = [
             { name: "Blender", url: "https://www.blender.org/" },
             { name: "Substance Painter", url: "https://www.adobe.com/products/substance3d-painter.html" },
@@ -279,12 +255,11 @@
             const a = document.createElement('a');
             a.href = prog.url;
             a.target = "_blank";
-            a.className = "social-btn opacity-90 flex items-center justify-center p-4 rounded-xl bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 hover:border-blue-400 dark:hover:border-blue-500 transition-all group shadow-sm btn-glass text-center";
+            a.className = "social-btn flex items-center justify-center p-4 rounded-xl bg-white/20 dark:bg-zinc-900/20 border border-slate-200/50 dark:border-zinc-800/50 hover:border-blue-400 dark:hover:border-blue-500 transition-all shadow-sm btn-glass text-center";
             a.innerHTML = `<span class="text-sm font-bold text-slate-800 dark:text-zinc-100 uppercase tracking-widest">${prog.name}</span>`;
             programsContainer.appendChild(a);
         });
 
-        // LIGHTBOX LOGIC
         let currentWorks = [];
         let currentIndex = 0;
 
@@ -293,21 +268,18 @@
             const lightbox = document.getElementById('lightbox');
             const img = document.getElementById('lightbox-img');
             const counter = document.getElementById('lightbox-counter');
-            
             img.src = currentWorks[currentIndex];
             counter.textContent = `${currentIndex + 1} / ${currentWorks.length}`;
-            
             lightbox.style.display = 'flex';
             setTimeout(() => img.classList.remove('scale-95'), 10);
             document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
             const img = document.getElementById('lightbox-img');
             img.classList.add('scale-95');
             setTimeout(() => {
-                lightbox.style.display = 'none';
+                document.getElementById('lightbox').style.display = 'none';
                 document.body.style.overflow = 'auto';
             }, 300);
         }
@@ -333,7 +305,24 @@
             }, 150);
         }
 
-        // Keyboard support
+        const worksContainer = document.getElementById('tab-works');
+        for (let i = 1; i <= 25; i++) {
+            const imgSrc = `assets/works/${i}.png`;
+            const div = document.createElement('div');
+            div.className = "aspect-square overflow-hidden rounded-2xl bg-white/10 dark:bg-zinc-900/30 border border-slate-200/30 dark:border-zinc-800/30 social-btn group relative cursor-pointer btn-glass";
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110";
+            img.onload = function() {
+                currentWorks.push(this.src);
+                const assignedIndex = currentWorks.length - 1;
+                div.onclick = () => openLightbox(assignedIndex);
+            };
+            img.onerror = function() { this.parentElement.style.display = 'none'; };
+            div.appendChild(img);
+            worksContainer.appendChild(div);
+        }
+
         window.addEventListener('keydown', (e) => {
             if (document.getElementById('lightbox').style.display === 'flex') {
                 if (e.key === 'ArrowRight') nextImage();
@@ -341,33 +330,6 @@
                 if (e.key === 'Escape') closeLightbox();
             }
         });
-
-        // WORKS RENDER (MAX 25 IMAGES)
-        const worksContainer = document.getElementById('tab-works');
-
-        for (let i = 1; i <= 25; i++) {
-            const imgSrc = `assets/works/${i}.png`;
-            const div = document.createElement('div');
-            div.className = "aspect-square overflow-hidden rounded-2xl bg-slate-200 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 social-btn group relative cursor-pointer";
-            
-            const img = document.createElement('img');
-            img.src = imgSrc;
-            img.alt = `Work ${i}`;
-            img.className = "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110";
-            
-            img.onload = function() {
-                currentWorks.push(this.src);
-                const assignedIndex = currentWorks.length - 1;
-                div.onclick = () => openLightbox(assignedIndex);
-            };
-
-            img.onerror = function() {
-                this.parentElement.style.display = 'none';
-            };
-
-            div.appendChild(img);
-            worksContainer.appendChild(div);
-        }
     </script>
 </body>
 </html>
