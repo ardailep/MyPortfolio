@@ -68,15 +68,19 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .dark .btn-glass {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .social-btn {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow: hidden;
         }
         
         .glow-text {
@@ -85,14 +89,16 @@
         }
 
         .social-btn:hover {
-            transform: scale(1.02);
-            filter: brightness(1.1);
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
         }
 
         .tab-active {
-            background-color: rgb(37 99 235 / 0.2);
-            border-color: rgb(37 99 235 / 0.6);
-            color: white;
+            background-color: rgba(37, 99, 235, 0.4) !important;
+            border-color: rgba(37, 99, 235, 0.8) !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
         }
 
         #lightbox {
@@ -114,7 +120,6 @@
 
     <!-- VIDEO BACKGROUND -->
     <div class="video-background">
-        <!-- Tarayıcı kısıtlamaları nedeniyle 'muted' olmak zorundadır -->
         <video autoplay muted loop playsinline id="bg-video">
             <source src="assets/background.mp4" type="video/mp4">
             Tarayıcınız video etiketini desteklemiyor.
@@ -169,7 +174,6 @@
                 I am 19 years old and a graduate of Fıne Arts. Currently specıalızıng ın 3D modelıng and anımatıon for leadıng game companıes.
             </p>
             
-            <!-- COMMISSIONS & SAAT BÖLÜMÜ -->
             <div class="inline-flex items-center gap-4 border border-white/20 rounded-2xl p-4 shadow-xl btn-glass mx-auto">
                 <a href="https://www.worldtimebuddy.com/" target="_blank" class="flex items-center gap-3 pr-4 border-r border-white/20 hover:opacity-70 transition-opacity">
                     <div class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
@@ -197,15 +201,15 @@
                 <button onclick="switchTab('works')" id="btn-works" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn">WORKS</button>
             </div>
 
-            <div id="tab-links" class="flex flex-wrap justify-center gap-2 w-full transition-all duration-300">
-                <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-black/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">X (Twıtter)</a>
-                <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-blue-500/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider">ArtStatıon</a>
-                <a href="https://github.com/ardailep" target="_blank" class="social-btn glow-text px-5 py-3 bg-purple-600/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider">GıtHub</a>
-                <a href="https://www.youtube.com/@swaxdev" target="_blank" class="social-btn glow-text px-5 py-3 bg-red-600/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider">YouTube</a>
-                <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text px-5 py-3 bg-indigo-600/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider">Dıscord</a>
+            <div id="tab-links" class="flex flex-wrap justify-center gap-3 w-full transition-all duration-300">
+                <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-neutral-900/60 dark:bg-neutral-800/80 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">X (Twıtter)</a>
+                <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-blue-600/50 dark:bg-blue-700/60 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">ArtStatıon</a>
+                <a href="https://github.com/ardailep" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-slate-700/60 dark:bg-slate-800/80 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">GıtHub</a>
+                <a href="https://www.youtube.com/@swaxdev" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-red-600/50 dark:bg-red-700/60 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">YouTube</a>
+                <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-indigo-600/50 dark:bg-indigo-700/60 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">Dıscord</a>
             </div>
 
-            <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-4xl mx-auto w-full transition-all duration-300"></div>
+            <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-4xl mx-auto w-full transition-all duration-300"></div>
 
             <div id="tab-works" class="hidden grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 w-full transition-all duration-300"></div>
         </section>
@@ -267,7 +271,7 @@
             const a = document.createElement('a');
             a.href = prog.url;
             a.target = "_blank";
-            a.className = "social-btn opacity-90 flex items-center justify-center p-4 rounded-xl border border-white/10 hover:border-blue-400 transition-all group shadow-sm btn-glass text-center";
+            a.className = "social-btn flex items-center justify-center p-5 rounded-xl border border-white/10 hover:border-blue-400 transition-all group shadow-sm btn-glass text-center bg-white/5 dark:bg-black/20";
             a.innerHTML = `<span class="text-sm font-bold text-white uppercase tracking-widest">${prog.name}</span>`;
             programsContainer.appendChild(a);
         });
