@@ -69,6 +69,21 @@
             border-color: rgb(59 130 246 / 0.5);
             color: rgb(96 165 250);
         }
+
+        /* Lightbox Styles */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
     </style>
 </head>
 <body class="theme-transition bg-slate-50 dark:bg-zinc-950 text-slate-700 dark:text-zinc-400 selection:bg-blue-500/30 overflow-x-hidden relative min-h-screen text-center">
@@ -88,6 +103,27 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
             </span>
         </button>
+    </div>
+
+    <!-- LIGHTBOX UI -->
+    <div id="lightbox" class="flex flex-col">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 p-3 text-white hover:text-blue-400 transition-colors z-[1010]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        
+        <button onclick="prevImage()" class="absolute left-6 top-1/2 -translate-y-1/2 p-4 text-white hover:text-blue-400 transition-all hover:scale-110 z-[1010] bg-white/5 rounded-full btn-glass border border-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+
+        <img id="lightbox-img" src="" class="max-w-[90%] max-h-[85vh] object-contain rounded-xl shadow-2xl transition-all duration-300 transform scale-95" alt="Preview">
+
+        <button onclick="nextImage()" class="absolute right-6 top-1/2 -translate-y-1/2 p-4 text-white hover:text-blue-400 transition-all hover:scale-110 z-[1010] bg-white/5 rounded-full btn-glass border border-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+
+        <div id="lightbox-counter" class="absolute bottom-10 px-4 py-2 bg-black/50 text-white/70 font-mono text-xs tracking-widest rounded-full border border-white/10 btn-glass uppercase">
+            0 / 0
+        </div>
     </div>
 
     <div class="relative z-10 max-w-2xl mx-auto px-6 py-16 md:py-24 flex flex-col gap-12">
@@ -214,17 +250,85 @@
             programsContainer.appendChild(a);
         });
 
+        // LIGHTBOX LOGIC
+        let currentWorks = [];
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('lightbox-counter');
+            
+            img.src = currentWorks[currentIndex];
+            counter.textContent = `${currentIndex + 1} / ${currentWorks.length}`;
+            
+            lightbox.style.display = 'flex';
+            setTimeout(() => img.classList.remove('scale-95'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.classList.add('scale-95');
+            setTimeout(() => {
+                lightbox.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % currentWorks.length;
+            updateLightboxContent();
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + currentWorks.length) % currentWorks.length;
+            updateLightboxContent();
+        }
+
+        function updateLightboxContent() {
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('lightbox-counter');
+            img.style.opacity = '0';
+            setTimeout(() => {
+                img.src = currentWorks[currentIndex];
+                counter.textContent = `${currentIndex + 1} / ${currentWorks.length}`;
+                img.style.opacity = '1';
+            }, 150);
+        }
+
+        // Keyboard support
+        window.addEventListener('keydown', (e) => {
+            if (document.getElementById('lightbox').style.display === 'flex') {
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'Escape') closeLightbox();
+            }
+        });
+
         // WORKS RENDER (MAX 25 IMAGES)
         const worksContainer = document.getElementById('tab-works');
+        let loadedCount = 0;
+
         for (let i = 1; i <= 25; i++) {
+            const imgSrc = `assets/works/${i}.png`;
             const div = document.createElement('div');
-            div.className = "aspect-square overflow-hidden rounded-2xl bg-slate-200 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 social-btn group relative";
+            div.className = "aspect-square overflow-hidden rounded-2xl bg-slate-200 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 social-btn group relative cursor-pointer";
             
-            // Image loading with fallback
             const img = document.createElement('img');
-            img.src = `assets/works/${i}.png`;
+            img.src = imgSrc;
             img.alt = `Work ${i}`;
             img.className = "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110";
+            
+            img.onload = function() {
+                // Sadece başarıyla yüklenenleri listeye ekle
+                currentWorks.push(this.src);
+                const assignedIndex = currentWorks.length - 1;
+                div.onclick = () => openLightbox(assignedIndex);
+            };
+
             img.onerror = function() {
                 this.parentElement.style.display = 'none';
             };
