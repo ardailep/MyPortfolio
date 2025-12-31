@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swaxılep | Portfolyo</title>
     
-    <!-- Sıte İkonları -->
+    <!-- Site İkonları -->
     <link rel="icon" type="image/png" href="assets/SiteIcon.png">
     <link rel="apple-touch-icon" href="assets/SiteIcon.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Montserrat eklendi -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        // Ana font ailesi Montserrat olarak güncellendi
+                        sans: ['"Montserrat"', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace'],
                     },
                 }
@@ -54,14 +56,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            /* Blur miktarını 8px'den 4px'e düşürdük */
             filter: brightness(0.6) blur(4px);
-            /* Blur azaldığı için ölçeği (scale) kenarları korumak adına hafifçe azalttık */
             scale: 1.03;
         }
 
         .dark .video-background video {
-            /* Karanlık modda da blur miktarını 10px'den 5px'e düşürdük */
             filter: brightness(0.3) contrast(1.1) blur(5px);
         }
 
@@ -117,7 +116,7 @@
         }
     </style>
 </head>
-<body class="theme-transition bg-slate-900 text-white selection:bg-blue-500/30 overflow-x-hidden relative min-h-screen text-center">
+<body class="theme-transition bg-slate-900 text-white selection:bg-blue-500/30 overflow-x-hidden relative min-h-screen text-center font-sans">
 
     <!-- VIDEO BACKGROUND -->
     <div class="video-background">
@@ -165,8 +164,8 @@
         <!-- --- 1. HEADER & IDENTITY --- -->
         <section class="flex flex-col gap-8 items-center text-center">
             <div class="w-full">
-                <h1 class="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-3 drop-shadow-lg">Swaxılep</h1>
-                <h2 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 drop-shadow-md">
+                <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight mb-3 drop-shadow-lg uppercase">Swaxılep</h1>
+                <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 drop-shadow-md">
                     Game Developer
                 </h2>
             </div>
@@ -178,7 +177,7 @@
             <div class="inline-flex items-center gap-4 border border-white/20 rounded-2xl p-4 shadow-xl btn-glass mx-auto">
                 <a href="https://www.worldtimebuddy.com/" target="_blank" class="flex items-center gap-3 pr-4 border-r border-white/20 hover:opacity-70 transition-opacity">
                     <div class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
-                    <p class="text-sm text-white font-bold uppercase tracking-wider">
+                    <p class="text-sm text-white font-black uppercase tracking-wider">
                         COMMıSSıONS ARE OPEN
                     </p>
                 </a>
