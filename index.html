@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swaxilep | Portfolyo</title>
+    
+    <!-- Site İkonları -->
+    <link rel="icon" type="image/png" href="assets/SiteIcon.png">
+    <link rel="apple-touch-icon" href="assets/SiteIcon.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
@@ -70,7 +75,6 @@
             color: rgb(96 165 250);
         }
 
-        /* Lightbox Styles */
         #lightbox {
             display: none;
             position: fixed;
@@ -163,14 +167,12 @@
 
         <!-- --- 2. INTERACTIVE TABS --- -->
         <section class="flex flex-col gap-8">
-            <!-- TAB NAV -->
             <div class="flex items-center justify-center gap-2 p-1 bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 rounded-2xl w-fit mx-auto btn-glass">
                 <button onclick="switchTab('links')" id="btn-links" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn tab-active">LINKS</button>
                 <button onclick="switchTab('programs')" id="btn-programs" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn">PROGRAMS</button>
                 <button onclick="switchTab('works')" id="btn-works" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn">WORKS</button>
             </div>
 
-            <!-- TAB CONTENT: LINKS -->
             <div id="tab-links" class="flex flex-wrap justify-center gap-2 w-full transition-all duration-300">
                 <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-black dark:bg-zinc-900 text-white rounded-xl font-bold text-[10px] border border-zinc-800/50 btn-glass uppercase tracking-wider shadow-lg">X (Twitter)</a>
                 <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-blue-500/80 text-white rounded-xl font-bold text-[10px] border border-blue-400/20 btn-glass uppercase tracking-wider">ArtStation</a>
@@ -179,15 +181,9 @@
                 <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text px-5 py-3 bg-indigo-600/80 text-white rounded-xl font-bold text-[10px] border border-indigo-500/20 btn-glass uppercase tracking-wider">Discord</a>
             </div>
 
-            <!-- TAB CONTENT: PROGRAMS (3er 3er Düzen) -->
-            <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-4xl mx-auto w-full transition-all duration-300">
-                <!-- JS ile doldurulacak -->
-            </div>
+            <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-4xl mx-auto w-full transition-all duration-300"></div>
 
-            <!-- TAB CONTENT: WORKS -->
-            <div id="tab-works" class="hidden grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 w-full transition-all duration-300">
-                <!-- JS ile dinamik resimler doldurulacak -->
-            </div>
+            <div id="tab-works" class="hidden grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 w-full transition-all duration-300"></div>
         </section>
 
         <!-- --- 3. FOOTER --- -->
@@ -219,7 +215,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // TAB SWITCH LOGIC
         function switchTab(tabId) {
             const tabs = ['links', 'programs', 'works'];
             tabs.forEach(t => {
@@ -230,7 +225,6 @@
             document.getElementById(`btn-${tabId}`).classList.add('tab-active');
         }
 
-        // PROGRAMS RENDER (3er 3er)
         const programs = [
             { name: "Blender", url: "https://www.blender.org/" },
             { name: "Substance Painter", url: "https://www.adobe.com/products/substance3d-painter.html" },
@@ -250,7 +244,6 @@
             programsContainer.appendChild(a);
         });
 
-        // LIGHTBOX LOGIC
         let currentWorks = [];
         let currentIndex = 0;
 
@@ -299,7 +292,6 @@
             }, 150);
         }
 
-        // Keyboard support
         window.addEventListener('keydown', (e) => {
             if (document.getElementById('lightbox').style.display === 'flex') {
                 if (e.key === 'ArrowRight') nextImage();
@@ -308,7 +300,6 @@
             }
         });
 
-        // WORKS RENDER (MAX 25 IMAGES)
         const worksContainer = document.getElementById('tab-works');
 
         for (let i = 1; i <= 25; i++) {
