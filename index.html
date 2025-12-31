@@ -54,14 +54,15 @@
             left: 50%;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            /* Videonun üzerine hafif bir karartma ve blur ekledik */
-            filter: brightness(0.6) blur(8px);
-            /* Kenarlardaki beyazlamayı önlemek için hafifçe büyütüyoruz */
-            scale: 1.05;
+            /* Blur miktarını 8px'den 4px'e düşürdük */
+            filter: brightness(0.6) blur(4px);
+            /* Blur azaldığı için ölçeği (scale) kenarları korumak adına hafifçe azalttık */
+            scale: 1.03;
         }
 
         .dark .video-background video {
-            filter: brightness(0.3) contrast(1.1) blur(10px);
+            /* Karanlık modda da blur miktarını 10px'den 5px'e düşürdük */
+            filter: brightness(0.3) contrast(1.1) blur(5px);
         }
 
         .btn-glass {
