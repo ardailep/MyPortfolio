@@ -10,7 +10,6 @@
     <link rel="apple-touch-icon" href="assets/SiteIcon.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Montserrat eklendi -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -18,7 +17,6 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        // Ana font ailesi Montserrat olarak güncellendi
                         sans: ['"Montserrat"', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace'],
                     },
@@ -35,7 +33,6 @@
             font-feature-settings: "cv02", "cv03", "cv04", "cv11";
         }
 
-        /* Video Background Styling */
         .video-background {
             position: fixed;
             top: 0;
@@ -118,7 +115,7 @@
 </head>
 <body class="theme-transition bg-slate-900 text-white selection:bg-blue-500/30 overflow-x-hidden relative min-h-screen text-center font-sans">
 
-    <!-- VIDEO BACKGROUND -->
+    <!-- VIDEO ARKA PLANI -->
     <div class="video-background">
         <video autoplay muted loop playsinline id="bg-video">
             <source src="assets/background.mp4" type="video/mp4">
@@ -161,7 +158,7 @@
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-16 md:py-24 flex flex-col gap-12">
 
-        <!-- --- 1. HEADER & IDENTITY --- -->
+        <!-- --- 1. HEADER & KIMLIK --- -->
         <section class="flex flex-col gap-8 items-center text-center">
             <div class="w-full">
                 <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight mb-3 drop-shadow-lg uppercase">Swaxılep</h1>
@@ -193,7 +190,7 @@
             </div>
         </section>
 
-        <!-- --- 2. INTERACTIVE TABS --- -->
+        <!-- --- 2. INTERAKTIF SEKMELER --- -->
         <section class="flex flex-col gap-8">
             <div class="flex items-center justify-center gap-2 p-1 border border-white/10 rounded-2xl w-fit mx-auto btn-glass">
                 <button onclick="switchTab('links')" id="btn-links" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn tab-active">LıNKS</button>
@@ -204,7 +201,8 @@
             <div id="tab-links" class="flex flex-wrap justify-center gap-3 w-full transition-all duration-300">
                 <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-neutral-900/60 dark:bg-neutral-800/80 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">X (Twıtter)</a>
                 <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-blue-600/50 dark:bg-blue-700/60 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">ArtStatıon</a>
-                <a href="https://github.com/ardailep" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-slate-700/60 dark:bg-slate-800/80 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">GıtHub</a>
+                <!-- Roblox bağlantısı buraya eklendi -->
+                <a href="https://www.roblox.com/users/940248004/profile" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-zinc-700/60 dark:bg-zinc-800/80 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">Roblox</a>
                 <a href="https://www.youtube.com/@swaxdev" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-red-600/50 dark:bg-red-700/60 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">YouTube</a>
                 <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text px-6 py-3.5 bg-indigo-600/50 dark:bg-indigo-700/60 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">Dıscord</a>
             </div>
