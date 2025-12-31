@@ -33,20 +33,42 @@
             font-feature-settings: "cv02", "cv03", "cv04", "cv11";
         }
 
-        /* Ana Arkaplan Katmanı */
-        .site-background {
+        /* Video Background Styling */
+        .video-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+            overflow: hidden;
+        }
+
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            /* Videonun üzerine hafif bir karartma veya blur eklemek içeriği okutur */
+            filter: brightness(0.7);
+        }
+
+        .dark .video-background video {
+            filter: brightness(0.4) contrast(1.1);
         }
 
         .btn-glass {
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .dark .btn-glass {
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .social-btn {
@@ -58,32 +80,17 @@
         .glow-text {
             color: #ffffff !important;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
-            filter: brightness(1.2);
         }
 
         .social-btn:hover {
             transform: scale(1.02);
-            opacity: 1 !important;
-            filter: brightness(1.1) contrast(1.1);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-
-        .bg-blob {
-            filter: blur(80px);
-            z-index: 0;
-            opacity: 0.12;
-            pointer-events: none;
+            filter: brightness(1.1);
         }
 
         .tab-active {
-            background-color: rgb(37 99 235 / 0.1);
-            border-color: rgb(37 99 235 / 0.5);
-            color: rgb(37 99 235);
-        }
-        .dark .tab-active {
-            background-color: rgb(59 130 246 / 0.1);
-            border-color: rgb(59 130 246 / 0.5);
-            color: rgb(96 165 250);
+            background-color: rgb(37 99 235 / 0.2);
+            border-color: rgb(37 99 235 / 0.6);
+            color: white;
         }
 
         #lightbox {
@@ -93,25 +100,28 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
         }
     </style>
 </head>
-<body class="theme-transition bg-slate-50 dark:bg-zinc-950 text-slate-700 dark:text-zinc-400 selection:bg-blue-500/30 overflow-x-hidden relative min-h-screen text-center">
+<body class="theme-transition bg-slate-900 text-white selection:bg-blue-500/30 overflow-x-hidden relative min-h-screen text-center">
 
-    <!-- SITE BACKGROUND LAYERS -->
-    <div class="site-background"></div>
-    <div class="fixed top-0 left-0 w-full h-[600px] bg-gradient-to-b from-blue-500/5 to-transparent dark:from-blue-900/10 pointer-events-none z-0"></div>
-    <div class="fixed top-[-100px] right-[-100px] w-[500px] h-[500px] bg-blue-400 dark:bg-blue-600 bg-blob rounded-full"></div>
-    <div class="fixed bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-indigo-400 dark:bg-indigo-900 bg-blob rounded-full"></div>
+    <!-- VIDEO BACKGROUND -->
+    <div class="video-background">
+        <!-- Tarayıcı kısıtlamaları nedeniyle 'muted' olmak zorundadır -->
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="assets/background.mp4" type="video/mp4">
+            Tarayıcınız video etiketini desteklemiyor.
+        </video>
+    </div>
 
     <!-- TEMA DEĞİŞTİRME BUTONU -->
     <div class="fixed top-6 right-6 z-50">
-        <button onclick="toggleTheme()" class="p-3 rounded-2xl bg-white/40 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all text-slate-800 dark:text-yellow-400 btn-glass">
+        <button onclick="toggleTheme()" class="p-3 rounded-2xl border border-white/20 shadow-xl hover:scale-110 active:scale-95 transition-all text-white btn-glass">
             <span id="theme-icon-sun" class="hidden dark:block">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             </span>
@@ -147,30 +157,30 @@
         <!-- --- 1. HEADER & IDENTITY --- -->
         <section class="flex flex-col gap-8 items-center text-center">
             <div class="w-full">
-                <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">Swaxılep</h1>
-                <h2 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-300">
+                <h1 class="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-3 drop-shadow-lg">Swaxılep</h1>
+                <h2 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 drop-shadow-md">
                     Game Developer
                 </h2>
             </div>
 
-            <p class="text-slate-600 dark:text-zinc-400 text-lg leading-relaxed max-w-xl font-medium mx-auto">
+            <p class="text-white/80 text-lg leading-relaxed max-w-xl font-medium mx-auto drop-shadow-sm">
                 I am 19 years old and a graduate of Fıne Arts. Currently specıalızıng ın 3D modelıng and anımatıon for leadıng game companıes.
             </p>
             
             <!-- COMMISSIONS & SAAT BÖLÜMÜ -->
-            <div class="inline-flex items-center gap-4 bg-white/40 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800/50 rounded-2xl p-4 shadow-sm btn-glass mx-auto">
-                <a href="https://www.worldtimebuddy.com/" target="_blank" class="flex items-center gap-3 pr-4 border-r border-slate-200 dark:border-zinc-800/80 hover:opacity-70 transition-opacity">
-                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
-                    <p class="text-sm text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">
+            <div class="inline-flex items-center gap-4 border border-white/20 rounded-2xl p-4 shadow-xl btn-glass mx-auto">
+                <a href="https://www.worldtimebuddy.com/" target="_blank" class="flex items-center gap-3 pr-4 border-r border-white/20 hover:opacity-70 transition-opacity">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
+                    <p class="text-sm text-white font-bold uppercase tracking-wider">
                         COMMıSSıONS ARE OPEN
                     </p>
                 </a>
                 
                 <div class="flex flex-col items-start gap-0.5">
-                    <div id="clock" class="text-xl font-mono font-bold text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none">
+                    <div id="clock" class="text-xl font-mono font-bold text-white tracking-tighter tabular-nums leading-none">
                         00:00
                     </div>
-                    <div class="text-[8px] text-blue-600 dark:text-blue-400 font-bold font-mono opacity-80 uppercase tracking-widest leading-none">
+                    <div class="text-[8px] text-blue-400 font-bold font-mono opacity-80 uppercase tracking-widest leading-none">
                         UTC+3
                     </div>
                 </div>
@@ -179,18 +189,18 @@
 
         <!-- --- 2. INTERACTIVE TABS --- -->
         <section class="flex flex-col gap-8">
-            <div class="flex items-center justify-center gap-2 p-1 bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 rounded-2xl w-fit mx-auto btn-glass">
+            <div class="flex items-center justify-center gap-2 p-1 border border-white/10 rounded-2xl w-fit mx-auto btn-glass">
                 <button onclick="switchTab('links')" id="btn-links" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn tab-active">LıNKS</button>
                 <button onclick="switchTab('programs')" id="btn-programs" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn">PROGRAMS</button>
                 <button onclick="switchTab('works')" id="btn-works" class="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all social-btn">WORKS</button>
             </div>
 
             <div id="tab-links" class="flex flex-wrap justify-center gap-2 w-full transition-all duration-300">
-                <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-black dark:bg-zinc-900 text-white rounded-xl font-bold text-[10px] border border-zinc-800/50 btn-glass uppercase tracking-wider shadow-lg">X (Twıtter)</a>
-                <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-blue-500/80 text-white rounded-xl font-bold text-[10px] border border-blue-400/20 btn-glass uppercase tracking-wider">ArtStatıon</a>
-                <a href="https://github.com/ardailep" target="_blank" class="social-btn glow-text px-5 py-3 bg-purple-600/80 text-white rounded-xl font-bold text-[10px] border border-purple-500/20 btn-glass uppercase tracking-wider">GıtHub</a>
-                <a href="https://www.youtube.com/@swaxdev" target="_blank" class="social-btn glow-text px-5 py-3 bg-red-600/80 text-white rounded-xl font-bold text-[10px] border border-red-500/20 btn-glass uppercase tracking-wider">YouTube</a>
-                <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text px-5 py-3 bg-indigo-600/80 text-white rounded-xl font-bold text-[10px] border border-indigo-500/20 btn-glass uppercase tracking-wider">Dıscord</a>
+                <a href="https://x.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-black/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider shadow-lg">X (Twıtter)</a>
+                <a href="https://www.artstation.com/swaxilep" target="_blank" class="social-btn glow-text px-5 py-3 bg-blue-500/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider">ArtStatıon</a>
+                <a href="https://github.com/ardailep" target="_blank" class="social-btn glow-text px-5 py-3 bg-purple-600/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider">GıtHub</a>
+                <a href="https://www.youtube.com/@swaxdev" target="_blank" class="social-btn glow-text px-5 py-3 bg-red-600/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider">YouTube</a>
+                <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text px-5 py-3 bg-indigo-600/40 text-white rounded-xl font-bold text-[10px] border border-white/10 btn-glass uppercase tracking-wider">Dıscord</a>
             </div>
 
             <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-4xl mx-auto w-full transition-all duration-300"></div>
@@ -199,8 +209,8 @@
         </section>
 
         <!-- --- 3. FOOTER --- -->
-        <footer class="mt-8 border-t border-slate-200 dark:border-zinc-900 pt-12 text-center pb-12">
-            <p class="text-slate-400 dark:text-zinc-600 text-[10px] font-mono font-bold uppercase tracking-[0.5em]">
+        <footer class="mt-8 border-t border-white/10 pt-12 text-center pb-12">
+            <p class="text-white/40 text-[10px] font-mono font-bold uppercase tracking-[0.5em]">
                 COPYRIGHT © 2024 SWAXıLEP • ALL RıGHTS RESERVED
             </p>
         </footer>
@@ -255,8 +265,8 @@
             const a = document.createElement('a');
             a.href = prog.url;
             a.target = "_blank";
-            a.className = "social-btn opacity-90 flex items-center justify-center p-4 rounded-xl bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 hover:border-blue-400 dark:hover:border-blue-500 transition-all group shadow-sm btn-glass text-center";
-            a.innerHTML = `<span class="text-sm font-bold text-slate-800 dark:text-zinc-100 uppercase tracking-widest">${prog.name}</span>`;
+            a.className = "social-btn opacity-90 flex items-center justify-center p-4 rounded-xl border border-white/10 hover:border-blue-400 transition-all group shadow-sm btn-glass text-center";
+            a.innerHTML = `<span class="text-sm font-bold text-white uppercase tracking-widest">${prog.name}</span>`;
             programsContainer.appendChild(a);
         });
 
@@ -321,7 +331,7 @@
         for (let i = 1; i <= 25; i++) {
             const imgSrc = `assets/works/${i}.png`;
             const div = document.createElement('div');
-            div.className = "aspect-square overflow-hidden rounded-2xl bg-slate-200 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 social-btn group relative cursor-pointer";
+            div.className = "aspect-square overflow-hidden rounded-2xl bg-white/5 border border-white/10 social-btn group relative cursor-pointer";
             
             const img = document.createElement('img');
             img.src = imgSrc;
