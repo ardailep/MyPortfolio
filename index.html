@@ -46,7 +46,7 @@
         }
 
         .social-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
             opacity: 1 !important;
             filter: brightness(1.1) contrast(1.1);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
@@ -179,8 +179,8 @@
                 <a href="https://discord.com/users/454979640306696192" target="_blank" class="social-btn glow-text px-5 py-3 bg-indigo-600/80 text-white rounded-xl font-bold text-[10px] border border-indigo-500/20 btn-glass uppercase tracking-wider">Discord</a>
             </div>
 
-            <!-- TAB CONTENT: PROGRAMS -->
-            <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full transition-all duration-300">
+            <!-- TAB CONTENT: PROGRAMS (3er 3er Düzen) -->
+            <div id="tab-programs" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-4xl mx-auto w-full transition-all duration-300">
                 <!-- JS ile doldurulacak -->
             </div>
 
@@ -230,7 +230,7 @@
             document.getElementById(`btn-${tabId}`).classList.add('tab-active');
         }
 
-        // PROGRAMS RENDER
+        // PROGRAMS RENDER (3er 3er)
         const programs = [
             { name: "Blender", url: "https://www.blender.org/" },
             { name: "Substance Painter", url: "https://www.adobe.com/products/substance3d-painter.html" },
@@ -245,8 +245,8 @@
             const a = document.createElement('a');
             a.href = prog.url;
             a.target = "_blank";
-            a.className = "social-btn opacity-80 flex items-center justify-center p-4 rounded-2xl bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 hover:border-blue-400 dark:hover:border-blue-500 transition-all group shadow-sm btn-glass text-center";
-            a.innerHTML = `<span class="text-sm font-bold text-slate-800 dark:text-zinc-100">${prog.name}</span>`;
+            a.className = "social-btn opacity-90 flex items-center justify-center p-4 rounded-xl bg-white/30 dark:bg-zinc-900/30 border border-slate-200 dark:border-zinc-800 hover:border-blue-400 dark:hover:border-blue-500 transition-all group shadow-sm btn-glass text-center";
+            a.innerHTML = `<span class="text-sm font-bold text-slate-800 dark:text-zinc-100 uppercase tracking-widest">${prog.name}</span>`;
             programsContainer.appendChild(a);
         });
 
@@ -310,7 +310,6 @@
 
         // WORKS RENDER (MAX 25 IMAGES)
         const worksContainer = document.getElementById('tab-works');
-        let loadedCount = 0;
 
         for (let i = 1; i <= 25; i++) {
             const imgSrc = `assets/works/${i}.png`;
@@ -323,7 +322,6 @@
             img.className = "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110";
             
             img.onload = function() {
-                // Sadece başarıyla yüklenenleri listeye ekle
                 currentWorks.push(this.src);
                 const assignedIndex = currentWorks.length - 1;
                 div.onclick = () => openLightbox(assignedIndex);
