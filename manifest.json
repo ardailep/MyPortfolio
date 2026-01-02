@@ -1,7 +1,7 @@
 {
   "name": "Swaxilep Portfolio",
   "short_name": "Swaxilep",
-  "start_url": ".",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#020617",
   "theme_color": "#3b82f6",
@@ -9,7 +9,8 @@
     {
       "src": "assets/SiteIcon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
