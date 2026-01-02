@@ -1,0 +1,17 @@
+{
+  "name": "Swaxilep Portfolio",
+  "short_name": "Swaxilep",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "assets/SiteIcon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
+Ardından HTML'inizin `<head>` kısmına `<link rel="manifest" href="manifest.json">` satırını eklemelisiniz. Uygulama bu şartlar sağlandığında butonu otomatik olarak gösterecektir.
