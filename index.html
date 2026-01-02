@@ -120,7 +120,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        #lightbox, #confirm-modal, #discord-toast {
+        #lightbox, #confirm-modal, #discord-toast, #tray-context-menu {
             display: none;
             backdrop-filter: blur(24px);
             z-index: 2000;
@@ -147,6 +147,25 @@
             50% { border-color: rgba(59, 130, 246, 0.6); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
             100% { border-color: rgba(59, 130, 246, 0.3); box-shadow: 0 0 0px rgba(59, 130, 246, 0); }
         }
+
+        /* Tray Icon Logic */
+        #tray-sim {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: none;
+        }
+
+        #tray-icon {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #tray-icon:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+        }
     </style>
 </head>
 <body class="font-sans selection:bg-primary/30">
@@ -159,6 +178,19 @@
     </div>
     <div class="video-overlay"></div>
 
+    <!-- Background App Tray Simulator -->
+    <div id="tray-sim" class="flex flex-col items-end gap-2">
+        <div id="tray-context-menu" class="glass-darker p-2 rounded-xl border border-white/10 w-48 mb-2">
+            <button onclick="restoreApp()" class="w-full text-left px-4 py-2 text-[10px] font-bold text-white hover:bg-blue-500/20 rounded-lg transition-colors uppercase tracking-widest">Restore Window</button>
+            <button onclick="location.reload()" class="w-full text-left px-4 py-2 text-[10px] font-bold text-white/60 hover:bg-white/5 rounded-lg transition-colors uppercase tracking-widest">Check Updates</button>
+            <div class="h-[1px] bg-white/5 my-1"></div>
+            <button onclick="window.close()" class="w-full text-left px-4 py-2 text-[10px] font-bold text-red-400 hover:bg-red-500/10 rounded-lg transition-colors uppercase tracking-widest">Quit App</button>
+        </div>
+        <div id="tray-icon" onclick="toggleTrayMenu()" class="glass-darker p-3 rounded-xl border border-blue-500/30 shadow-xl shadow-blue-500/10">
+            <img src="assets/SiteIcon.png" class="w-5 h-5 opacity-80" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%233b82f6%22><circle cx=%2212%22 cy=%2212%22 r=%2210%22/></svg>'">
+        </div>
+    </div>
+
     <!-- Discord Status Toast -->
     <div id="discord-toast" class="glass-darker p-4 rounded-2xl border border-discord/30 flex items-center gap-4 fixed bottom-6 right-6">
         <div class="w-10 h-10 bg-discord rounded-xl flex items-center justify-center">
@@ -170,7 +202,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col lg:flex-row min-h-screen relative z-20">
+    <div id="main-content-wrapper" class="flex flex-col lg:flex-row min-h-screen relative z-20 transition-all duration-700">
         <aside class="w-full lg:w-[400px] lg:fixed lg:h-screen flex flex-col p-6 sm:p-8 lg:p-12 justify-between border-b lg:border-b-0 lg:border-r border-white/5 bg-black/40 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none">
             <div class="flex flex-col gap-8 lg:gap-12">
                 <div class="text-left group">
@@ -312,6 +344,61 @@
     </div>
 
     <script>
+        // --- TRAY LOGIC (STEAM STYLE) ---
+        let isMinimized = false;
+
+        function toggleTrayMenu() {
+            const menu = document.getElementById('tray-context-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function minimizeToTray() {
+            isMinimized = true;
+            document.getElementById('main-content-wrapper').style.opacity = '0';
+            document.getElementById('main-content-wrapper').style.pointerEvents = 'none';
+            document.getElementById('tray-sim').style.display = 'flex';
+            
+            // Send notification if permission granted
+            if (Notification.permission === "granted") {
+                new Notification("Swaxilep Portfolio", {
+                    body: "Application minimized to system tray.",
+                    icon: "assets/SiteIcon.png"
+                });
+            }
+        }
+
+        function restoreApp() {
+            isMinimized = false;
+            document.getElementById('main-content-wrapper').style.opacity = '1';
+            document.getElementById('main-content-wrapper').style.pointerEvents = 'auto';
+            document.getElementById('tray-sim').style.display = 'none';
+            document.getElementById('tray-context-menu').style.display = 'none';
+        }
+
+        // Handle Page Visibility (Simulating minimizing when tab is changed or window minimized)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && !isMinimized) {
+                // When tab becomes hidden, we show the tray icon for when they return
+                document.getElementById('tray-sim').style.display = 'flex';
+            }
+        });
+
+        // Request notification permission on first interaction
+        document.addEventListener('click', () => {
+            if (Notification.permission === "default") {
+                Notification.requestPermission();
+            }
+        }, { once: true });
+
+        // Close tray menu when clicking outside
+        window.addEventListener('click', (e) => {
+            const tray = document.getElementById('tray-sim');
+            if (!tray.contains(e.target)) {
+                document.getElementById('tray-context-menu').style.display = 'none';
+            }
+        });
+
+        // --- ORIGINAL LOGIC ---
         function initDiscordPresence() {
             const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
             const discordToast = document.getElementById('discord-toast');
@@ -446,7 +533,6 @@
         }
         function closeConfirmModal() { document.getElementById('confirm-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
-        // Güncellenmiş Program Listesi
         const programs = [
             { name: "Blender", url: "https://www.blender.org/" },
             { name: "Substance Painter", url: "https://www.adobe.com/products/substance3d-painter.html" },
