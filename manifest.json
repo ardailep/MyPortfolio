@@ -14,4 +14,3 @@
   ]
 }
 
-Ardından HTML'inizin `<head>` kısmına `<link rel="manifest" href="manifest.json">` satırını eklemelisiniz. Uygulama bu şartlar sağlandığında butonu otomatik olarak gösterecektir.
