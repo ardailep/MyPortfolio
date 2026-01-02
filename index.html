@@ -132,12 +132,6 @@
             background: rgba(0,0,0,0.85);
         }
 
-        #discord-toast {
-            bottom: 24px;
-            right: 24px;
-            display: none; /* JS ile açılır */
-        }
-
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -166,7 +160,7 @@
     <div class="video-overlay"></div>
 
     <!-- Discord Status Toast -->
-    <div id="discord-toast" class="glass-darker p-4 rounded-2xl border border-discord/30 flex items-center gap-4 animate-bounce">
+    <div id="discord-toast" class="glass-darker p-4 rounded-2xl border border-discord/30 flex items-center gap-4 fixed bottom-6 right-6">
         <div class="w-10 h-10 bg-discord rounded-xl flex items-center justify-center">
             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.069.069 0 0 0-.032.027C.533 9.048-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.419-2.157 2.419z"/></svg>
         </div>
@@ -220,14 +214,21 @@
         </aside>
 
         <main class="flex-1 lg:ml-[400px] p-6 sm:p-8 lg:p-16">
+            <!-- About Section -->
             <div id="tab-about" class="content-fade max-w-4xl text-left">
                 <h3 class="text-3xl lg:text-5xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Who am I?</h3>
                 <div class="glass-darker p-6 lg:p-10 rounded-[32px] flex flex-col gap-6 mb-8">
                     <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
-                        I am a Fine Arts graduate with a strong academic background in form, composition, color, and visual language.
+                        I am a Fine Arts graduate with a strong academic background in form, composition, color, and visual language. This foundation shapes both my physical work on canvas and my digital production. I currently participate in group and solo exhibitions with my physical artworks, while continuing to produce both traditional and digital work in parallel.
                     </p>
                     <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
-                        I primarily focus on 3D modeling and visual production. I create stylized, hand-paint–oriented models for games.
+                        On the digital side, I primarily focus on 3D modeling and visual production. I create stylized, hand-paint–oriented models for games and interactive projects, with an emphasis on atmosphere, form, and visual coherence. For me, the value of a piece lies not only in its technical accuracy, but in the feeling it conveys and the visual language it establishes.
+                    </p>
+                    <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
+                        I work mainly with Blender and Roblox, preparing my models according to their intended context and use. I have a basic working knowledge of Luau, which I use to support the production process and ensure smoother integration within projects.
+                    </p>
+                    <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light italic text-blue-400">
+                        I see my physical art practice and digital work not as separate disciplines, but as two interconnected forms of expression that continuously inform and strengthen each other.
                     </p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4 max-w-2xl">
@@ -242,6 +243,7 @@
                 </div>
             </div>
 
+            <!-- Works Section -->
             <div id="tab-works" class="hidden content-fade">
                 <div class="flex flex-row justify-between items-center lg:items-end mb-6 lg:mb-8">
                     <h3 class="text-2xl lg:text-3xl font-bold tracking-tighter text-white italic">Portfolio</h3>
@@ -250,6 +252,7 @@
                 <div id="works-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 lg:gap-3"></div>
             </div>
 
+            <!-- Links Section -->
             <div id="tab-links" class="hidden content-fade max-w-3xl">
                 <h3 class="text-2xl lg:text-3xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Connect</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
@@ -261,9 +264,18 @@
                         <span class="text-[10px] lg:text-xs font-bold text-white/20 group-hover:text-blue-400 uppercase">02. Portfolio</span>
                         <span class="text-lg lg:text-xl font-bold text-white uppercase tracking-widest">ArtStation</span>
                     </a>
+                    <a href="https://discord.com/users/454979640306696192" target="_blank" class="glass p-6 lg:p-8 rounded-2xl lg:rounded-3xl flex flex-col gap-3 lg:gap-4 group hover:bg-white/5 transition-all">
+                        <span class="text-[10px] lg:text-xs font-bold text-white/20 group-hover:text-blue-400 uppercase">03. Chat</span>
+                        <span class="text-lg lg:text-xl font-bold text-white uppercase tracking-widest">Discord</span>
+                    </a>
+                    <a href="https://www.roblox.com/users/940248004/profile" target="_blank" class="glass p-6 lg:p-8 rounded-2xl lg:rounded-3xl flex flex-col gap-3 lg:gap-4 group hover:bg-white/5 transition-all">
+                        <span class="text-[10px] lg:text-xs font-bold text-white/20 group-hover:text-blue-400 uppercase">04. Games</span>
+                        <span class="text-lg lg:text-xl font-bold text-white uppercase tracking-widest">Roblox Profile</span>
+                    </a>
                 </div>
             </div>
 
+            <!-- Programs Section -->
             <div id="tab-programs" class="hidden content-fade max-w-3xl">
                 <h3 class="text-2xl lg:text-3xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Toolkit</h3>
                 <div id="programs-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4"></div>
@@ -300,23 +312,16 @@
     </div>
 
     <script>
-        // --- DISCORD RICH PRESENCE MANTIĞI ---
-        // Not: Tarayıcılar doğrudan Discord'a veri gönderemez.
-        // Bu kod, uygulama yüklendiğinde bir "Sync" simülasyonu başlatır.
         function initDiscordPresence() {
             const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
             const discordToast = document.getElementById('discord-toast');
-
             if (isPWA) {
-                // Eğer uygulama bilgisayara indirilip açılmışsa bildirimi göster
                 setTimeout(() => {
                     discordToast.style.display = 'flex';
-                    console.log("Discord Rich Presence Active: Swaxilep Portfolio");
                 }, 3000);
             }
         }
 
-        // --- GÜNCEL PWA KAYIT MANTIĞI ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
@@ -341,19 +346,10 @@
             if (!deferredPrompt) return;
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                installBtn.style.display = 'none';
-                // Kurulum sonrası Discord uyarısını tetikle
-                initDiscordPresence();
-            }
+            if (outcome === 'accepted') installBtn.style.display = 'none';
             deferredPrompt = null;
         });
 
-        window.addEventListener('appinstalled', () => {
-            installBtn.style.display = 'none';
-        });
-
-        // Tab Değiştirme Sistemi
         function switchTab(tabId) {
             ['about', 'works', 'links', 'programs'].forEach(id => {
                 document.getElementById(`tab-${id}`)?.classList.add('hidden');
@@ -374,7 +370,6 @@
             }
         }
 
-        // Saat Güncelleme
         function updateClock() {
             const trTime = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
             document.getElementById('clock').textContent = trTime.toTimeString().split(' ')[0].substring(0, 5);
@@ -382,7 +377,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Portfolio Galeri Sistemi
         let loadedWorks = [];
         let currentIndex = 0;
         const worksGrid = document.getElementById('works-grid');
@@ -452,11 +446,14 @@
         }
         function closeConfirmModal() { document.getElementById('confirm-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
+        // Güncellenmiş Program Listesi
         const programs = [
             { name: "Blender", url: "https://www.blender.org/" },
             { name: "Substance Painter", url: "https://www.adobe.com/products/substance3d-painter.html" },
             { name: "Roblox Studio", url: "https://www.roblox.com/create" },
-            { name: "VS Code", url: "https://code.visualstudio.com/" }
+            { name: "VS Code", url: "https://code.visualstudio.com/" },
+            { name: "Medibang Paint", url: "https://medibangpaint.com/" },
+            { name: "Krita", url: "https://krita.org/" }
         ];
         
         const progGrid = document.getElementById('programs-grid');
