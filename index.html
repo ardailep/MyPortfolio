@@ -58,20 +58,14 @@
 
         .video-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(2, 6, 23, 0.9) 100%);
             z-index: -1;
         }
 
         .noise {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://grainy-gradients.vercel.app/noise.svg');
             opacity: 0.04;
             pointer-events: none;
@@ -80,17 +74,12 @@
 
         .video-background {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2; overflow: hidden;
         }
 
         .video-background video {
-            min-width: 100%;
-            min-height: 100%;
+            min-width: 100%; min-height: 100%;
             object-fit: cover;
             filter: brightness(0.4) contrast(1.1) blur(4px);
             transform: scale(1.1);
@@ -118,9 +107,7 @@
         }
         
         @media (min-width: 1024px) {
-            .tab-active {
-                transform: translateX(8px);
-            }
+            .tab-active { transform: translateX(8px); }
         }
 
         .content-fade {
@@ -146,9 +133,8 @@
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.5); }
 
-        /* Install Button specific styles */
         #btn-install {
-            display: none; /* Initially hidden */
+            display: none;
             animation: pulse-glow 2s infinite;
         }
 
@@ -170,18 +156,12 @@
     <div class="video-overlay"></div>
 
     <div class="flex flex-col lg:flex-row min-h-screen relative z-20">
-        
         <aside class="w-full lg:w-[400px] lg:fixed lg:h-screen flex flex-col p-6 sm:p-8 lg:p-12 justify-between border-b lg:border-b-0 lg:border-r border-white/5 bg-black/40 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none">
-            
             <div class="flex flex-col gap-8 lg:gap-12">
                 <div class="text-left group">
                     <span class="text-[9px] font-black tracking-[0.4em] text-blue-500/60 mb-2 lg:mb-4 block uppercase">Portfolio V.3.0</span>
-                    <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tighter text-white italic transition-all group-hover:text-blue-400">
-                        Swaxilep
-                    </h1>
-                    <h2 class="text-base lg:text-lg font-medium text-white/40 tracking-[0.2em] uppercase mt-1 lg:mt-2">
-                        Game Developer
-                    </h2>
+                    <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tighter text-white italic transition-all group-hover:text-blue-400">Swaxilep</h1>
+                    <h2 class="text-base lg:text-lg font-medium text-white/40 tracking-[0.2em] uppercase mt-1 lg:mt-2">Game Developer</h2>
                 </div>
 
                 <nav class="grid grid-cols-2 lg:flex lg:flex-col gap-2 lg:gap-3">
@@ -190,12 +170,9 @@
                     <button onclick="switchTab('links')" id="btn-links" class="glass px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-white/5 text-white/40 uppercase">03. LINKS</button>
                     <button onclick="switchTab('programs')" id="btn-programs" class="glass px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-white/5 text-white/40 uppercase">04. PROGRAMS</button>
                     
-                    <!-- Install App Button -->
                     <button id="btn-install" class="lg:mt-4 bg-blue-500/10 border border-blue-500/30 px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-blue-500/20 text-blue-400 uppercase flex items-center justify-between group">
                         <span>Install App</span>
-                        <svg class="w-4 h-4 transform group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                        </svg>
+                        <svg class="w-4 h-4 transform group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                     </button>
                 </nav>
             </div>
@@ -222,25 +199,16 @@
         </aside>
 
         <main class="flex-1 lg:ml-[400px] p-6 sm:p-8 lg:p-16">
-            
             <div id="tab-about" class="content-fade max-w-4xl text-left">
                 <h3 class="text-3xl lg:text-5xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Who am I?</h3>
-                
                 <div class="glass-darker p-6 lg:p-10 rounded-[32px] flex flex-col gap-6 mb-8">
                     <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
-                        I am a Fine Arts graduate with a strong academic background in form, composition, color, and visual language. This foundation shapes both my physical work on canvas and my digital production. I currently participate in group and solo exhibitions with my physical artworks, while continuing to produce both traditional and digital work in parallel.
+                        I am a Fine Arts graduate with a strong academic background in form, composition, color, and visual language.
                     </p>
                     <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
-                        On the digital side, I primarily focus on 3D modeling and visual production. I create stylized, hand-paint–oriented models for games and interactive projects, with an emphasis on atmosphere, form, and visual coherence. For me, the value of a piece lies not only in its technical accuracy, but in the feeling it conveys and the visual language it establishes.
-                    </p>
-                    <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
-                        I work mainly with Blender and Roblox, preparing my models according to their intended context and use. I have a basic working knowledge of Luau, which I use to support the production process and ensure smoother integration within projects.
-                    </p>
-                    <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
-                        I see my physical art practice and digital work not as separate disciplines, but as two interconnected forms of expression that continuously inform and strengthen each other.
+                        I primarily focus on 3D modeling and visual production. I create stylized, hand-paint–oriented models for games.
                     </p>
                 </div>
-                
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4 max-w-2xl">
                     <div class="glass p-5 lg:p-6 rounded-2xl lg:rounded-3xl">
                         <span class="text-blue-400 text-[10px] lg:text-xs font-bold tracking-widest uppercase block mb-1 lg:mb-2">Age</span>
@@ -258,8 +226,7 @@
                     <h3 class="text-2xl lg:text-3xl font-bold tracking-tighter text-white italic">Portfolio</h3>
                     <span id="items-counter" class="text-[8px] lg:text-[10px] font-bold text-white/30 tracking-widest uppercase">0 Items</span>
                 </div>
-                <div id="works-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 lg:gap-3">
-                </div>
+                <div id="works-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 lg:gap-3"></div>
             </div>
 
             <div id="tab-links" class="hidden content-fade max-w-3xl">
@@ -273,26 +240,17 @@
                         <span class="text-[10px] lg:text-xs font-bold text-white/20 group-hover:text-blue-400 uppercase">02. Portfolio</span>
                         <span class="text-lg lg:text-xl font-bold text-white uppercase tracking-widest">ArtStation</span>
                     </a>
-                    <a href="https://discord.com/users/454979640306696192" target="_blank" class="glass p-6 lg:p-8 rounded-2xl lg:rounded-3xl flex flex-col gap-3 lg:gap-4 group hover:bg-white/5 transition-all">
-                        <span class="text-[10px] lg:text-xs font-bold text-white/20 group-hover:text-blue-400 uppercase">03. Chat</span>
-                        <span class="text-lg lg:text-xl font-bold text-white uppercase tracking-widest">Discord</span>
-                    </a>
-                    <a href="https://www.roblox.com/users/940248004/profile" target="_blank" class="glass p-6 lg:p-8 rounded-2xl lg:rounded-3xl flex flex-col gap-3 lg:gap-4 group hover:bg-white/5 transition-all">
-                        <span class="text-[10px] lg:text-xs font-bold text-white/20 group-hover:text-blue-400 uppercase">04. Games</span>
-                        <span class="text-lg lg:text-xl font-bold text-white uppercase tracking-widest">Roblox Profile</span>
-                    </a>
                 </div>
             </div>
 
             <div id="tab-programs" class="hidden content-fade max-w-3xl">
                 <h3 class="text-2xl lg:text-3xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Toolkit</h3>
-                <div id="programs-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
-                </div>
+                <div id="programs-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4"></div>
             </div>
-
         </main>
     </div>
 
+    <!-- Modals (Confirm & Lightbox) -->
     <div id="confirm-modal" class="flex items-center justify-center p-4">
         <div class="glass max-w-sm w-full p-8 rounded-[32px] text-center flex flex-col gap-6">
             <h3 class="text-xl font-black tracking-tighter text-white uppercase">Redirect</h3>
@@ -317,86 +275,58 @@
                 <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
         </div>
-        <div id="lightbox-counter" class="mt-6 lg:mt-8 glass px-6 lg:px-8 py-2 lg:py-3 rounded-full text-[9px] lg:text-[10px] font-mono font-bold tracking-[0.4em] text-white/40 uppercase">
-            00 / 00
-        </div>
+        <div id="lightbox-counter" class="mt-6 lg:mt-8 glass px-6 lg:px-8 py-2 lg:py-3 rounded-full text-[9px] lg:text-[10px] font-mono font-bold tracking-[0.4em] text-white/40 uppercase">00 / 00</div>
     </div>
 
     <script>
-        // --- PWA LOGIC START ---
-        
-        // Register a basic Service Worker (required for PWA to show install prompt)
+        // --- GÜNCEL PWA KAYIT MANTIĞI (Blob Yerine Fiziksel sw.js) ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                const blob = new Blob([`
-                    self.addEventListener('fetch', function(event) {});
-                `], { type: 'text/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swUrl).catch(err => console.log('SW Registration failed', err));
+                navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW Registered!', reg))
+                .catch(err => console.log('SW Registration failed', err));
             });
         }
 
         let deferredPrompt;
         const installBtn = document.getElementById('btn-install');
 
-        // Capture the install prompt
         window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('beforeinstallprompt event fired');
-            // Prevent Chrome 67 and earlier from automatically showing the prompt
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             deferredPrompt = e;
-            // Update UI to notify the user they can add to home screen
             installBtn.style.display = 'flex';
         });
 
         installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) {
-                console.log('The install prompt is not available yet.');
-                return;
-            }
-            // Show the prompt
+            if (!deferredPrompt) return;
             deferredPrompt.prompt();
-            // Wait for the user to respond to the prompt
             const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User response to the install prompt: ${outcome}`);
-            // We've used the prompt, and can't use it again
+            if (outcome === 'accepted') installBtn.style.display = 'none';
             deferredPrompt = null;
-            // Hide the button
-            installBtn.style.display = 'none';
         });
 
-        window.addEventListener('appinstalled', (evt) => {
-            console.log('App was successfully installed');
+        window.addEventListener('appinstalled', () => {
             installBtn.style.display = 'none';
         });
-
-        // --- PWA LOGIC END ---
 
         // Tab Değiştirme Sistemi
         function switchTab(tabId) {
             ['about', 'works', 'links', 'programs'].forEach(id => {
-                const tab = document.getElementById(`tab-${id}`);
+                document.getElementById(`tab-${id}`)?.classList.add('hidden');
                 const btn = document.getElementById(`btn-${id}`);
-                if (tab) tab.classList.add('hidden');
                 if (btn) {
                     btn.classList.remove('tab-active');
                     btn.classList.add('text-white/40');
                 }
             });
-            
-            const activeTab = document.getElementById(`tab-${tabId}`);
+            document.getElementById(`tab-${tabId}`)?.classList.remove('hidden');
             const activeBtn = document.getElementById(`btn-${tabId}`);
-            
-            if (activeTab) activeTab.classList.remove('hidden');
             if (activeBtn) {
                 activeBtn.classList.add('tab-active');
                 activeBtn.classList.remove('text-white/40');
             }
-
             if(window.innerWidth < 1024) {
-                const mainEl = document.querySelector('main');
-                window.scrollTo({ top: mainEl.offsetTop - 20, behavior: 'smooth' });
+                window.scrollTo({ top: document.querySelector('main').offsetTop - 20, behavior: 'smooth' });
             }
         }
 
@@ -413,37 +343,23 @@
         let currentIndex = 0;
         const worksGrid = document.getElementById('works-grid');
         const itemsCounter = document.getElementById('items-counter');
-        const maxImagesToTry = 50; 
         
-        for (let i = 1; i <= maxImagesToTry; i++) {
+        for (let i = 1; i <= 50; i++) {
             const imgSrc = `assets/works/${i}.png`;
             const imgChecker = new Image();
-            
             imgChecker.onload = function() {
                 const div = document.createElement('div');
                 div.className = "aspect-square glass rounded-xl lg:rounded-2xl overflow-hidden cursor-pointer group hover:scale-[1.03] transition-all duration-500";
-                
+                div.onclick = () => { currentIndex = loadedWorks.indexOf(imgSrc); openLightbox(); };
                 const img = document.createElement('img');
                 img.src = imgSrc;
                 img.className = "w-full h-full object-cover transition-all duration-700";
-                
-                div.onclick = () => {
-                    currentIndex = loadedWorks.indexOf(imgSrc);
-                    openLightbox();
-                };
-                
                 div.appendChild(img);
                 if(worksGrid) worksGrid.appendChild(div);
-                
                 loadedWorks.push(imgSrc);
-                updateGlobalCounter();
+                if(itemsCounter) itemsCounter.textContent = `${loadedWorks.length} Items`;
             };
             imgChecker.src = imgSrc;
-        }
-
-        function updateGlobalCounter() {
-            if(itemsCounter) itemsCounter.textContent = `${loadedWorks.length} Items`;
-            updateLightboxCounter();
         }
 
         function openLightbox() {
@@ -460,17 +376,10 @@
         }
 
         function nextImage() { 
-            if(loadedWorks.length > 0) { 
-                currentIndex = (currentIndex + 1) % loadedWorks.length; 
-                updateLightboxUI(); 
-            } 
+            if(loadedWorks.length > 0) { currentIndex = (currentIndex + 1) % loadedWorks.length; updateLightboxUI(); } 
         }
-        
         function prevImage() { 
-            if(loadedWorks.length > 0) { 
-                currentIndex = (currentIndex - 1 + loadedWorks.length) % loadedWorks.length; 
-                updateLightboxUI(); 
-            } 
+            if(loadedWorks.length > 0) { currentIndex = (currentIndex - 1 + loadedWorks.length) % loadedWorks.length; updateLightboxUI(); } 
         }
 
         function updateLightboxUI() {
@@ -490,31 +399,20 @@
             }
         }
 
-        // Yönlendirme Modalı
         let pendingUrl = "";
         function confirmRedirect(url) {
             pendingUrl = url;
             document.getElementById('confirm-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
-            document.getElementById('confirm-yes-btn').onclick = () => {
-                window.open(pendingUrl, '_blank');
-                closeConfirmModal();
-            };
+            document.getElementById('confirm-yes-btn').onclick = () => { window.open(pendingUrl, '_blank'); closeConfirmModal(); };
         }
+        function closeConfirmModal() { document.getElementById('confirm-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
-        function closeConfirmModal() {
-            document.getElementById('confirm-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // Toolkit Grid Oluşturma
         const programs = [
             { name: "Blender", url: "https://www.blender.org/" },
             { name: "Substance Painter", url: "https://www.adobe.com/products/substance3d-painter.html" },
             { name: "Roblox Studio", url: "https://www.roblox.com/create" },
-            { name: "VS Code", url: "https://code.visualstudio.com/" },
-            { name: "Medibang Paint", url: "https://medibangpaint.com/" },
-            { name: "Krita", url: "https://krita.org/" }
+            { name: "VS Code", url: "https://code.visualstudio.com/" }
         ];
         
         const progGrid = document.getElementById('programs-grid');
@@ -523,15 +421,11 @@
                 const div = document.createElement('div');
                 div.className = "glass p-5 lg:p-6 rounded-2xl lg:rounded-3xl flex justify-between items-center group cursor-pointer hover:border-blue-500/30 transition-all";
                 div.onclick = () => confirmRedirect(p.url);
-                div.innerHTML = `
-                    <span class="text-xs lg:text-sm font-bold tracking-widest text-white/70 group-hover:text-white uppercase">${p.name}</span>
-                    <svg class="w-3 h-3 lg:w-4 h-4 text-white/20 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                `;
+                div.innerHTML = `<span class="text-xs lg:text-sm font-bold tracking-widest text-white/70 group-hover:text-white uppercase">${p.name}</span><svg class="w-3 h-3 lg:w-4 h-4 text-white/20 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>`;
                 progGrid.appendChild(div);
             });
         }
 
-        // Klavye Kontrolleri
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') { closeLightbox(); closeConfirmModal(); }
             if (e.key === 'ArrowRight') nextImage();
