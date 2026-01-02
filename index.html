@@ -14,9 +14,6 @@
     <meta name="twitter:title" content="Swaxilep | Portfolio">
     <meta name="twitter:description" content="Swaxilep invites you to a portfolio.">
 
-    <!-- PWA Manifest for Installation -->
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Swaxilep%20Portfolio%22,%22short_name%22:%22Swaxilep%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#020617%22,%22theme_color%22:%22#3b82f6%22,%22icons%22:[{%22src%22:%22assets/SiteIcon.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22}]}">
-
     <!-- Site Icon -->
     <link rel="icon" type="image/png" href="assets/SiteIcon.png">
     
@@ -146,9 +143,16 @@
         ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.5); }
 
         /* Install Button Animation */
-        #install-btn {
-            display: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        #btn-install {
+            display: none; /* Hidden by default, shown via JS */
+        }
+        .install-pulse {
+            animation: pulse-blue 2s infinite;
+        }
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
     </style>
 </head>
@@ -182,43 +186,38 @@
                     <button onclick="switchTab('works')" id="btn-works" class="glass px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-white/5 text-white/40 uppercase">02. WORKS</button>
                     <button onclick="switchTab('links')" id="btn-links" class="glass px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-white/5 text-white/40 uppercase">03. LINKS</button>
                     <button onclick="switchTab('programs')" id="btn-programs" class="glass px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-white/5 text-white/40 uppercase">04. PROGRAMS</button>
+                    
+                    <!-- Install App Button -->
+                    <button id="btn-install" class="lg:mt-4 bg-blue-600/20 border border-blue-500/30 px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-blue-600/40 text-blue-400 uppercase flex items-center justify-between group install-pulse">
+                        <span>Install App</span>
+                        <svg class="w-4 h-4 transform group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    </button>
                 </nav>
             </div>
 
-            <div class="mt-8 lg:mt-0 flex flex-col gap-4">
-                <!-- Install Button -->
-                <button id="install-btn" class="w-full glass p-4 rounded-2xl flex items-center justify-between group hover:bg-blue-500/10 border-blue-500/20">
-                    <div class="flex flex-col text-left">
-                        <span class="text-[8px] font-black tracking-widest text-blue-400 uppercase">Available Desktop</span>
-                        <span class="text-[11px] font-bold text-white tracking-widest uppercase">Install App</span>
+            <div class="mt-8 lg:mt-0 flex flex-row lg:flex-col items-center lg:items-start justify-between lg:justify-end gap-4 lg:gap-6">
+                <div class="glass inline-flex items-center gap-3 p-2 lg:p-3 rounded-xl lg:rounded-2xl w-fit">
+                    <div class="flex items-center gap-2 lg:gap-3 pl-2 pr-3 lg:pr-4 border-r border-white/10">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[8px] lg:text-[9px] font-black tracking-widest text-white/80 uppercase">Commissions are Open</span>
                     </div>
-                    <svg class="w-5 h-5 text-blue-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                </button>
-
-                <div class="flex flex-row lg:flex-col items-center lg:items-start justify-between lg:justify-end gap-4 lg:gap-6">
-                    <div class="glass inline-flex items-center gap-3 p-2 lg:p-3 rounded-xl lg:rounded-2xl w-fit">
-                        <div class="flex items-center gap-2 lg:gap-3 pl-2 pr-3 lg:pr-4 border-r border-white/10">
-                            <span class="relative flex h-2 w-2">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                            </span>
-                            <span class="text-[8px] lg:text-[9px] font-black tracking-widest text-white/80 uppercase">Commissions are Open</span>
-                        </div>
-                        <span id="clock" class="text-xs lg:text-sm font-mono font-bold tabular-nums pr-1 lg:pr-2">00:00</span>
-                    </div>
-                    
-                    <div class="text-right lg:text-left">
-                        <p class="text-[7px] lg:text-[8px] font-bold tracking-[0.3em] lg:tracking-[0.5em] text-white/20 uppercase leading-relaxed">
-                            © 2026 SWAXILEP<br class="hidden lg:block">
-                            <span class="lg:mt-1 block">ALL RIGHTS RESERVED</span>
-                        </p>
-                    </div>
+                    <span id="clock" class="text-xs lg:text-sm font-mono font-bold tabular-nums pr-1 lg:pr-2">00:00</span>
+                </div>
+                
+                <div class="text-right lg:text-left">
+                    <p class="text-[7px] lg:text-[8px] font-bold tracking-[0.3em] lg:tracking-[0.5em] text-white/20 uppercase leading-relaxed">
+                        © 2026 SWAXILEP<br class="hidden lg:block">
+                        <span class="lg:mt-1 block">ALL RIGHTS RESERVED</span>
+                    </p>
                 </div>
             </div>
         </aside>
 
         <main class="flex-1 lg:ml-[400px] p-6 sm:p-8 lg:p-16">
-            <!-- Tabs content remain same... -->
+            
             <div id="tab-about" class="content-fade max-w-4xl text-left">
                 <h3 class="text-3xl lg:text-5xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Who am I?</h3>
                 
@@ -285,10 +284,10 @@
                 <div id="programs-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
                 </div>
             </div>
+
         </main>
     </div>
 
-    <!-- Modals and Lightbox remain same... -->
     <div id="confirm-modal" class="flex items-center justify-center p-4">
         <div class="glass max-w-sm w-full p-8 rounded-[32px] text-center flex flex-col gap-6">
             <h3 class="text-xl font-black tracking-tighter text-white uppercase">Redirect</h3>
@@ -319,38 +318,35 @@
     </div>
 
     <script>
-        // PWA & Installation Logic
+        // PWA Install Logic
         let deferredPrompt;
-        const installBtn = document.getElementById('install-btn');
+        const installBtn = document.getElementById('btn-install');
 
         window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
             e.preventDefault();
+            // Stash the event so it can be triggered later.
             deferredPrompt = e;
+            // Update UI notify the user they can install the PWA
             installBtn.style.display = 'flex';
         });
 
         installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
-                    // Simulating Discord "View" notification logic
-                    // In a real RPC, this would trigger the activity update
-                    updateDiscordActivity();
-                }
-                deferredPrompt = null;
-                installBtn.style.display = 'none';
-            }
+            if (!deferredPrompt) return;
+            // Show the install prompt
+            deferredPrompt.prompt();
+            // Wait for the user to respond to the prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            // We've used the prompt, and can't use it again, throw it away
+            deferredPrompt = null;
+            // Hide the install button
+            installBtn.style.display = 'none';
         });
 
-        // Simulating Discord Activity Message
-        // Note: Real Discord Presence requires a backend or PreMiD presence file.
-        // This function will alert the user how they can see the "View" button.
-        function updateDiscordActivity() {
-            console.log("Activity updated: Playing Swaxilep Portfolio");
-            // Tip: For actual Discord Status, users can use PreMiD or a custom RPC app.
-        }
+        window.addEventListener('appinstalled', (evt) => {
+            // Log install to analytics or hide UI
+            installBtn.style.display = 'none';
+        });
 
         function switchTab(tabId) {
             ['about', 'works', 'links', 'programs'].forEach(id => {
@@ -412,7 +408,7 @@
         }
 
         function updateGlobalCounter() {
-            if(itemsCounter) itemsCounter.textContent = `${loadedWorks.length} Items`;
+            itemsCounter.textContent = `${loadedWorks.length} Items`;
             updateLightboxCounter();
         }
 
@@ -454,9 +450,8 @@
         }
 
         function updateLightboxCounter() {
-            const counter = document.getElementById('lightbox-counter');
-            if (loadedWorks.length === 0 || !counter) return;
-            counter.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(loadedWorks.length).padStart(2, '0')}`;
+            if (loadedWorks.length === 0) return;
+            document.getElementById('lightbox-counter').textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(loadedWorks.length).padStart(2, '0')}`;
         }
 
         let pendingUrl = "";
@@ -484,18 +479,16 @@
             { name: "Krita", url: "https://krita.org/" }
         ];
         const progGrid = document.getElementById('programs-grid');
-        if(progGrid) {
-            programs.forEach(p => {
-                const div = document.createElement('div');
-                div.className = "glass p-5 lg:p-6 rounded-2xl lg:rounded-3xl flex justify-between items-center group cursor-pointer hover:border-blue-500/30 transition-all";
-                div.onclick = () => confirmRedirect(p.url);
-                div.innerHTML = `
-                    <span class="text-xs lg:text-sm font-bold tracking-widest text-white/70 group-hover:text-white uppercase">${p.name}</span>
-                    <svg class="w-3 h-3 lg:w-4 h-4 text-white/20 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                `;
-                progGrid.appendChild(div);
-            });
-        }
+        programs.forEach(p => {
+            const div = document.createElement('div');
+            div.className = "glass p-5 lg:p-6 rounded-2xl lg:rounded-3xl flex justify-between items-center group cursor-pointer hover:border-blue-500/30 transition-all";
+            div.onclick = () => confirmRedirect(p.url);
+            div.innerHTML = `
+                <span class="text-xs lg:text-sm font-bold tracking-widest text-white/70 group-hover:text-white uppercase">${p.name}</span>
+                <svg class="w-3 h-3 lg:w-4 h-4 text-white/20 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            `;
+            progGrid.appendChild(div);
+        });
 
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') { closeLightbox(); closeConfirmModal(); }
