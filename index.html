@@ -30,7 +30,7 @@
         :root {
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-blur: 16px;
+            --glass-blur: 24px;
         }
 
         .dark {
@@ -42,11 +42,7 @@
             background-color: #020617;
             color: #f8fafc;
             -webkit-font-smoothing: antialiased;
-            font-variant-ligatures: none;
-        }
-
-        [lang="en"]:not(.lowercase-bio) {
-            text-transform: uppercase;
+            overflow-x: hidden;
         }
 
         .video-overlay {
@@ -55,7 +51,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(2, 6, 23, 0.8) 100%);
+            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(2, 6, 23, 0.9) 100%);
             z-index: -1;
         }
 
@@ -68,7 +64,7 @@
             background: url('https://grainy-gradients.vercel.app/noise.svg');
             opacity: 0.04;
             pointer-events: none;
-            z-index: 1;
+            z-index: 10;
         }
 
         .video-background {
@@ -85,8 +81,8 @@
             min-width: 100%;
             min-height: 100%;
             object-fit: cover;
-            filter: brightness(0.5) contrast(1.1) blur(2px);
-            transform: scale(1.05);
+            filter: brightness(0.4) contrast(1.1) blur(4px);
+            transform: scale(1.1);
         }
 
         .glass {
@@ -94,46 +90,28 @@
             backdrop-filter: blur(var(--glass-blur));
             -webkit-backdrop-filter: blur(var(--glass-blur));
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        .btn-premium {
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-premium::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: 0.5s;
-        }
-
-        .btn-premium:hover::after {
-            left: 100%;
         }
 
         .tab-active {
-            background: rgba(59, 130, 246, 0.15) !important;
+            background: rgba(59, 130, 246, 0.2) !important;
             border-color: rgba(59, 130, 246, 0.5) !important;
             color: #60a5fa !important;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+        }
+        
+        @media (min-width: 1024px) {
+            .tab-active {
+                transform: translateX(8px);
+            }
         }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
+        .content-fade {
+            animation: fadeIn 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         #lightbox, #confirm-modal {
@@ -144,9 +122,15 @@
             inset: 0;
             background: rgba(0,0,0,0.85);
         }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.5); }
     </style>
 </head>
-<body class="font-sans selection:bg-primary/30 text-center">
+<body class="font-sans selection:bg-primary/30">
 
     <div class="noise"></div>
     <div class="video-background">
@@ -156,132 +140,176 @@
     </div>
     <div class="video-overlay"></div>
 
-    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center pointer-events-none">
-        <div class="glass px-4 py-2 rounded-full pointer-events-auto">
-            <span class="text-xs font-bold tracking-tighter uppercase text-white/50">V. 2.7</span>
-        </div>
-        <button onclick="toggleTheme()" class="glass p-3 rounded-2xl hover:scale-110 active:scale-95 transition-all pointer-events-auto group">
-            <svg id="theme-icon-sun" class="hidden dark:block w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z"/></svg>
-            <svg id="theme-icon-moon" class="block dark:hidden w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        </button>
-    </nav>
-
-    <main class="relative z-10 max-w-5xl mx-auto px-6 pt-32 pb-24">
+    <div class="flex flex-col lg:flex-row min-h-screen relative z-20">
         
-        <header class="reveal flex flex-col items-center text-center gap-6 mb-20">
-            <div class="relative">
-                <div class="absolute -inset-4 bg-primary/20 blur-3xl rounded-full"></div>
-                <h1 lang="en" class="text-6xl md:text-8xl font-extrabold tracking-tighter text-white italic">
-                    Swaxilep
-                </h1>
-            </div>
+        <!-- --- LEFT SIDEBAR (FIXED IDENTITY) --- -->
+        <!-- Mobile: Flex row/column with border-b | Desktop: Fixed width sidebar with border-r -->
+        <aside class="w-full lg:w-[400px] lg:fixed lg:h-screen flex flex-col p-6 sm:p-8 lg:p-12 justify-between border-b lg:border-b-0 lg:border-r border-white/5 bg-black/40 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none">
             
-            <div class="flex flex-col gap-2">
-                <h2 class="text-lg md:text-xl font-medium text-blue-400 tracking-widest uppercase">
-                    Game Developer
-                </h2>
-                <p class="lowercase-bio font-sans text-base md:text-lg text-white/60 max-w-xl mx-auto leading-relaxed drop-shadow-sm font-normal lowercase">
+            <div class="flex flex-col gap-8 lg:gap-12">
+                <!-- Branding -->
+                <div class="text-left group">
+                    <span class="text-[9px] font-black tracking-[0.4em] text-blue-500/60 mb-2 lg:mb-4 block uppercase">Portfolio V.2.9</span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tighter text-white italic transition-all group-hover:text-blue-400">
+                        Swaxılep
+                    </h1>
+                    <h2 class="text-base lg:text-lg font-medium text-white/40 tracking-[0.2em] uppercase mt-1 lg:mt-2">
+                        Game Developer
+                    </h2>
+                </div>
+
+                <!-- Navigation Buttons - Grid on mobile for better accessibility -->
+                <nav class="grid grid-cols-2 lg:flex lg:flex-col gap-2 lg:gap-3">
+                    <button onclick="switchTab('about')" id="btn-about" class="glass px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-white/5 tab-active uppercase">01. ABOUT</button>
+                    <button onclick="switchTab('works')" id="btn-works" class="glass px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-white/5 text-white/40 uppercase">02. WORKS</button>
+                    <button onclick="switchTab('links')" id="btn-links" class="glass px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-white/5 text-white/40 uppercase">03. LINKS</button>
+                    <button onclick="switchTab('programs')" id="btn-programs" class="glass px-4 py-3 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl text-left text-[10px] lg:text-xs font-bold tracking-widest transition-all hover:bg-white/5 text-white/40 uppercase">04. PROGRAMS</button>
+                </nav>
+            </div>
+
+            <!-- Footer of Sidebar (Clock & Copyright) -->
+            <div class="mt-8 lg:mt-0 flex flex-row lg:flex-col items-center lg:items-start justify-between lg:justify-end gap-4 lg:gap-6">
+                <div class="glass inline-flex items-center gap-3 p-2 lg:p-3 rounded-xl lg:rounded-2xl w-fit">
+                    <div class="flex items-center gap-2 lg:gap-3 pl-2 pr-3 lg:pr-4 border-r border-white/10">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[8px] lg:text-[9px] font-black tracking-widest text-white/80 uppercase">Active</span>
+                    </div>
+                    <span id="clock" class="text-xs lg:text-sm font-mono font-bold tabular-nums pr-1 lg:pr-2">00:00</span>
+                </div>
+                <!-- Updated Copyright & Year -->
+                <div class="text-right lg:text-left">
+                    <p class="text-[7px] lg:text-[8px] font-bold tracking-[0.3em] lg:tracking-[0.5em] text-white/20 uppercase leading-relaxed">
+                        © 2026 SWAXILEP<br class="hidden lg:block">
+                        <span class="lg:mt-1 block">ALL RIGHTS RESERVED</span>
+                    </p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- --- RIGHT CONTENT AREA --- -->
+        <main class="flex-1 lg:ml-[400px] p-6 sm:p-8 lg:p-16">
+            
+            <!-- Tab: About (Default) -->
+            <div id="tab-about" class="content-fade max-w-2xl text-left">
+                <h3 class="text-3xl lg:text-5xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Who am I?</h3>
+                <p class="font-sans text-lg lg:text-2xl text-white/60 leading-relaxed font-light lowercase">
                     i am 19 years old and a graduate of fine arts. currently specializing in 3d modeling and animation for leading game companies.
                 </p>
-            </div>
-
-            <div class="glass inline-flex items-center gap-4 p-2 rounded-2xl">
-                <div class="flex items-center gap-3 pl-4 pr-6 border-r border-white/10">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <span lang="en" class="text-[10px] font-black tracking-widest text-white">COMMISSIONS ARE OPEN</span>
-                </div>
-                <div class="flex flex-col items-center px-4">
-                    <span id="clock" class="text-lg font-mono font-bold tabular-nums">00:00</span>
-                    <span class="text-[8px] text-blue-400 font-bold opacity-60">UTC+3</span>
+                <div class="mt-8 lg:mt-12 grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
+                    <div class="glass p-5 lg:p-6 rounded-2xl lg:rounded-3xl">
+                        <span class="text-blue-400 text-[10px] lg:text-xs font-bold tracking-widest uppercase block mb-1 lg:mb-2">Age</span>
+                        <span class="text-xl lg:text-2xl font-bold text-white uppercase">19 Years</span>
+                    </div>
+                    <div class="glass p-5 lg:p-6 rounded-2xl lg:rounded-3xl">
+                        <span class="text-blue-400 text-[10px] lg:text-xs font-bold tracking-widest uppercase block mb-1 lg:mb-2">Based in</span>
+                        <span class="text-xl lg:text-2xl font-bold text-white uppercase">Istanbul</span>
+                    </div>
                 </div>
             </div>
-        </header>
 
-        <section class="reveal">
-            <div class="glass p-1.5 rounded-2xl flex justify-center gap-1 w-fit mx-auto mb-12">
-                <button onclick="switchTab('links')" id="btn-links" lang="en" class="px-8 py-2.5 rounded-xl text-[10px] font-bold tracking-widest transition-all tab-active">LINKS</button>
-                <button onclick="switchTab('programs')" id="btn-programs" lang="en" class="px-8 py-2.5 rounded-xl text-[10px] font-bold tracking-widest transition-all text-white/50 hover:text-white">PROGRAMS</button>
-                <button onclick="switchTab('works')" id="btn-works" lang="en" class="px-8 py-2.5 rounded-xl text-[10px] font-bold tracking-widest transition-all text-white/50 hover:text-white">WORKS</button>
+            <!-- Tab: Works -->
+            <div id="tab-works" class="hidden content-fade">
+                <div class="flex flex-row justify-between items-center lg:items-end mb-6 lg:mb-8">
+                    <h3 class="text-2xl lg:text-3xl font-bold tracking-tighter text-white italic">Portfolio</h3>
+                    <span class="text-[8px] lg:text-[10px] font-bold text-white/30 tracking-widest uppercase">25 Items</span>
+                </div>
+                <div id="works-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 lg:gap-3">
+                    <!-- JS ile dolacak -->
+                </div>
             </div>
 
-            <div id="tab-links" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <a href="https://x.com/swaxilep" target="_blank" class="glass btn-premium p-6 rounded-2xl flex flex-col gap-4 group">
-                    <div class="flex justify-between items-start">
-                        <span class="text-xs font-bold text-white/40 group-hover:text-blue-400 transition-colors">01</span>
-                    </div>
-                    <span lang="en" class="text-sm font-bold tracking-widest">Twitter / X</span>
-                </a>
-                <a href="https://www.artstation.com/swaxilep" target="_blank" class="glass btn-premium p-6 rounded-2xl flex flex-col gap-4 group">
-                    <div class="flex justify-between items-start">
-                        <span class="text-xs font-bold text-white/40 group-hover:text-blue-400 transition-colors">02</span>
-                    </div>
-                    <span lang="en" class="text-sm font-bold tracking-widest">ArtStation</span>
-                </a>
-                <a href="https://discord.com/users/454979640306696192" target="_blank" class="glass btn-premium p-6 rounded-2xl flex flex-col gap-4 group">
-                    <div class="flex justify-between items-start">
-                        <span class="text-xs font-bold text-white/40 group-hover:text-blue-400 transition-colors">03</span>
-                    </div>
-                    <span lang="en" class="text-sm font-bold tracking-widest">Discord</span>
-                </a>
+            <!-- Tab: Links -->
+            <div id="tab-links" class="hidden content-fade max-w-3xl">
+                <h3 class="text-2xl lg:text-3xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Connect</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
+                    <a href="https://x.com/swaxilep" target="_blank" class="glass p-6 lg:p-8 rounded-2xl lg:rounded-3xl flex flex-col gap-3 lg:gap-4 group hover:bg-white/5 transition-all">
+                        <span class="text-[10px] lg:text-xs font-bold text-white/20 group-hover:text-blue-400 uppercase">01. Social</span>
+                        <span class="text-lg lg:text-xl font-bold text-white uppercase tracking-widest">Twitter / X</span>
+                    </a>
+                    <a href="https://www.artstation.com/swaxilep" target="_blank" class="glass p-6 lg:p-8 rounded-2xl lg:rounded-3xl flex flex-col gap-3 lg:gap-4 group hover:bg-white/5 transition-all">
+                        <span class="text-[10px] lg:text-xs font-bold text-white/20 group-hover:text-blue-400 uppercase">02. Portfolio</span>
+                        <span class="text-lg lg:text-xl font-bold text-white uppercase tracking-widest">ArtStation</span>
+                    </a>
+                    <a href="https://discord.com/users/454979640306696192" target="_blank" class="glass p-6 lg:p-8 rounded-2xl lg:rounded-3xl flex flex-col gap-3 lg:gap-4 group hover:bg-white/5 transition-all">
+                        <span class="text-[10px] lg:text-xs font-bold text-white/20 group-hover:text-blue-400 uppercase">03. Chat</span>
+                        <span class="text-lg lg:text-xl font-bold text-white uppercase tracking-widest">Discord</span>
+                    </a>
+                </div>
             </div>
 
-            <!-- Programs - 3erli sıralama (grid-cols-1 sm:grid-cols-2 md:grid-cols-3) -->
-            <div id="tab-programs" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+            <!-- Tab: Programs -->
+            <div id="tab-programs" class="hidden content-fade max-w-3xl">
+                <h3 class="text-2xl lg:text-3xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Toolkit</h3>
+                <div id="programs-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
+                    <!-- JS ile dolacak -->
+                </div>
+            </div>
 
-            <div id="tab-works" class="hidden grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3"></div>
-        </section>
+        </main>
+    </div>
 
-        <footer class="reveal mt-24 text-center">
-            <div class="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8"></div>
-            <p lang="en" class="text-[9px] font-bold tracking-[0.8em] text-white/30">
-                SWAXILEP • 2024 • ALL RIGHTS RESERVED
-            </p>
-        </footer>
-    </main>
-
+    <!-- MODALS (Lightbox & Confirmation) -->
     <div id="confirm-modal" class="flex items-center justify-center p-4">
-        <div class="glass max-w-sm w-full p-8 rounded-3xl text-center flex flex-col gap-6">
-            <div class="flex flex-col gap-2">
-                <h3 lang="en" class="text-xl font-black tracking-tighter text-white">EXTERNAL LINK</h3>
-                <p class="font-sans text-sm text-white/60 leading-relaxed">
-                    You are being redirected to an external software website. Are you sure you want to proceed?
-                </p>
-            </div>
+        <div class="glass max-w-sm w-full p-8 rounded-[32px] lg:rounded-[40px] text-center flex flex-col gap-6">
+            <h3 class="text-xl font-black tracking-tighter text-white uppercase">Redirect</h3>
+            <p class="text-sm text-white/60 leading-relaxed lowercase">you are being redirected to an external website. proceed?</p>
             <div class="flex gap-3">
-                <button onclick="closeConfirmModal()" class="flex-1 py-3 rounded-xl bg-white/5 text-white/50 text-xs font-bold hover:bg-white/10 transition-all uppercase">CANCEL</button>
-                <button id="confirm-yes-btn" class="flex-1 py-3 rounded-xl bg-blue-500 text-white text-xs font-bold hover:bg-blue-400 transition-all shadow-lg shadow-blue-500/20 uppercase">YES, PROCEED</button>
+                <button onclick="closeConfirmModal()" class="flex-1 py-4 rounded-xl lg:rounded-2xl bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-widest">No</button>
+                <button id="confirm-yes-btn" class="flex-1 py-4 rounded-xl lg:rounded-2xl bg-blue-500 text-white text-[10px] font-bold uppercase tracking-widest shadow-xl shadow-blue-500/20">Yes</button>
             </div>
         </div>
     </div>
 
     <div id="lightbox" class="flex flex-col items-center justify-center p-4">
-        <button onclick="closeLightbox()" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        <button onclick="closeLightbox()" class="absolute top-4 lg:top-8 right-4 lg:right-8 p-3 lg:p-4 glass rounded-full text-white/50 hover:text-white transition-colors">
+            <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
-        <div class="relative w-full max-w-5xl flex items-center justify-center">
-            <button onclick="prevImage()" class="glass p-4 rounded-full mr-4 hover:bg-white/10 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <div class="relative w-full max-w-4xl flex items-center justify-center gap-2 lg:gap-4">
+            <button onclick="prevImage()" class="glass p-3 lg:p-5 rounded-full hover:bg-white/10 transition-all active:scale-90">
+                <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <img id="lightbox-img" src="" class="max-h-[80vh] rounded-2xl shadow-2xl object-contain transition-all duration-300">
-            <button onclick="nextImage()" class="glass p-4 rounded-full ml-4 hover:bg-white/10 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <img id="lightbox-img" src="" class="max-h-[65vh] lg:max-h-[75vh] rounded-2xl lg:rounded-[32px] shadow-2xl object-contain bg-black/20">
+            <button onclick="nextImage()" class="glass p-3 lg:p-5 rounded-full hover:bg-white/10 transition-all active:scale-90">
+                <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
         </div>
-        <div id="lightbox-counter" class="mt-8 glass px-6 py-2 rounded-full text-xs font-mono tracking-widest text-white/50">
+        <div id="lightbox-counter" class="mt-6 lg:mt-8 glass px-6 lg:px-8 py-2 lg:py-3 rounded-full text-[9px] lg:text-[10px] font-mono font-bold tracking-[0.4em] text-white/40 uppercase">
             01 / 25
         </div>
     </div>
 
     <script>
+        // Tab Switch Logic
+        function switchTab(tabId) {
+            // Hide all tabs
+            ['about', 'works', 'links', 'programs'].forEach(id => {
+                document.getElementById(`tab-${id}`).classList.add('hidden');
+                document.getElementById(`btn-${id}`).classList.remove('tab-active');
+                document.getElementById(`btn-${id}`).classList.add('text-white/40');
+            });
+            
+            // Show active
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.classList.add('tab-active');
+            activeBtn.classList.remove('text-white/40');
+
+            // Scroll to content on mobile (right after the sidebar)
+            if(window.innerWidth < 1024) {
+                const mainEl = document.querySelector('main');
+                window.scrollTo({ top: mainEl.offsetTop - 20, behavior: 'smooth' });
+            }
+        }
+
+        // Redirect Confirmation
         let pendingUrl = "";
         function confirmRedirect(url) {
             pendingUrl = url;
             document.getElementById('confirm-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
-            
             document.getElementById('confirm-yes-btn').onclick = () => {
                 window.open(pendingUrl, '_blank');
                 closeConfirmModal();
@@ -291,22 +319,9 @@
         function closeConfirmModal() {
             document.getElementById('confirm-modal').style.display = 'none';
             document.body.style.overflow = 'auto';
-            pendingUrl = "";
         }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        function toggleTheme() {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        }
-        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
-
+        // Clock
         function updateClock() {
             const trTime = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
             document.getElementById('clock').textContent = trTime.toTimeString().split(' ')[0].substring(0, 5);
@@ -314,67 +329,54 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        function switchTab(tabId) {
-            ['links', 'programs', 'works'].forEach(t => {
-                const content = document.getElementById(`tab-${t}`);
-                const btn = document.getElementById(`btn-${t}`);
-                if(content) content.classList.add('hidden');
-                if(btn) {
-                    btn.classList.remove('tab-active', 'text-white');
-                    btn.classList.add('text-white/50');
-                }
-            });
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`btn-${tabId}`);
-            activeBtn.classList.add('tab-active', 'text-white');
-            activeBtn.classList.remove('text-white/50');
-        }
-
+        // Populate Programs
         const programs = [
             { name: "Blender", url: "https://www.blender.org/" },
             { name: "Substance Painter", url: "https://www.adobe.com/products/substance3d-painter.html" },
             { name: "Roblox Studio", url: "https://www.roblox.com/create" },
-            { name: "Visual Studio Code", url: "https://code.visualstudio.com/" },
+            { name: "VS Code", url: "https://code.visualstudio.com/" },
             { name: "Medibang Paint", url: "https://medibangpaint.com/" },
             { name: "Krita", url: "https://krita.org/" }
         ];
-        const programsContainer = document.getElementById('tab-programs');
-        programs.forEach(prog => {
+        const progGrid = document.getElementById('programs-grid');
+        programs.forEach(p => {
             const div = document.createElement('div');
-            div.className = "glass p-6 rounded-2xl text-center hover:border-primary/50 transition-all cursor-pointer group";
-            div.onclick = () => confirmRedirect(prog.url);
-            div.innerHTML = `<span lang="en" class="text-xs font-bold tracking-widest text-white/60 group-hover:text-white transition-colors uppercase">${prog.name}</span>`;
-            programsContainer.appendChild(div);
+            div.className = "glass p-5 lg:p-6 rounded-2xl lg:rounded-3xl flex justify-between items-center group cursor-pointer hover:border-blue-500/30 transition-all";
+            div.onclick = () => confirmRedirect(p.url);
+            div.innerHTML = `
+                <span class="text-xs lg:text-sm font-bold tracking-widest text-white/70 group-hover:text-white uppercase">${p.name}</span>
+                <svg class="w-3 h-3 lg:w-4 h-4 text-white/20 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            `;
+            progGrid.appendChild(div);
         });
 
+        // Portfolio Logic
         let currentWorks = [];
         let currentIndex = 0;
-        const worksContainer = document.getElementById('tab-works');
+        const worksGrid = document.getElementById('works-grid');
 
+        // Note: Using placeholder/simulated loop for the 25 images. 
+        // In real environment, ensures the grid is populated.
         for (let i = 1; i <= 25; i++) {
             const div = document.createElement('div');
-            div.className = "aspect-square glass rounded-2xl overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-500";
-            
+            div.className = "aspect-square glass rounded-xl lg:rounded-2xl overflow-hidden cursor-pointer group hover:scale-[1.03] transition-all duration-500";
             const img = document.createElement('img');
             img.src = `assets/works/${i}.png`;
-            img.className = "w-full h-full object-cover transition-transform duration-700 group-hover:scale-110";
+            img.className = "w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700";
             img.onerror = () => div.style.display = 'none';
-            img.onload = () => {
-                if(!currentWorks.includes(img.src)) currentWorks.push(img.src);
-            };
-
+            img.onload = () => { if(!currentWorks.includes(img.src)) currentWorks.push(img.src); };
             div.onclick = () => {
                 currentIndex = currentWorks.indexOf(img.src);
                 openLightbox();
             };
             div.appendChild(img);
-            worksContainer.appendChild(div);
+            worksGrid.appendChild(div);
         }
 
         function openLightbox() {
-            const lb = document.getElementById('lightbox');
+            if (currentWorks.length === 0) return;
             document.getElementById('lightbox-img').src = currentWorks[currentIndex];
-            lb.style.display = 'flex';
+            document.getElementById('lightbox').style.display = 'flex';
             document.body.style.overflow = 'hidden';
             updateCounter();
         }
@@ -384,15 +386,8 @@
             document.body.style.overflow = 'auto';
         }
 
-        function nextImage() {
-            currentIndex = (currentIndex + 1) % currentWorks.length;
-            updateLightboxUI();
-        }
-
-        function prevImage() {
-            currentIndex = (currentIndex - 1 + currentWorks.length) % currentWorks.length;
-            updateLightboxUI();
-        }
+        function nextImage() { if(currentWorks.length > 0) { currentIndex = (currentIndex + 1) % currentWorks.length; updateLightboxUI(); } }
+        function prevImage() { if(currentWorks.length > 0) { currentIndex = (currentIndex - 1 + currentWorks.length) % currentWorks.length; updateLightboxUI(); } }
 
         function updateLightboxUI() {
             const img = document.getElementById('lightbox-img');
@@ -409,10 +404,7 @@
         }
 
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeLightbox();
-                closeConfirmModal();
-            }
+            if (e.key === 'Escape') { closeLightbox(); closeConfirmModal(); }
             if (e.key === 'ArrowRight') nextImage();
             if (e.key === 'ArrowLeft') prevImage();
         });
