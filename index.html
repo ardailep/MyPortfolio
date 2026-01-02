@@ -148,7 +148,7 @@
 
         /* Install Button specific styles */
         #btn-install {
-            display: none; /* Initially hidden, JS will show it when available */
+            display: none; /* Initially hidden */
             animation: pulse-glow 2s infinite;
         }
 
@@ -323,35 +323,55 @@
     </div>
 
     <script>
-        // PWA Yükleme Mantığı
+        // --- PWA LOGIC START ---
+        
+        // Register a basic Service Worker (required for PWA to show install prompt)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const blob = new Blob([`
+                    self.addEventListener('fetch', function(event) {});
+                `], { type: 'text/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).catch(err => console.log('SW Registration failed', err));
+            });
+        }
+
         let deferredPrompt;
         const installBtn = document.getElementById('btn-install');
 
+        // Capture the install prompt
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Tarayıcının varsayılan istemini engelle
+            console.log('beforeinstallprompt event fired');
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
             e.preventDefault();
-            // Etkinliği sakla
+            // Stash the event so it can be triggered later.
             deferredPrompt = e;
-            // Butonu görünür yap
+            // Update UI to notify the user they can add to home screen
             installBtn.style.display = 'flex';
         });
 
         installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            // Yükleme istemini göster
+            if (!deferredPrompt) {
+                console.log('The install prompt is not available yet.');
+                return;
+            }
+            // Show the prompt
             deferredPrompt.prompt();
-            // Kullanıcının seçimini bekle
+            // Wait for the user to respond to the prompt
             const { outcome } = await deferredPrompt.userChoice;
-            // deferredPrompt'u temizle (tek kullanımlıktır)
+            console.log(`User response to the install prompt: ${outcome}`);
+            // We've used the prompt, and can't use it again
             deferredPrompt = null;
-            // Butonu gizle
+            // Hide the button
             installBtn.style.display = 'none';
         });
 
-        window.addEventListener('appinstalled', () => {
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('App was successfully installed');
             installBtn.style.display = 'none';
-            console.log('Uygulama başarıyla yüklendi');
         });
+
+        // --- PWA LOGIC END ---
 
         // Tab Değiştirme Sistemi
         function switchTab(tabId) {
