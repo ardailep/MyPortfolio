@@ -90,6 +90,14 @@
             border: 1px solid var(--glass-border);
         }
 
+        /* Daha koyu cam efekti metin okunabilirliği için */
+        .glass-darker {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
         .tab-active {
             background: rgba(59, 130, 246, 0.2) !important;
             border-color: rgba(59, 130, 246, 0.5) !important;
@@ -185,22 +193,24 @@
             
             <div id="tab-about" class="content-fade max-w-2xl text-left">
                 <h3 class="text-3xl lg:text-5xl font-bold tracking-tighter mb-6 lg:mb-8 text-white italic">Who am I?</h3>
-                <div class="flex flex-col gap-6">
-                    <p class="font-sans text-lg lg:text-xl text-white/70 leading-relaxed font-light">
+                
+                <!-- Okunabilirliği artıran Frame/Panel yapısı -->
+                <div class="glass-darker p-6 lg:p-10 rounded-[32px] flex flex-col gap-6 mb-8">
+                    <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
                         I am a Fine Arts graduate with a strong academic background in form, composition, color, and visual language. This foundation shapes both my physical work on canvas and my digital production. I currently participate in group and solo exhibitions with my physical artworks, while continuing to produce both traditional and digital work in parallel.
                     </p>
-                    <p class="font-sans text-lg lg:text-xl text-white/70 leading-relaxed font-light">
+                    <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
                         On the digital side, I primarily focus on 3D modeling and visual production. I create stylized, hand-paint–oriented models for games and interactive projects, with an emphasis on atmosphere, form, and visual coherence. For me, the value of a piece lies not only in its technical accuracy, but in the feeling it conveys and the visual language it establishes.
                     </p>
-                    <p class="font-sans text-lg lg:text-xl text-white/70 leading-relaxed font-light">
+                    <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
                         I work mainly with Blender and Roblox, preparing my models according to their intended context and use. I have a basic working knowledge of Luau, which I use to support the production process and ensure smoother integration within projects.
                     </p>
-                    <p class="font-sans text-lg lg:text-xl text-white/70 leading-relaxed font-light">
+                    <p class="font-sans text-lg lg:text-xl text-white/80 leading-relaxed font-light">
                         I see my physical art practice and digital work not as separate disciplines, but as two interconnected forms of expression that continuously inform and strengthen each other.
                     </p>
                 </div>
                 
-                <div class="mt-8 lg:mt-12 grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
                     <div class="glass p-5 lg:p-6 rounded-2xl lg:rounded-3xl">
                         <span class="text-blue-400 text-[10px] lg:text-xs font-bold tracking-widest uppercase block mb-1 lg:mb-2">Status</span>
                         <span class="text-xl lg:text-2xl font-bold text-white uppercase italic">Artist & Dev</span>
