@@ -224,6 +224,23 @@
     setLang(saved || browserLang);
 
     // ─────────────────────────────────────────
+    // 1b. BACKGROUND VIDEO — only on larger screens (it's ~23 MB; phones get the static background)
+    // ─────────────────────────────────────────
+    const video = document.querySelector(".bg-video[data-src]");
+    if (video) {
+        const saveData = navigator.connection && navigator.connection.saveData;
+        const bigScreen = window.matchMedia("(min-width: 768px)").matches;
+        const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (bigScreen && !saveData && !calm) {
+            video.muted = true;
+            video.src = video.dataset.src;
+            video.play().catch(() => { /* autoplay blocked — the static background stays */ });
+        } else {
+            video.remove();
+        }
+    }
+
+    // ─────────────────────────────────────────
     // 2. NAV — background on scroll
     // ─────────────────────────────────────────
     const nav = document.getElementById("nav");
