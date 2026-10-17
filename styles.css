@@ -301,6 +301,36 @@ ul {
     gap: clamp(2rem, 5vw, 5rem);
 }
 
+/* "Leave me a note" — first thing on the page */
+.note-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+    padding: 10px 16px;
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-sm);
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    animation: rise 1s var(--ease) both;
+}
+
+.note-cta:hover {
+    background: var(--accent);
+    color: var(--accent-ink);
+}
+
+.visitor-count::before {
+    content: '·';
+    margin: 0 0.6em 0 0.1em;   /* the space between the spans already adds a gap on the left */
+}
+
+.visitor-count[hidden] {
+    display: none;
+}
+
 .eyebrow {
     font-family: var(--mono);
     font-size: 0.8rem;

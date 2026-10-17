@@ -21,7 +21,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Caveat:wght@700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=24">
+    <link rel="stylesheet" href="styles.css?v=25">
 </head>
 
 <body>
@@ -29,7 +29,7 @@
     <!-- Background -->
     <div class="bg" aria-hidden="true">
         <div class="bg-image"></div>
-        <video class="bg-video" muted loop playsinline preload="none" data-src="shared/background.mp4?v=24">
+        <video class="bg-video" muted loop playsinline preload="none" data-src="shared/background.mp4?v=25">
         </video>
         <div class="bg-tint"></div>
         <div class="bg-grain"></div>
@@ -58,7 +58,15 @@
         <section class="hero" id="top">
             <div class="hero-grid">
                 <div class="hero-copy">
-                    <p class="eyebrow"><span data-i18n="hero.eyebrow">Portfolio · 2026</span></p>
+                    <a href="/letters" class="note-cta">
+                        <span aria-hidden="true">✉️</span>
+                        <span data-i18n="hero.note">Leave me a note</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
+                    <p class="eyebrow">
+                        <span data-i18n="hero.eyebrow">Portfolio · 2026</span>
+                        <span class="visitor-count" id="visitorCount" hidden></span>
+                    </p>
                     <h1 class="hero-title">
                         <span class="line"><span>Swaxilep</span></span>
                     </h1>
@@ -79,7 +87,7 @@
 
                 <div class="hero-portrait">
                     <div class="portrait-card" id="portrait">
-                        <img src="shared/Profile.png?v=24" alt="Photo of Teoman (Swaxilep)" width="1381" height="1440">
+                        <img src="shared/Profile.png?v=25" alt="Photo of Teoman (Swaxilep)" width="1381" height="1440">
                         <div class="portrait-meta">
                             <span>@swaxilep</span>
                             <span>3D · Roblox · Blender</span>
@@ -240,8 +248,9 @@
         </div>
     </div>
 
-    <script src="common.js?v=24"></script>
-    <script src="script.js?v=24"></script>
+    <script src="letters-config.js?v=25"></script>
+    <script src="common.js?v=25"></script>
+    <script src="script.js?v=25"></script>
 </body>
 
 </html>

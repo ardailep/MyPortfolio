@@ -18,6 +18,9 @@
             "nav.connect": "Connect",
             "nav.cta": "Say hi",
             "hero.eyebrow": "Portfolio · 2026",
+            "hero.note": "Leave me a note",
+            "visitors.one": "1 visitor",
+            "visitors": "{n} visitors",
             "hero.prefix": "I'm a",
             "hero.lede": "I make 3D models and environment designs for games. I mostly use Blender and Roblox Studio.",
             "hero.work": "View my work",
@@ -108,6 +111,9 @@
             "nav.connect": "İletişim",
             "nav.cta": "Merhaba de",
             "hero.eyebrow": "Portfolyo · 2026",
+            "hero.note": "Bana bir not bırak",
+            "visitors.one": "1 ziyaretçi",
+            "visitors": "{n} ziyaretçi",
             "hero.prefix": "",
             "hero.lede": "Oyunlar için 3D model ve çevre tasarımı yapıyorum. Çoğunlukla Blender ve Roblox Studio kullanıyorum.",
             "hero.work": "Çalışmalarım",
@@ -251,6 +257,33 @@
         } else {
             video.remove();
         }
+    }
+
+    // ─────────────────────────────────────────
+    // 1c. VISITOR COUNTER — one per IP, counted in Supabase (see supabase-visitors.sql)
+    // ─────────────────────────────────────────
+    const config = window.LETTERS_CONFIG || {};
+    const counter = document.getElementById("visitorCount");
+    let visitors = null;
+
+    const renderVisitors = () => {
+        if (!counter || visitors === null) return;
+        const n = new Intl.NumberFormat(SITE.lang === "tr" ? "tr-TR" : "en-US").format(visitors);
+        counter.textContent = visitors === 1 ? SITE.t("visitors.one") : SITE.t("visitors").replace("{n}", n);
+        counter.hidden = false;
+    };
+    SITE.onLangChange(renderVisitors);
+
+    // Every page registers the visit (so landing on /letters counts too); only the home page shows the number.
+    if (config.supabaseUrl && config.supabaseAnonKey) {
+        fetch(`${config.supabaseUrl}/rest/v1/rpc/register_visit`, {
+            method: "POST",
+            headers: { apikey: config.supabaseAnonKey, "Content-Type": "application/json" },
+            body: "{}",
+        })
+            .then(res => (res.ok ? res.json() : Promise.reject(res.status)))
+            .then(count => { visitors = Number(count); renderVisitors(); })
+            .catch(() => { /* counter not set up yet — stays hidden */ });
     }
 
     // ─────────────────────────────────────────
