@@ -42,6 +42,14 @@ create policy "admin can reply"
     using (public.is_admin())
     with check (public.is_admin());
 
+-- 4b. Only admins can delete letters
+grant delete on public.letters to authenticated;
+drop policy if exists "admin can delete" on public.letters;
+create policy "admin can delete"
+    on public.letters for delete
+    to authenticated
+    using (public.is_admin());
+
 -- 5. Make your account an admin (replace the email with the one you created in step 0)
 insert into public.admins (user_id)
 select id from auth.users where email = 'teoman.33.canbaz@gmail.com'

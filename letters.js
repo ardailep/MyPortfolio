@@ -16,7 +16,7 @@
     // ─────────────────────────────────────────
     // Each backend: list() → letters newest first, myId() → current user id (or null),
     // send(name, message) → saved letter (throws { code: "already" } on a second letter),
-    // isAdmin(), login(email, password), logout(), reply(id, text, gif) → updated letter.
+    // isAdmin(), login(email, password), logout(), reply(id, text, gif) → updated letter, remove(id).
 
     const supabaseBackend = () => {
         const client = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
@@ -100,6 +100,12 @@
                 if (gif && !fields.includes("reply_gif")) return { ...data, gifNotSaved: true };
                 return data;
             },
+            async remove(id) {
+                // Without the delete policy RLS silently deletes nothing, so check that a row came back.
+                const { data, error } = await client.from("letters").delete().eq("id", id).select("id");
+                if (error) throw error;
+                if (!data || !data.length) throw { code: "not-deleted" };
+            },
         };
     };
 
@@ -132,6 +138,7 @@
                 write(letters);
                 return letter;
             },
+            async remove(id) { write(read().filter(l => l.id !== id)); },
         };
     };
 
@@ -311,6 +318,7 @@
         replyText.value = (letter && letter.reply) || "";
         replyGif.value = (letter && letter.reply_gif) || "";
         showGifPreview();
+        disarmDelete();
         modal.hidden = false;
         document.body.style.overflow = "hidden";
         modalClose.focus();
@@ -356,6 +364,42 @@
             replyStatus.textContent = SITE.t("letters.error.generic");
         } finally {
             replySave.disabled = false;
+        }
+    });
+
+    // Delete: first tap arms the button, a second tap within 4 s deletes.
+    const deleteBtn = document.getElementById("letterDelete");
+    let deleteArmed = null;
+
+    const disarmDelete = () => {
+        clearTimeout(deleteArmed);
+        deleteArmed = null;
+        deleteBtn.classList.remove("is-armed");
+        deleteBtn.firstElementChild.textContent = SITE.t("letters.delete");
+    };
+
+    deleteBtn.addEventListener("click", async () => {
+        if (!isAdmin || openId === null) return;
+        if (!deleteArmed) {
+            deleteBtn.classList.add("is-armed");
+            deleteBtn.firstElementChild.textContent = SITE.t("letters.delete.confirm");
+            deleteArmed = setTimeout(disarmDelete, 4000);
+            return;
+        }
+        disarmDelete();
+        deleteBtn.disabled = true;
+        try {
+            const id = openId;
+            await api.remove(id);
+            letters = letters.filter(l => l.id !== id);
+            openFrom = null;   // its envelope is gone
+            closeLetter();
+            renderWall();
+        } catch (err) {
+            console.error(err);
+            replyStatus.textContent = SITE.t("letters.delete.failed");
+        } finally {
+            deleteBtn.disabled = false;
         }
     });
 

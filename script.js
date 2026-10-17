@@ -2,7 +2,6 @@
 (() => {
     const SITE = window.SITE;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     // ─────────────────────────────────────────
     // 1. TYPEWRITER
@@ -52,33 +51,7 @@
     document.querySelectorAll("main section[id]").forEach(s => sectionObs.observe(s));
 
     // ─────────────────────────────────────────
-    // 3. POINTER EFFECTS — card spotlight + portrait tilt
-    // ─────────────────────────────────────────
-    if (finePointer && !reduceMotion) {
-        document.querySelectorAll(".facet").forEach(card => {
-            card.addEventListener("pointermove", (e) => {
-                const r = card.getBoundingClientRect();
-                card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-                card.style.setProperty("--my", `${e.clientY - r.top}px`);
-            });
-        });
-
-        const portrait = document.getElementById("portrait");
-        portrait.addEventListener("pointermove", (e) => {
-            const r = portrait.getBoundingClientRect();
-            const x = (e.clientX - r.left) / r.width - 0.5;
-            const y = (e.clientY - r.top) / r.height - 0.5;
-            portrait.style.setProperty("--ry", `${x * 10}deg`);
-            portrait.style.setProperty("--rx", `${-y * 10}deg`);
-        });
-        portrait.addEventListener("pointerleave", () => {
-            portrait.style.setProperty("--ry", "0deg");
-            portrait.style.setProperty("--rx", "0deg");
-        });
-    }
-
-    // ─────────────────────────────────────────
-    // 4. REDIRECT MODAL
+    // 3. REDIRECT MODAL
     // ─────────────────────────────────────────
     const modal = document.getElementById("modal");
     const modalUrl = document.getElementById("modalUrl");

@@ -16,17 +16,16 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=18">
+    <link rel="stylesheet" href="styles.css?v=21">
 </head>
 
 <body data-title-key="letters.meta.title">
 
     <!-- Background -->
     <div class="bg" aria-hidden="true">
-        <video class="bg-video" muted loop playsinline preload="none" data-src="shared/background.mp4">
+        <video class="bg-video" muted loop playsinline preload="none" data-src="shared/background.mp4?v=21">
         </video>
         <div class="bg-tint"></div>
-        <div class="bg-glow"></div>
         <div class="bg-grain"></div>
     </div>
 
@@ -52,7 +51,7 @@
         <!-- Intro + form -->
         <section class="letters-intro container">
             <div class="letters-copy">
-                <p class="eyebrow"><span class="dot"></span><span data-i18n="letters.eyebrow">Letters</span></p>
+                <p class="eyebrow"><span data-i18n="letters.eyebrow">Letters</span></p>
                 <h1 class="letters-title" data-i18n="letters.title">Leave me a <em>letter.</em></h1>
                 <p class="letters-lede" data-i18n="letters.lede">Write your name and a message and it'll show up below. Everyone can send only one.</p>
                 <p class="demo-note" id="demoNote" data-i18n="letters.demo" hidden>Demo mode — letters are only saved in this browser until the database is connected.</p>
@@ -87,7 +86,7 @@
                 </form>
 
                 <div class="compose-card sent-card" id="sentCard" hidden>
-                    <span class="sent-icon" aria-hidden="true">✦</span>
+                    <span class="sent-icon" aria-hidden="true">✉️</span>
                     <h2 data-i18n="letters.sent.title">Your letter was sent!</h2>
                     <p data-i18n="letters.sent.text">Thanks for writing. You can see it with the others below.</p>
                 </div>
@@ -115,7 +114,7 @@
                         <p class="form-error" id="adminError" role="alert" hidden></p>
                     </form>
                     <div class="admin-on" id="adminOn" hidden>
-                        <span class="dot"></span>
+                        
                         <span data-i18n="letters.admin.on">Logged in as admin. Open a letter to reply.</span>
                         <button type="button" class="btn btn-ghost" id="adminLogout"><span data-i18n="letters.admin.logout">Log out</span></button>
                     </div>
@@ -166,6 +165,7 @@
                 <img class="reply-gif-preview" id="replyGifPreview" alt="" referrerpolicy="no-referrer" hidden>
 
                 <div class="reply-actions">
+                    <button type="button" class="reply-delete" id="letterDelete"><span data-i18n="letters.delete">Delete letter</span></button>
                     <span class="reply-status" id="replyStatus" role="status"></span>
                     <button type="submit" class="btn btn-primary" id="replySave"><span data-i18n="letters.reply.save">Save reply</span></button>
                 </div>
@@ -174,9 +174,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="letters-config.js?v=18"></script>
-    <script src="common.js?v=18"></script>
-    <script src="letters.js?v=18"></script>
+    <script src="letters-config.js?v=21"></script>
+    <script src="common.js?v=21"></script>
+    <script src="letters.js?v=21"></script>
 </body>
 
 </html>

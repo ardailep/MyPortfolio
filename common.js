@@ -90,6 +90,9 @@
             "letters.reply.gif.hint": "Giphy: paste the page link. Tenor: right-click the GIF → \"Copy image address\".",
             "letters.reply.gif.bad": "This link doesn't open as an image. Try the GIF's direct address.",
             "letters.reply.gif.nocolumn": "Text saved, but the GIF wasn't: run supabase-replies.sql again in Supabase.",
+            "letters.delete": "Delete letter",
+            "letters.delete.confirm": "Sure? Tap again",
+            "letters.delete.failed": "Couldn't delete: run supabase-replies.sql again in Supabase.",
             "letters.admin.title": "Admin login",
             "letters.admin.email": "Email",
             "letters.admin.password": "Password",
@@ -177,6 +180,9 @@
             "letters.reply.gif.hint": "Giphy: sayfa linkini yapıştır. Tenor: GIF'e sağ tıkla → \"Resim adresini kopyala\".",
             "letters.reply.gif.bad": "Bu link resim olarak açılmıyor. GIF'in doğrudan adresini dene.",
             "letters.reply.gif.nocolumn": "Yazı kaydedildi ama GIF kaydedilmedi: Supabase'te supabase-replies.sql dosyasını tekrar çalıştır.",
+            "letters.delete": "Mektubu sil",
+            "letters.delete.confirm": "Emin misin? Tekrar bas",
+            "letters.delete.failed": "Silinemedi: Supabase'te supabase-replies.sql dosyasını tekrar çalıştır.",
             "letters.admin.title": "Yönetici girişi",
             "letters.admin.email": "E-posta",
             "letters.admin.password": "Şifre",
@@ -233,8 +239,17 @@
         const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         if (bigScreen && !saveData && !calm) {
             video.muted = true;
+            video.setAttribute("autoplay", "");
             video.src = video.dataset.src;
-            video.play().catch(() => { /* autoplay blocked — the static background stays */ });
+
+            // Some browsers (Safari, low-power mode) block autoplay: retry when ready, on first interaction,
+            // and when the tab becomes visible again. The static background shows until then.
+            const tryPlay = () => { if (video.paused) video.play().catch(() => { }); };
+            tryPlay();
+            video.addEventListener("canplay", tryPlay, { once: true });
+            ["pointerdown", "touchstart", "keydown", "scroll"].forEach(type =>
+                window.addEventListener(type, tryPlay, { once: true, passive: true }));
+            document.addEventListener("visibilitychange", () => { if (!document.hidden) tryPlay(); });
         } else {
             video.remove();
         }
