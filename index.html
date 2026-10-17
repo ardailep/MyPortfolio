@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swaxilep | Portfolio</title>
-    <meta name="description" content="Swaxilep — Game Developer & 3D Artist. Stylized, hand-painted 3D models for games.">
+    <meta name="description" content="Swaxilep — Game Developer & 3D Artist. Sculpture student at Anadolu University.">
     <meta name="theme-color" content="#0d0a09">
 
     <meta property="og:title" content="Swaxilep | Portfolio">
-    <meta property="og:description" content="Game Developer & 3D Artist. Stylized, hand-painted 3D models for games.">
+    <meta property="og:description" content="Game Developer & 3D Artist. Sculpture student at Anadolu University.">
     <meta property="og:image" content="https://swaxilep.com/shared/Profile.png">
     <meta property="og:url" content="https://swaxilep.com">
 
@@ -42,11 +42,16 @@
             <img src="shared/Icon.png" alt="" width="36" height="36">
         </a>
         <nav class="nav-links" aria-label="Main">
-            <a href="#about">About</a>
-            <a href="#toolkit">Toolkit</a>
-            <a href="#connect">Connect</a>
+            <a href="#about" data-i18n="nav.about">About</a>
+            <a href="#connect" data-i18n="nav.connect">Connect</a>
         </nav>
-        <a href="#connect" class="nav-cta">Say hi <span aria-hidden="true">→</span></a>
+        <div class="nav-end">
+            <div class="lang-switch" role="group" aria-label="Language">
+                <button type="button" data-lang="en" aria-pressed="true">EN</button>
+                <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+            </div>
+            <a href="#connect" class="nav-cta"><span data-i18n="nav.cta">Say hi</span> <span aria-hidden="true">→</span></a>
+        </div>
     </header>
 
     <main>
@@ -54,23 +59,22 @@
         <section class="hero" id="top">
             <div class="hero-grid">
                 <div class="hero-copy">
-                    <p class="eyebrow"><span class="dot"></span>Portfolio · 2026</p>
+                    <p class="eyebrow"><span class="dot"></span><span data-i18n="hero.eyebrow">Portfolio · 2026</span></p>
                     <h1 class="hero-title">
                         <span class="line"><span>Swaxilep</span></span>
                     </h1>
                     <p class="hero-role">
-                        <span class="role-prefix">I'm a</span>
-                        <span class="role-text" id="roleText">3D Artist</span><span class="role-caret" aria-hidden="true"></span>
+                        <span class="role-prefix" data-i18n="hero.prefix">I'm a</span><span class="role-text" id="roleText">3D Artist</span><span class="role-caret" aria-hidden="true"></span>
                     </p>
-                    <p class="hero-lede">
+                    <p class="hero-lede" data-i18n="hero.lede">
                         Stylized, hand-painted 3D models for games and interactive worlds —
-                        built on a fine-arts foundation.
+                        shaped by a sculptor's sense of form.
                     </p>
                     <div class="hero-actions">
                         <a href="https://www.artstation.com/swaxilep" class="btn btn-primary" target="_blank" rel="noopener">
-                            View my work <span aria-hidden="true">↗</span>
+                            <span data-i18n="hero.work">View my work</span> <span aria-hidden="true">↗</span>
                         </a>
-                        <a href="#about" class="btn btn-ghost">About me</a>
+                        <a href="#about" class="btn btn-ghost" data-i18n="hero.about">About me</a>
                     </div>
                 </div>
 
@@ -87,7 +91,7 @@
                             <defs>
                                 <path id="circlePath" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
                             </defs>
-                            <text><textPath href="#circlePath">GAME DEV · 3D ARTIST · FINE ARTS · </textPath></text>
+                            <text><textPath href="#circlePath">SWAXILEP · 3D · ART · SWAXILEP · 3D · ART · </textPath></text>
                         </svg>
                         <span>✦</span>
                     </div>
@@ -96,18 +100,18 @@
 
             <div class="marquee" aria-hidden="true">
                 <div class="marquee-track">
-                    <span>Game Developer</span><i>✦</i>
-                    <span>3D Artist</span><i>✦</i>
-                    <span>Hand-painted Textures</span><i>✦</i>
+                    <span data-i18n="mq.1">Game Developer</span><i>✦</i>
+                    <span data-i18n="mq.2">3D Artist</span><i>✦</i>
+                    <span data-i18n="mq.3">Hand-painted Textures</span><i>✦</i>
                     <span>Blender</span><i>✦</i>
                     <span>Roblox</span><i>✦</i>
-                    <span>Fine Arts Graduate</span><i>✦</i>
-                    <span>Game Developer</span><i>✦</i>
-                    <span>3D Artist</span><i>✦</i>
-                    <span>Hand-painted Textures</span><i>✦</i>
+                    <span data-i18n="mq.4">Sculpture</span><i>✦</i>
+                    <span data-i18n="mq.1">Game Developer</span><i>✦</i>
+                    <span data-i18n="mq.2">3D Artist</span><i>✦</i>
+                    <span data-i18n="mq.3">Hand-painted Textures</span><i>✦</i>
                     <span>Blender</span><i>✦</i>
                     <span>Roblox</span><i>✦</i>
-                    <span>Fine Arts Graduate</span><i>✦</i>
+                    <span data-i18n="mq.4">Sculpture</span><i>✦</i>
                 </div>
             </div>
         </section>
@@ -117,76 +121,41 @@
             <div class="container">
                 <header class="section-head reveal">
                     <span class="section-index">01</span>
-                    <h2>Who am I?</h2>
+                    <h2 data-i18n="about.title">Who am I?</h2>
                 </header>
 
                 <div class="about-grid">
-                    <p class="about-statement reveal">
-                        A painter's eye, <em>translated</em> into polygons.
+                    <p class="about-statement reveal" data-i18n="about.statement">
+                        A sculptor's eye, <em>translated</em> into polygons.
                     </p>
                     <div class="about-body reveal">
-                        <p>I am a Fine Arts graduate with a strong academic background in
-                            <strong>form, composition, color, and visual language.</strong> This foundation shapes
-                            both my physical work on canvas and my digital production.</p>
-                        <p>On the digital side, I primarily focus on <strong>3D modeling and visual
+                        <p data-i18n="about.p1">I am currently studying <strong>Sculpture at Anadolu University,</strong>
+                            building a strong foundation in form, volume, composition, and visual language. This
+                            shapes both my physical work and my digital production.</p>
+                        <p data-i18n="about.p2">On the digital side, I primarily focus on <strong>3D modeling and visual
                                 production.</strong> I create stylized, hand-paint–oriented models for games and
                             interactive projects.</p>
-                        <p>I work mainly with <strong>Blender and Roblox</strong> and have a working knowledge of
-                            Luau to support the production process.</p>
+                        <p data-i18n="about.p3">I work mainly with <strong>Blender and Roblox</strong> and have a working
+                            knowledge of Luau to support the production process.</p>
                     </div>
                 </div>
 
                 <div class="facets">
                     <article class="facet reveal">
                         <span class="facet-icon" aria-hidden="true">◐</span>
-                        <h3>Fine Arts</h3>
-                        <p>Form, composition and color theory from canvas to screen.</p>
+                        <h3 data-i18n="facet.1.title">Sculpture</h3>
+                        <p data-i18n="facet.1.text">Studying at Anadolu University — form and volume, from clay to screen.</p>
                     </article>
                     <article class="facet reveal">
                         <span class="facet-icon" aria-hidden="true">◇</span>
-                        <h3>Stylized 3D</h3>
-                        <p>Game-ready models with a hand-painted, illustrative feel.</p>
+                        <h3 data-i18n="facet.2.title">Stylized 3D</h3>
+                        <p data-i18n="facet.2.text">Game-ready models with a hand-painted, illustrative feel.</p>
                     </article>
                     <article class="facet reveal">
                         <span class="facet-icon" aria-hidden="true">▣</span>
                         <h3>Roblox &amp; Luau</h3>
-                        <p>Building and scripting assets straight into the engine.</p>
+                        <p data-i18n="facet.3.text">Building and scripting assets straight into the engine.</p>
                     </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- Toolkit -->
-        <section class="section" id="toolkit">
-            <div class="container">
-                <header class="section-head reveal">
-                    <span class="section-index">02</span>
-                    <h2>Toolkit</h2>
-                </header>
-
-                <div class="toolkit">
-                    <div class="tool-group reveal">
-                        <h3 class="tool-group-title">3D &amp; Render</h3>
-                        <ul class="tool-list">
-                            <li class="tool" style="--level: 92"><span class="tool-name">Blender</span><span class="tool-meter"></span><span class="tool-value">92</span></li>
-                            <li class="tool" style="--level: 85"><span class="tool-name">Roblox Studio</span><span class="tool-meter"></span><span class="tool-value">85</span></li>
-                            <li class="tool" style="--level: 70"><span class="tool-name">Substance Painter</span><span class="tool-meter"></span><span class="tool-value">70</span></li>
-                        </ul>
-                    </div>
-                    <div class="tool-group reveal">
-                        <h3 class="tool-group-title">2D &amp; Paint</h3>
-                        <ul class="tool-list">
-                            <li class="tool" style="--level: 85"><span class="tool-name">Krita</span><span class="tool-meter"></span><span class="tool-value">85</span></li>
-                            <li class="tool" style="--level: 75"><span class="tool-name">Medibang</span><span class="tool-meter"></span><span class="tool-value">75</span></li>
-                            <li class="tool" style="--level: 60"><span class="tool-name">Photoshop</span><span class="tool-meter"></span><span class="tool-value">60</span></li>
-                        </ul>
-                    </div>
-                    <div class="tool-group reveal">
-                        <h3 class="tool-group-title">Code</h3>
-                        <ul class="tool-list">
-                            <li class="tool" style="--level: 65"><span class="tool-name">Luau</span><span class="tool-meter"></span><span class="tool-value">65</span></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </section>
@@ -195,14 +164,14 @@
         <section class="section" id="connect">
             <div class="container">
                 <header class="section-head reveal">
-                    <span class="section-index">03</span>
-                    <h2>Let's connect</h2>
+                    <span class="section-index">02</span>
+                    <h2 data-i18n="connect.title">Let's connect</h2>
                 </header>
 
                 <ul class="links">
                     <li class="reveal">
                         <a href="https://www.artstation.com/swaxilep" target="_blank" rel="noopener">
-                            <span class="link-cat">Portfolio</span>
+                            <span class="link-cat" data-i18n="connect.portfolio">Portfolio</span>
                             <span class="link-name">ArtStation</span>
                             <span class="link-handle">swaxilep</span>
                             <span class="link-arrow" aria-hidden="true">↗</span>
@@ -210,7 +179,7 @@
                     </li>
                     <li class="reveal">
                         <a href="https://x.com/swaxilep" target="_blank" rel="noopener">
-                            <span class="link-cat">Social</span>
+                            <span class="link-cat" data-i18n="connect.social">Social</span>
                             <span class="link-name">Twitter / X</span>
                             <span class="link-handle">@swaxilep</span>
                             <span class="link-arrow" aria-hidden="true">↗</span>
@@ -218,7 +187,7 @@
                     </li>
                     <li class="reveal">
                         <a href="https://discord.com/users/454979640306696192" target="_blank" rel="noopener">
-                            <span class="link-cat">Chat</span>
+                            <span class="link-cat" data-i18n="connect.chat">Chat</span>
                             <span class="link-name">Discord</span>
                             <span class="link-handle">swaxilep</span>
                             <span class="link-arrow" aria-hidden="true">↗</span>
@@ -226,7 +195,7 @@
                     </li>
                     <li class="reveal">
                         <a href="https://www.roblox.com/users/940248004/profile" target="_blank" rel="noopener">
-                            <span class="link-cat">Games</span>
+                            <span class="link-cat" data-i18n="connect.games">Games</span>
                             <span class="link-name">Roblox</span>
                             <span class="link-handle">Swaxilep</span>
                             <span class="link-arrow" aria-hidden="true">↗</span>
@@ -241,8 +210,8 @@
         <div class="container">
             <p class="footer-word" aria-hidden="true">SWAXILEP</p>
             <div class="footer-bar">
-                <span>© 2026 Swaxilep. All rights reserved.</span>
-                <a href="#top" class="to-top">Back to top <span aria-hidden="true">↑</span></a>
+                <span data-i18n="footer.copy">© 2026 Swaxilep. All rights reserved.</span>
+                <a href="#top" class="to-top"><span data-i18n="footer.top">Back to top</span> <span aria-hidden="true">↑</span></a>
             </div>
         </div>
     </footer>
@@ -250,12 +219,12 @@
     <!-- Redirect dialog -->
     <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
         <div class="modal-card">
-            <p class="modal-label">Leaving swaxilep.com</p>
-            <h2 class="modal-title" id="modalTitle">You're heading to an external site</h2>
+            <p class="modal-label" data-i18n="modal.label">Leaving swaxilep.com</p>
+            <h2 class="modal-title" id="modalTitle" data-i18n="modal.title">You're heading to an external site</h2>
             <p class="modal-url" id="modalUrl">—</p>
             <div class="modal-actions">
-                <button type="button" class="btn btn-ghost" id="modalCancel">Cancel</button>
-                <button type="button" class="btn btn-primary" id="modalConfirm">Continue <span aria-hidden="true">↗</span></button>
+                <button type="button" class="btn btn-ghost" id="modalCancel" data-i18n="modal.cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="modalConfirm"><span data-i18n="modal.continue">Continue</span> <span aria-hidden="true">↗</span></button>
             </div>
         </div>
     </div>
