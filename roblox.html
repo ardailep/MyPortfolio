@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swaxilep on Roblox</title>
+    <meta name="description" content="Swaxilep's Roblox profile — avatar, stats and favorite games.">
+    <meta name="theme-color" content="#0f1115">
+
+    <link rel="icon" type="image/png" href="shared/Icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="roblox.css?v=1">
+</head>
+
+<body>
+    <header class="top">
+        <a href="/" class="top-home" data-t="home">← swaxilep.com</a>
+        <div class="top-lang" role="group" aria-label="Language">
+            <button type="button" data-lang="en" aria-pressed="true">EN</button>
+            <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <!-- Profile -->
+        <section class="profile" aria-busy="true" id="profile">
+            <div class="avatar">
+                <img id="avatarImg" alt="" hidden>
+                <div class="avatar-placeholder" id="avatarPlaceholder"></div>
+            </div>
+
+            <div class="profile-info">
+                <p class="label" data-t="profileLabel">Roblox profile</p>
+                <h1 class="display-name" id="displayName">&nbsp;</h1>
+                <p class="username" id="username">&nbsp;</p>
+                <p class="bio" id="bio"></p>
+
+                <dl class="stats">
+                    <div><dt data-t="friends">Friends</dt><dd id="statFriends">–</dd></div>
+                    <div><dt data-t="followers">Followers</dt><dd id="statFollowers">–</dd></div>
+                    <div><dt data-t="following">Following</dt><dd id="statFollowing">–</dd></div>
+                    <div><dt data-t="joined">Joined</dt><dd id="statJoined">–</dd></div>
+                </dl>
+
+                <a class="button" id="profileLink" href="https://www.roblox.com/users/940248004/profile" target="_blank" rel="noopener" data-t="viewProfile">View on Roblox</a>
+            </div>
+        </section>
+
+        <!-- Favorite games -->
+        <section class="games">
+            <div class="section-top">
+                <h2 data-t="favorites">Favorite games</h2>
+                <p class="updated"><span class="live-dot" aria-hidden="true"></span><span id="updated"></span></p>
+            </div>
+            <p class="status" id="gamesStatus">Loading…</p>
+            <ul class="game-grid" id="gameGrid"></ul>
+        </section>
+
+        <!-- Own games (only shown if there are any) -->
+        <section class="games" id="createdSection" hidden>
+            <div class="section-top">
+                <h2 data-t="created">Games I made</h2>
+            </div>
+            <ul class="game-grid" id="createdGrid"></ul>
+        </section>
+    </main>
+
+    <footer class="foot">
+        <p data-t="source">Data comes live from Roblox via RoProxy. Not affiliated with Roblox.</p>
+    </footer>
+
+    <script src="roblox.js?v=1"></script>
+</body>
+
+</html>
