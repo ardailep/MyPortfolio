@@ -96,6 +96,8 @@
                     return client.from("letters").update(changes).eq("id", id).select(f).single();
                 });
                 if (error) throw error;
+                // Text is saved, but the GIF can't be until the reply_gif column exists.
+                if (gif && !fields.includes("reply_gif")) return { ...data, gifNotSaved: true };
                 return data;
             },
         };
@@ -348,7 +350,7 @@
             letters = letters.map(l => (l.id === updated.id ? updated : l));
             renderWall();
             fillLetter();
-            replyStatus.textContent = SITE.t("letters.reply.saved");
+            replyStatus.textContent = SITE.t(updated.gifNotSaved ? "letters.reply.gif.nocolumn" : "letters.reply.saved");
         } catch (err) {
             console.error(err);
             replyStatus.textContent = SITE.t("letters.error.generic");
