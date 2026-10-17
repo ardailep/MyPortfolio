@@ -96,11 +96,23 @@ ul {
     background: var(--bg);
 }
 
+/* Still frame from the video: shown on phones (no video) and on computers until the video starts.
+   Same filter as the video so the switch isn't visible. */
+.bg-image,
 .bg-video {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
     filter: brightness(0.32) saturate(0.6) sepia(0.35);
+}
+
+.bg-image {
+    background: url("shared/background.jpg?v=23") center / cover no-repeat;
+}
+
+.bg-video {
+    object-fit: cover;
 }
 
 .bg-tint {
