@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letters | Swaxilep</title>
+    <meta name="description" content="Leave Swaxilep a letter — one per visitor.">
+    <meta name="theme-color" content="#0d0a09">
+
+    <link rel="icon" type="image/png" href="shared/Icon.png">
+    <link rel="apple-touch-icon" href="shared/Icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=4">
+</head>
+
+<body data-title-key="letters.meta.title">
+
+    <!-- Background -->
+    <div class="bg" aria-hidden="true">
+        <video class="bg-video" autoplay muted loop playsinline preload="metadata">
+            <source src="shared/background.mp4" type="video/mp4">
+        </video>
+        <div class="bg-tint"></div>
+        <div class="bg-glow"></div>
+        <div class="bg-grain"></div>
+    </div>
+
+    <!-- Navigation -->
+    <header class="nav" id="nav">
+        <a href="index.html" class="nav-logo" aria-label="Swaxilep — home">
+            <img src="shared/Icon.png" alt="" width="36" height="36">
+        </a>
+        <nav class="nav-links" aria-label="Main">
+            <a href="index.html#about" data-i18n="nav.about">About</a>
+            <a href="index.html#connect" data-i18n="nav.connect">Connect</a>
+        </nav>
+        <div class="nav-end">
+            <div class="lang-switch" role="group" aria-label="Language">
+                <button type="button" data-lang="en" aria-pressed="true">EN</button>
+                <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+            </div>
+            <a href="index.html" class="nav-cta"><span aria-hidden="true">←</span> <span data-i18n="letters.nav.home">Home</span></a>
+        </div>
+    </header>
+
+    <main class="letters-page">
+        <!-- Intro + form -->
+        <section class="letters-intro container">
+            <div class="letters-copy">
+                <p class="eyebrow"><span class="dot"></span><span data-i18n="letters.eyebrow">Letter wall</span></p>
+                <h1 class="letters-title" data-i18n="letters.title">Leave me a <em>letter.</em></h1>
+                <p class="letters-lede" data-i18n="letters.lede">Write your name and a message — it joins the wall below. Everyone gets exactly one letter, so make it count.</p>
+                <p class="demo-note" id="demoNote" data-i18n="letters.demo" hidden>Demo mode — letters are only saved in this browser until the database is connected.</p>
+            </div>
+
+            <div class="compose">
+                <form class="compose-card" id="letterForm" novalidate>
+                    <label class="field">
+                        <span class="field-label" data-i18n="letters.form.name">Your name</span>
+                        <input type="text" name="name" id="letterName" maxlength="40" autocomplete="nickname" required
+                            data-i18n-placeholder="letters.form.name.ph" placeholder="e.g. Alex">
+                    </label>
+                    <label class="field">
+                        <span class="field-label">
+                            <span data-i18n="letters.form.message">Your message</span>
+                            <span class="field-count" id="letterCount">0 / 1000</span>
+                        </span>
+                        <textarea name="message" id="letterMessage" maxlength="1000" rows="6" required
+                            data-i18n-placeholder="letters.form.message.ph" placeholder="Say hi, share feedback, ask something…"></textarea>
+                    </label>
+                    <!-- honeypot: real visitors never see or fill this -->
+                    <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                    <p class="form-error" id="formError" role="alert" hidden></p>
+
+                    <div class="compose-foot">
+                        <span class="compose-once" data-i18n="letters.form.once">You can only send one letter.</span>
+                        <button type="submit" class="btn btn-primary" id="letterSend">
+                            <span data-i18n="letters.form.send">Seal &amp; send</span> <span aria-hidden="true">✉</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="compose-card sent-card" id="sentCard" hidden>
+                    <span class="sent-icon" aria-hidden="true">✦</span>
+                    <h2 data-i18n="letters.sent.title">Your letter is on the wall.</h2>
+                    <p data-i18n="letters.sent.text">Thanks for writing! You've used your one letter — find yours below.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wall -->
+        <section class="section wall-section" id="wall">
+            <div class="container">
+                <header class="section-head">
+                    <span class="section-index" id="letterTotal">00</span>
+                    <h2 data-i18n="letters.wall.title">The wall</h2>
+                </header>
+                <p class="wall-hint" data-i18n="letters.wall.hint">Hover an envelope to see who sent it, click to read.</p>
+
+                <p class="wall-status" id="wallStatus" data-i18n="letters.wall.loading">Collecting letters…</p>
+                <ul class="wall" id="wall-grid"></ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-word" aria-hidden="true">SWAXILEP</p>
+            <div class="footer-bar">
+                <span data-i18n="footer.copy">© 2026 Swaxilep. All rights reserved.</span>
+                <a href="#nav" class="to-top"><span data-i18n="footer.top">Back to top</span> <span aria-hidden="true">↑</span></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Opened letter -->
+    <div class="modal letter-modal" id="letterModal" role="dialog" aria-modal="true" aria-labelledby="letterFrom" hidden>
+        <article class="letter-paper">
+            <button type="button" class="letter-close" id="letterClose" aria-label="Close">✕</button>
+            <p class="letter-date" id="letterDate"></p>
+            <p class="letter-body" id="letterBody"></p>
+            <p class="letter-sign"><span data-i18n="letters.from">From</span> — <strong id="letterFrom"></strong></p>
+        </article>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+    <script src="letters-config.js?v=4"></script>
+    <script src="common.js?v=4"></script>
+    <script src="letters.js?v=4"></script>
+</body>
+
+</html>

@@ -21,7 +21,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=4">
 </head>
 
 <body>
@@ -50,7 +50,7 @@
                 <button type="button" data-lang="en" aria-pressed="true">EN</button>
                 <button type="button" data-lang="tr" aria-pressed="false">TR</button>
             </div>
-            <a href="#connect" class="nav-cta"><span data-i18n="nav.cta">Say hi</span> <span aria-hidden="true">→</span></a>
+            <a href="letters.html" class="nav-cta"><span data-i18n="nav.cta">Say hi</span> <span aria-hidden="true">→</span></a>
         </div>
     </header>
 
@@ -64,7 +64,7 @@
                         <span class="line"><span>Swaxilep</span></span>
                     </h1>
                     <p class="hero-role">
-                        <span class="role-prefix" data-i18n="hero.prefix">I'm a</span><span class="role-text" id="roleText">3D Artist</span><span class="role-caret" aria-hidden="true"></span>
+                        <span class="role-prefix" data-i18n="hero.prefix">I'm a</span> <span class="role-text" id="roleText">3D Artist</span><span class="role-caret" aria-hidden="true"></span>
                     </p>
                     <p class="hero-lede" data-i18n="hero.lede">
                         Stylized, hand-painted 3D models for games and interactive worlds —
@@ -129,13 +129,15 @@
                         A sculptor's eye, <em>translated</em> into polygons.
                     </p>
                     <div class="about-body reveal">
-                        <p data-i18n="about.p1">I am currently studying <strong>Sculpture at Anadolu University,</strong>
-                            building a strong foundation in form, volume, composition, and visual language. This
-                            shapes both my physical work and my digital production.</p>
-                        <p data-i18n="about.p2">On the digital side, I primarily focus on <strong>3D modeling and visual
-                                production.</strong> I create stylized, hand-paint–oriented models for games and
-                            interactive projects.</p>
-                        <p data-i18n="about.p3">I work mainly with <strong>Blender and Roblox</strong> and have a working
+                        <p data-i18n="about.p1">I'm a passionate designer, modeler, and animator with several years of
+                            experience creating <strong>3D assets, environments, and character animations</strong> for
+                            games and digital media. I have a strong eye for detail and love bringing ideas to life
+                            through design and motion.</p>
+                        <p data-i18n="about.p2">Alongside this, I'm studying <strong>Sculpture at Anadolu
+                                University,</strong> which gives me a strong foundation in form, volume, composition,
+                            and visual language — shaping both my physical work and my digital production.</p>
+                        <p data-i18n="about.p3">My focus is stylized, hand-paint–oriented work for games and interactive
+                            projects. I work mainly with <strong>Blender and Roblox</strong> and have a working
                             knowledge of Luau to support the production process.</p>
                     </div>
                 </div>
@@ -148,8 +150,8 @@
                     </article>
                     <article class="facet reveal">
                         <span class="facet-icon" aria-hidden="true">◇</span>
-                        <h3 data-i18n="facet.2.title">Stylized 3D</h3>
-                        <p data-i18n="facet.2.text">Game-ready models with a hand-painted, illustrative feel.</p>
+                        <h3 data-i18n="facet.2.title">3D &amp; Animation</h3>
+                        <p data-i18n="facet.2.text">Game-ready assets, environments and character animation with a hand-painted feel.</p>
                     </article>
                     <article class="facet reveal">
                         <span class="facet-icon" aria-hidden="true">▣</span>
@@ -169,6 +171,14 @@
                 </header>
 
                 <ul class="links">
+                    <li class="reveal">
+                        <a href="letters.html">
+                            <span class="link-cat" data-i18n="connect.letters">Letters</span>
+                            <span class="link-name" data-i18n="connect.letters.name">Leave a letter</span>
+                            <span class="link-handle" data-i18n="connect.letters.handle">one per visitor</span>
+                            <span class="link-arrow" aria-hidden="true">✉</span>
+                        </a>
+                    </li>
                     <li class="reveal">
                         <a href="https://www.artstation.com/swaxilep" target="_blank" rel="noopener">
                             <span class="link-cat" data-i18n="connect.portfolio">Portfolio</span>
@@ -229,7 +239,8 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="common.js?v=4"></script>
+    <script src="script.js?v=4"></script>
 </body>
 
 </html>
