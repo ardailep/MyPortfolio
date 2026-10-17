@@ -5,6 +5,9 @@
     const USER_ID = 940248004;
     const API = (service, path) => `https://${service}.roproxy.com${path}`;
     const REFRESH_MS = 60 * 1000;   // live "playing" counts
+    // Roblox only reveals Premium status to the account itself, so it's set here by hand.
+    // Change to false if the Premium subscription ends.
+    const HAS_PREMIUM = true;
 
     // ─────────────────────────────────────────
     // Language
@@ -12,18 +15,18 @@
     const text = {
         en: {
             home: "← swaxilep.com", profileLabel: "Roblox profile", friends: "Friends", followers: "Followers",
-            following: "Following", joined: "Joined", viewProfile: "View on Roblox", favorites: "Favorite games",
-            created: "Games I made", loading: "Loading…", playing: "playing", visits: "visits", favs: "favorites",
-            by: "by", unavailable: "This game isn't available right now.", noFavorites: "No favorite games yet.",
+            following: "Following", joined: "Joined", viewProfile: "View on Roblox", favorites: "Games I’ve developed",
+            loading: "Loading…", playing: "playing", visits: "visits", favs: "favorites",
+            by: "by", unavailable: "This game isn't available right now.", noFavorites: "No games yet.",
             error: "Couldn't reach Roblox right now. Try again in a bit.", updatedNow: "Live · updated just now",
             updatedAgo: "Live · updated {n} min ago", source: "Data comes live from Roblox via RoProxy. Not affiliated with Roblox.",
             title: "Swaxilep on Roblox",
         },
         tr: {
             home: "← swaxilep.com", profileLabel: "Roblox profili", friends: "Arkadaş", followers: "Takipçi",
-            following: "Takip", joined: "Katılma", viewProfile: "Roblox'ta aç", favorites: "Favori oyunlar",
-            created: "Yaptığım oyunlar", loading: "Yükleniyor…", playing: "oynuyor", visits: "ziyaret", favs: "favori",
-            by: "yapan:", unavailable: "Bu oyun şu an erişilebilir değil.", noFavorites: "Henüz favori oyun yok.",
+            following: "Takip", joined: "Katılma", viewProfile: "Roblox'ta aç", favorites: "Geliştirdiğim Oyunlar",
+            loading: "Yükleniyor…", playing: "oynuyor", visits: "ziyaret", favs: "favori",
+            by: "yapan:", unavailable: "Bu oyun şu an erişilebilir değil.", noFavorites: "Henüz oyun yok.",
             error: "Şu an Roblox'a ulaşılamıyor. Biraz sonra tekrar dene.", updatedNow: "Canlı · az önce güncellendi",
             updatedAgo: "Canlı · {n} dk önce güncellendi", source: "Veriler Roblox'tan RoProxy üzerinden canlı geliyor. Roblox ile bağlantılı değildir.",
             title: "Swaxilep · Roblox",
@@ -60,7 +63,7 @@
         return (await getJSON(url)).data;
     };
 
-    const state = { user: null, counts: {}, avatar: null, favorites: [], created: [], stats: {}, icons: {}, updatedAt: null };
+    const state = { user: null, counts: {}, avatar: null, favorites: [], stats: {}, icons: {}, updatedAt: null };
 
     async function loadProfile() {
         const [user, friends, followers, following, avatar] = await Promise.all([
@@ -76,15 +79,12 @@
         renderProfile();
     }
 
+    // The games I've developed are the ones I keep in my Roblox favorites
     async function loadGames() {
-        const [favorites, created] = await Promise.all([
-            getJSON(API("games", `/v2/users/${USER_ID}/favorite/games?limit=50&sortOrder=Desc`)),
-            getJSON(API("games", `/v2/users/${USER_ID}/games?limit=50&sortOrder=Desc`)).catch(() => ({ data: [] })),
-        ]);
+        const favorites = await getJSON(API("games", `/v2/users/${USER_ID}/favorite/games?limit=50&sortOrder=Desc`));
         state.favorites = favorites.data || [];
-        state.created = created.data || [];
 
-        const ids = [...new Set([...state.favorites, ...state.created].map(g => g.id))];
+        const ids = state.favorites.map(g => g.id);
         if (ids.length) {
             const icons = await thumbnails(API("thumbnails", `/v1/games/icons?universeIds=${ids.join(",")}&size=256x256&format=Png&isCircular=false`)).catch(() => []);
             icons.forEach(i => { if (i.state === "Completed") state.icons[i.targetId] = i.imageUrl; });
@@ -94,7 +94,7 @@
 
     // visits / playing / favorites for every game (this is the part that refreshes every minute)
     async function refreshStats() {
-        const ids = [...new Set([...state.favorites, ...state.created].map(g => g.id))];
+        const ids = state.favorites.map(g => g.id);
         if (ids.length) {
             const { data } = await getJSON(API("games", `/v1/games?universeIds=${ids.join(",")}`));
             // Restricted/private games come back with id 0 — match by position as a fallback
@@ -117,10 +117,25 @@
         $("gamesStatus").textContent = t(statusKey);
     }
 
+    // Small icon next to the display name (Premium / verified)
+    function badge(kind, label, svgPaths) {
+        const span = document.createElement("span");
+        span.className = `name-badge name-badge--${kind}`;
+        span.title = label;
+        span.setAttribute("role", "img");
+        span.setAttribute("aria-label", label);
+        span.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${svgPaths}</svg>`;
+        return span;
+    }
+
     function renderProfile() {
         const { user, counts, avatar } = state;
         if (!user) return;
         $("displayName").textContent = user.displayName;
+        if (HAS_PREMIUM) $("displayName").appendChild(badge("premium", "Roblox Premium",
+            '<path fill-rule="evenodd" d="M6 2h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6a4 4 0 0 1 4-4Zm0 4v12h8v-4h4V6H6Zm4 4h4v4h-4v-4Z"/>'));
+        if (user.hasVerifiedBadge) $("displayName").appendChild(badge("verified", "Verified",
+            '<path d="M12 1.5 14.7 3.6l3.4-.2.9 3.3 2.9 1.8-1.2 3.2 1.2 3.2-2.9 1.8-.9 3.3-3.4-.2L12 22.5l-2.7-2.1-3.4.2-.9-3.3L2.1 15.5 3.3 12.3 2.1 9.1 5 7.3l.9-3.3 3.4.2L12 1.5Zm-1.2 13.9 5.6-5.6-1.4-1.4-4.2 4.2-2-2-1.4 1.4 3.4 3.4Z"/>'));
         $("username").textContent = `@${user.name}`;
         $("bio").textContent = user.description || "";
         $("bio").hidden = !user.description;
@@ -225,8 +240,6 @@
         const ordered = [...state.favorites].sort((a, b) => visits(b) - visits(a));
         $("gameGrid").replaceChildren(...ordered.map(gameCard));
 
-        $("createdSection").hidden = state.created.length === 0;
-        $("createdGrid").replaceChildren(...[...state.created].sort((a, b) => visits(b) - visits(a)).map(gameCard));
 
         renderUpdated();
     }

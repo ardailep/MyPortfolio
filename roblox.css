@@ -153,6 +153,29 @@ ul {
     letter-spacing: -0.03em;
 }
 
+.name-badge {
+    display: inline-block;
+    width: 0.62em;
+    height: 0.62em;
+    margin-left: 0.25em;
+    vertical-align: 0.08em;
+}
+
+.name-badge svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.name-badge--premium {
+    color: var(--text);
+}
+
+.name-badge--verified {
+    color: #3d8bfd;
+}
+
 .username {
     margin-top: 0.25rem;
     font: 400 1rem var(--mono);
