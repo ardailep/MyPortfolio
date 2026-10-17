@@ -1,154 +1,141 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     // ─────────────────────────────────────────
     // 1. TYPEWRITER
     // ─────────────────────────────────────────
-    const roles = [
-        "Game Developer",
-        "3D Artist",
-        "Fine Arts Graduate",
-        "Blender Artist",
-    ];
-    let ri = 0, ci = 0, deleting = false;
+    const roles = ["3D Artist", "Game Developer", "Fine Arts Graduate", "Blender Artist"];
     const roleEl = document.getElementById("roleText");
 
-    function type() {
-        const word = roles[ri];
-        if (deleting) {
-            roleEl.textContent = word.slice(0, --ci);
-        } else {
-            roleEl.textContent = word.slice(0, ++ci);
-        }
-        let speed = deleting ? 35 : 80;
-        if (!deleting && ci === word.length) { speed = 2000; deleting = true; }
-        else if (deleting && ci === 0) { deleting = false; ri = (ri + 1) % roles.length; speed = 400; }
-        setTimeout(type, speed);
+    if (!reduceMotion) {
+        let ri = 0, ci = roles[0].length, deleting = true;
+
+        const type = () => {
+            const word = roles[ri];
+            ci += deleting ? -1 : 1;
+            roleEl.textContent = word.slice(0, ci);
+
+            let delay = deleting ? 40 : 85;
+            if (!deleting && ci === word.length) { delay = 2200; deleting = true; }
+            else if (deleting && ci === 0) { deleting = false; ri = (ri + 1) % roles.length; delay = 350; }
+            setTimeout(type, delay);
+        };
+        setTimeout(type, 2600);
     }
-    setTimeout(type, 800);
 
     // ─────────────────────────────────────────
-    // 2. INTERSECTION OBSERVER — reveal
+    // 2. NAV — background on scroll + active link
     // ─────────────────────────────────────────
-    const revealTargets = document.querySelectorAll(
-        ".section-header, .about-text, .about-sidebar, " +
-        ".connect-card, .tool-group, .stat-block"
-    );
+    const nav = document.getElementById("nav");
+    const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
 
-    revealTargets.forEach(el => el.classList.add("reveal"));
-
-    const obs = new IntersectionObserver((entries) => {
+    const navLinks = document.querySelectorAll(".nav-links a");
+    const sectionObs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (!entry.isIntersecting) return;
-            const idx = Array.from(revealTargets).indexOf(entry.target);
-            setTimeout(() => entry.target.classList.add("visible"), (idx % 6) * 70);
-            obs.unobserve(entry.target);
+            navLinks.forEach(link => {
+                link.classList.toggle("is-active", link.getAttribute("href") === "#" + entry.target.id);
+            });
         });
-    }, { threshold: 0.08 });
-
-    revealTargets.forEach(el => obs.observe(el));
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    document.querySelectorAll("main section[id]").forEach(s => sectionObs.observe(s));
 
     // ─────────────────────────────────────────
-    // 3. SKILL BARS
+    // 3. REVEAL ON SCROLL (staggered per parent)
     // ─────────────────────────────────────────
-    const fills = document.querySelectorAll(".tool-fill");
-    const barObs = new IntersectionObserver((entries) => {
+    const reveals = document.querySelectorAll(".reveal, .tool-group");
+    reveals.forEach(el => {
+        const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains("reveal"));
+        const i = siblings.indexOf(el);
+        if (i > 0) el.style.setProperty("--delay", `${i * 0.08}s`);
+    });
+
+    const revealObs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (!entry.isIntersecting) return;
-            entry.target.style.width = entry.target.dataset.width + "%";
-            barObs.unobserve(entry.target);
+            entry.target.classList.add("is-visible");
+            revealObs.unobserve(entry.target);
         });
-    }, { threshold: 0.4 });
-    fills.forEach(f => barObs.observe(f));
+    }, { threshold: 0.12 });
+    reveals.forEach(el => revealObs.observe(el));
 
     // ─────────────────────────────────────────
-    // 4. COUNTERS
+    // 4. POINTER EFFECTS — card spotlight + portrait tilt
     // ─────────────────────────────────────────
-    const statVals = document.querySelectorAll(".stat-val");
-    const countObs = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            const el = entry.target;
-            const target = parseInt(el.dataset.count);
-            let n = 0;
-            const step = Math.max(1, Math.ceil(target / 40));
-            const iv = setInterval(() => {
-                n = Math.min(n + step, target);
-                el.textContent = n;
-                if (n >= target) clearInterval(iv);
-            }, 40);
-            countObs.unobserve(el);
+    if (finePointer && !reduceMotion) {
+        document.querySelectorAll(".facet, .tool-group").forEach(card => {
+            card.addEventListener("pointermove", (e) => {
+                const r = card.getBoundingClientRect();
+                card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+                card.style.setProperty("--my", `${e.clientY - r.top}px`);
+            });
         });
-    }, { threshold: 0.5 });
-    statVals.forEach(v => countObs.observe(v));
+
+        const portrait = document.getElementById("portrait");
+        portrait.addEventListener("pointermove", (e) => {
+            const r = portrait.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5;
+            const y = (e.clientY - r.top) / r.height - 0.5;
+            portrait.style.setProperty("--ry", `${x * 10}deg`);
+            portrait.style.setProperty("--rx", `${-y * 10}deg`);
+        });
+        portrait.addEventListener("pointerleave", () => {
+            portrait.style.setProperty("--ry", "0deg");
+            portrait.style.setProperty("--rx", "0deg");
+        });
+    }
 
     // ─────────────────────────────────────────
     // 5. REDIRECT MODAL
     // ─────────────────────────────────────────
-    const modalOverlay = document.getElementById("modalOverlay");
+    const modal = document.getElementById("modal");
     const modalUrl = document.getElementById("modalUrl");
     const modalConfirm = document.getElementById("modalConfirm");
     const modalCancel = document.getElementById("modalCancel");
     let pendingUrl = null;
+    let lastFocus = null;
+
+    const openModal = (url) => {
+        pendingUrl = url;
+        lastFocus = document.activeElement;
+        modalUrl.textContent = url.replace(/^https?:\/\//, "");
+        modal.hidden = false;
+        document.body.style.overflow = "hidden";
+        modalConfirm.focus();
+    };
+
+    const closeModal = () => {
+        modal.hidden = true;
+        document.body.style.overflow = "";
+        pendingUrl = null;
+        if (lastFocus) lastFocus.focus();
+    };
 
     document.querySelectorAll("a[target='_blank']").forEach(link => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
-            pendingUrl = link.href;
-            modalUrl.textContent = pendingUrl;
-            modalOverlay.classList.add("active");
+            openModal(link.href);
         });
     });
 
     modalConfirm.addEventListener("click", () => {
         if (pendingUrl) window.open(pendingUrl, "_blank", "noopener");
-        modalOverlay.classList.remove("active");
-        pendingUrl = null;
+        closeModal();
     });
-
-    modalCancel.addEventListener("click", () => {
-        modalOverlay.classList.remove("active");
-        pendingUrl = null;
-    });
-
-    modalOverlay.addEventListener("click", (e) => {
-        if (e.target === modalOverlay) {
-            modalOverlay.classList.remove("active");
-            pendingUrl = null;
-        }
-    });
+    modalCancel.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
 
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-            modalOverlay.classList.remove("active");
-            pendingUrl = null;
+        if (modal.hidden) return;
+        if (e.key === "Escape") closeModal();
+        if (e.key === "Tab") {
+            // keep focus inside the dialog
+            const first = modalCancel, last = modalConfirm;
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
         }
     });
-
-    // ─────────────────────────────────────────
-    // 6. SMOOTH SCROLL
-    // ─────────────────────────────────────────
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener("click", e => {
-            const target = document.querySelector(a.getAttribute("href"));
-            if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth" }); }
-        });
-    });
-
-    // ─────────────────────────────────────────
-    // 7. NAV active on scroll
-    // ─────────────────────────────────────────
-    const navItems = document.querySelectorAll(".nav-item");
-    const sections = Array.from(document.querySelectorAll("section[id]"));
-
-    window.addEventListener("scroll", () => {
-        let current = "";
-        sections.forEach(sec => {
-            if (window.scrollY + 100 >= sec.offsetTop) current = sec.id;
-        });
-        navItems.forEach(item => {
-            const href = item.getAttribute("href").replace("#", "");
-            item.style.color = href === current ? "rgba(255,255,255,0.9)" : "";
-        });
-    });
-
 });
