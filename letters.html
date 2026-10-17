@@ -16,7 +16,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=4">
+    <link rel="stylesheet" href="styles.css?v=6">
 </head>
 
 <body data-title-key="letters.meta.title">
@@ -33,19 +33,19 @@
 
     <!-- Navigation -->
     <header class="nav" id="nav">
-        <a href="index.html" class="nav-logo" aria-label="Swaxilep — home">
+        <a href="/" class="nav-logo" aria-label="Swaxilep — home">
             <img src="shared/Icon.png" alt="" width="36" height="36">
         </a>
         <nav class="nav-links" aria-label="Main">
-            <a href="index.html#about" data-i18n="nav.about">About</a>
-            <a href="index.html#connect" data-i18n="nav.connect">Connect</a>
+            <a href="/#about" data-i18n="nav.about">About</a>
+            <a href="/#connect" data-i18n="nav.connect">Connect</a>
         </nav>
         <div class="nav-end">
             <div class="lang-switch" role="group" aria-label="Language">
                 <button type="button" data-lang="en" aria-pressed="true">EN</button>
                 <button type="button" data-lang="tr" aria-pressed="false">TR</button>
             </div>
-            <a href="index.html" class="nav-cta"><span aria-hidden="true">←</span> <span data-i18n="letters.nav.home">Home</span></a>
+            <a href="/" class="nav-cta"><span aria-hidden="true">←</span> <span data-i18n="letters.nav.home">Home</span></a>
         </div>
     </header>
 
@@ -102,7 +102,7 @@
                     <span class="section-index" id="letterTotal">00</span>
                     <h2 data-i18n="letters.wall.title">The wall</h2>
                 </header>
-                <p class="wall-hint" data-i18n="letters.wall.hint">Hover an envelope to see who sent it, click to read.</p>
+                <p class="wall-hint" data-i18n="letters.wall.hint">Click an envelope to open the letter.</p>
 
                 <p class="wall-status" id="wallStatus" data-i18n="letters.wall.loading">Collecting letters…</p>
                 <ul class="wall" id="wall-grid"></ul>
@@ -131,9 +131,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="letters-config.js?v=4"></script>
-    <script src="common.js?v=4"></script>
-    <script src="letters.js?v=4"></script>
+    <script src="letters-config.js?v=6"></script>
+    <script src="common.js?v=6"></script>
+    <script src="letters.js?v=6"></script>
 </body>
 
 </html>

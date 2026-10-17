@@ -100,6 +100,12 @@
         return (h >>> 0) / 4294967295;
     };
 
+    function formatDate(iso, month = "long") {
+        return new Intl.DateTimeFormat(SITE.lang === "tr" ? "tr-TR" : "en-GB", {
+            day: "numeric", month, year: "numeric",
+        }).format(new Date(iso));
+    }
+
     let letters = [];
     let myId = null;
     let statusKey = "letters.wall.loading";
@@ -126,7 +132,7 @@
         btn.style.setProperty("--front", tone.front);
         btn.style.setProperty("--back", tone.back);
         btn.style.setProperty("--flap", tone.flap);
-        btn.setAttribute("aria-label", `${SITE.t("letters.from")}: ${letter.name}`);
+        btn.setAttribute("aria-label", `${SITE.t("letters.from")}: ${letter.name}, ${formatDate(letter.created_at)}`);
         btn.dataset.index = index;
 
         btn.innerHTML = `
@@ -134,14 +140,11 @@
             <span class="env-front" aria-hidden="true"></span>
             <span class="env-flap" aria-hidden="true"></span>
             <span class="env-seal" aria-hidden="true">✦</span>
-            <span class="env-name" aria-hidden="true"></span>`;
-        const label = btn.querySelector(".env-name");
-        label.textContent = letter.name;
-        if (mine) {
-            const tag = document.createElement("em");
-            tag.textContent = ` · ${SITE.t("letters.yours")}`;
-            label.appendChild(tag);
-        }
+            <span class="env-name" aria-hidden="true"></span>
+            <span class="env-date" aria-hidden="true"></span>`;
+        btn.querySelector(".env-name").textContent = letter.name;
+        btn.querySelector(".env-date").textContent =
+            formatDate(letter.created_at, "short") + (mine ? ` · ${SITE.t("letters.yours")}` : "");
 
         btn.addEventListener("click", () => openLetter(letter, btn));
         li.appendChild(btn);
@@ -178,9 +181,6 @@
     let openFrom = null;
     let openLetterData = null;
 
-    const formatDate = (iso) => new Intl.DateTimeFormat(SITE.lang === "tr" ? "tr-TR" : "en-GB", {
-        day: "numeric", month: "long", year: "numeric",
-    }).format(new Date(iso));
 
     const fillLetter = () => {
         if (!openLetterData) return;

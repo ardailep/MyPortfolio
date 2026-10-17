@@ -1,6 +1,12 @@
 // Shared by every page: translations, language switch, nav, scroll reveal, page protection.
 // Load this before the page's own script — it applies the language immediately and exposes window.SITE.
 (() => {
+    // Clean URLs: show /letters instead of /letters.html and / instead of /index.html
+    if (location.protocol.startsWith("http")) {
+        const clean = location.pathname.replace(/\/index\.html$/, "/").replace(/\.html$/, "");
+        if (clean !== location.pathname) history.replaceState(null, "", clean + location.search + location.hash);
+    }
+
     // ─────────────────────────────────────────
     // 1. TRANSLATIONS
     // ─────────────────────────────────────────
@@ -61,7 +67,7 @@
             "letters.sent.title": "Your letter is on the wall.",
             "letters.sent.text": "Thanks for writing! You've used your one letter — find yours below.",
             "letters.wall.title": "The wall",
-            "letters.wall.hint": "Hover an envelope to see who sent it, click to read.",
+            "letters.wall.hint": "Click an envelope to open the letter.",
             "letters.wall.empty": "No letters yet — be the first.",
             "letters.wall.loading": "Collecting letters…",
             "letters.wall.error": "Couldn't load the letters. Please try again later.",
@@ -128,7 +134,7 @@
             "letters.sent.title": "Mektubun duvarda.",
             "letters.sent.text": "Yazdığın için teşekkürler! Tek mektup hakkını kullandın — seninkini aşağıda bulabilirsin.",
             "letters.wall.title": "Duvar",
-            "letters.wall.hint": "Kimden geldiğini görmek için zarfın üstüne gel, okumak için tıkla.",
+            "letters.wall.hint": "Mektubu açmak için bir zarfa tıkla.",
             "letters.wall.empty": "Henüz mektup yok — ilk sen yaz.",
             "letters.wall.loading": "Mektuplar toplanıyor…",
             "letters.wall.error": "Mektuplar yüklenemedi. Lütfen daha sonra tekrar dene.",
