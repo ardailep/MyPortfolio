@@ -4,23 +4,13 @@
     const SITE = window.SITE;
     const $ = (id) => document.getElementById(id);
 
-    const STATIONS = [
-        { id: "jfKfPfyJRdk", name: "lofi hip hop radio" },
-        { id: "28KRPhVzCus", name: "sleepy lofi" },
-        { id: "HuFYqnbVbzY", name: "jazz lofi" },
-        { id: "7NOSDKb0HlU", name: "chillhop radio" },
-        { id: "4xDzrJKXOOY", name: "synthwave radio" },
-    ];
-
-    let index = 0;
-    try { index = Math.max(0, STATIONS.findIndex(s => s.id === localStorage.getItem("chill-station"))); } catch (e) { /* storage unavailable */ }
+    // One long lofi mix, looped forever
+    const VIDEO = { id: "BYTxPFj44uo", name: "Why the rush? · chill chill journal" };
 
     let player = null;
     let playing = false;
     const volume = $("volume");
     try { volume.value = localStorage.getItem("chill-volume") ?? volume.value; } catch (e) { /* storage unavailable */ }
-
-    const showStation = () => { $("stationName").textContent = STATIONS[index].name; };
 
     const setPlaying = (isPlaying) => {
         playing = isPlaying;
@@ -36,13 +26,16 @@
 
         window.onYouTubeIframeAPIReady = () => {
             player = new YT.Player("ytPlayer", {
-                videoId: STATIONS[index].id,
-                playerVars: { autoplay: 1, controls: 0, playsinline: 1, rel: 0, modestbranding: 1, disablekb: 1 },
+                videoId: VIDEO.id,
+                // loop needs the video listed as its own playlist
+                playerVars: { autoplay: 1, controls: 0, playsinline: 1, rel: 0, modestbranding: 1, disablekb: 1, loop: 1, playlist: VIDEO.id },
                 events: {
                     onReady: (e) => { e.target.setVolume(Number(volume.value)); e.target.playVideo(); },
                     onStateChange: (e) => {
                         if (e.data === YT.PlayerState.PLAYING) setPlaying(true);
                         else if (e.data === YT.PlayerState.PAUSED) setPlaying(false);
+                        // belt and braces: if it does end, start over
+                        else if (e.data === YT.PlayerState.ENDED) { e.target.seekTo(0); e.target.playVideo(); }
                     },
                 },
             });
@@ -60,13 +53,6 @@
         else player.playVideo();
     });
 
-    $("nextBtn").addEventListener("click", () => {
-        index = (index + 1) % STATIONS.length;
-        try { localStorage.setItem("chill-station", STATIONS[index].id); } catch (e) { /* storage unavailable */ }
-        showStation();
-        if (player && player.loadVideoById) player.loadVideoById(STATIONS[index].id);
-    });
-
     volume.addEventListener("input", () => {
         if (player && player.setVolume) player.setVolume(Number(volume.value));
         try { localStorage.setItem("chill-volume", volume.value); } catch (e) { /* storage unavailable */ }
@@ -80,7 +66,7 @@
         else $("playBtn").click();
     });
 
-    showStation();
+    $("trackName").textContent = VIDEO.name;
     // Shows "play" until YouTube reports it's really playing (phones may block autoplay — one tap then starts it)
     setPlaying(false);
     SITE.onLangChange(() => setPlaying(playing));

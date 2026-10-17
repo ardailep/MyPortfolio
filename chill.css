@@ -160,10 +160,14 @@ body.is-on .radio-bg {
     border-color: transparent transparent transparent currentColor;
 }
 
-.ctrl-next {
-    font-size: 1.2rem;
-    line-height: 1;
-    color: var(--text-3);
+.ctrl-track {
+    padding: 0 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .ctrl-volume {
@@ -180,16 +184,9 @@ body.is-on .radio-bg {
         bottom: 14px;
     }
 
-    .ctrl-station {
+    .ctrl-track {
         flex: 1;
         min-width: 0;
-        justify-content: space-between;
-    }
-
-    .ctrl-station span:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     .ctrl-volume {
