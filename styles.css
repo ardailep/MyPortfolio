@@ -223,59 +223,61 @@ ul {
     text-decoration-color: var(--accent);
 }
 
-.nav-cta {
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: var(--radius-sm);
-    border: 2px solid var(--text);
-    color: var(--text);
-    transition: background 0.2s, color 0.2s;
-}
-
-.nav-cta:hover {
-    background: var(--text);
-    color: var(--accent-ink);
-}
-
 /* =============================================
-   BUTTONS
+   BUTTONS — one system: primary (solid) and secondary (outline), same height and shape everywhere
    ============================================= */
-.btn {
+.btn,
+.nav-cta {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
+    height: 44px;
+    padding: 0 20px;
     font-family: var(--display);
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 12px 22px;
-    border-radius: var(--radius-sm);
-    border: 2px solid transparent;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    border-radius: 8px;
+    border: 1px solid transparent;
     cursor: pointer;
-    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.btn-primary {
-    background: var(--accent);
-    border-color: var(--accent);
+.btn-primary,
+.nav-cta {
+    background: var(--text);
     color: var(--accent-ink);
 }
 
-.btn-primary:hover {
-    background: var(--text);
-    border-color: var(--text);
+.btn-primary:hover,
+.nav-cta:hover {
+    background: #ffffff;
 }
 
 .btn-ghost {
-    background: transparent;
-    border-color: var(--text-2);
+    background: rgba(246, 236, 228, 0.04);
+    border-color: rgba(246, 236, 228, 0.18);
     color: var(--text);
 }
 
 .btn-ghost:hover {
-    background: var(--text);
-    border-color: var(--text);
-    color: var(--accent-ink);
+    background: rgba(246, 236, 228, 0.08);
+    border-color: rgba(246, 236, 228, 0.36);
+}
+
+.btn-sm,
+.nav-cta {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 0.875rem;
+}
+
+.btn:active,
+.nav-cta:active {
+    transform: translateY(1px);
 }
 
 /* =============================================
@@ -303,23 +305,8 @@ ul {
 
 /* "Leave me a note" — first thing on the page */
 .note-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
     margin-bottom: 1.5rem;
-    padding: 10px 16px;
-    border: 2px solid var(--accent);
-    border-radius: var(--radius-sm);
-    color: var(--accent);
-    font-size: 1rem;
-    font-weight: 600;
-    transition: background 0.2s, color 0.2s;
     animation: rise 1s var(--ease) both;
-}
-
-.note-cta:hover {
-    background: var(--accent);
-    color: var(--accent-ink);
 }
 
 .visitor-count::before {
@@ -788,10 +775,6 @@ ul {
     gap: 0.6rem;
 }
 
-.modal-actions .btn {
-    padding: 12px 22px;
-    font-size: 0.95rem;
-}
 
 /* =============================================
    REVEAL
@@ -1441,15 +1424,18 @@ ul {
 }
 
 .reply-delete {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
     margin-right: auto;
-    padding: 9px 14px;
+    padding: 0 14px;
     border: 1px solid rgba(168, 69, 47, 0.35);
-    border-radius: var(--radius-sm);
+    border-radius: 8px;
     background: transparent;
     color: #a8452f;
     font: inherit;
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.875rem;
+    font-weight: 500;
     cursor: pointer;
     transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
@@ -1469,9 +1455,20 @@ ul {
     cursor: progress;
 }
 
+/* buttons on the light letter paper */
 .reply-actions .btn {
-    padding: 10px 18px;
-    font-size: 0.9rem;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 0.875rem;
+}
+
+.reply-form .btn-primary {
+    background: #3a2a1e;
+    color: var(--paper);
+}
+
+.reply-form .btn-primary:hover {
+    background: #241810;
 }
 
 /* Admin bar on the wall */
@@ -1524,14 +1521,8 @@ ul {
 
 .admin-on .btn {
     margin-left: auto;
-    padding: 9px 18px;
-    font-size: 0.9rem;
 }
 
-.admin-login .btn {
-    padding: 10px 20px;
-    font-size: 0.95rem;
-}
 
 @keyframes unfold {
     from {
@@ -1618,9 +1609,6 @@ ul {
         grid-template-columns: 1fr;
     }
 
-    .nav-cta {
-        padding: 9px 14px;
-    }
 
     .link-arrow {
         width: 42px;
