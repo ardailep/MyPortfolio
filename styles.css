@@ -1625,6 +1625,99 @@ ul {
 }
 
 /* =============================================
+   LINK HUB (home page)
+   ============================================= */
+.hub {
+    width: min(560px, 100%);
+    min-height: 100svh;
+    margin: 0 auto;
+    padding: 20px var(--gutter) 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+.hub-top {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hub-head {
+    margin-top: clamp(2rem, 8vh, 4.5rem);
+    text-align: center;
+    animation: rise 0.9s var(--ease) both;
+}
+
+.hub-photo {
+    width: 112px;
+    height: 112px;
+    margin: 0 auto;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--paper);
+}
+
+.hub-name {
+    margin-top: 1.25rem;
+    font-size: clamp(2.6rem, 9vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.045em;
+}
+
+.hub-sub {
+    margin-top: 0.6rem;
+    font-size: 1.05rem;
+    color: var(--text-2);
+}
+
+.hub-meta {
+    margin-top: 0.9rem;
+}
+
+.hub-links {
+    margin-top: clamp(2rem, 6vh, 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: rise 0.9s var(--ease) 0.1s both;
+}
+
+.hub-link {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 18px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(246, 236, 228, 0.16);
+    background: rgba(13, 10, 9, 0.72);
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.hub-link:hover {
+    border-color: rgba(246, 236, 228, 0.4);
+    background: rgba(23, 17, 15, 0.9);
+}
+
+.hub-link-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.hub-link-sub {
+    font-size: 0.9rem;
+    color: var(--text-3);
+}
+
+.hub-foot {
+    margin-top: auto;
+    padding-top: 3rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-3);
+}
+
+/* =============================================
    PHONES & TOUCH
    ============================================= */
 html {

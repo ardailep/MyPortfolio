@@ -43,8 +43,9 @@
     // ─────────────────────────────────────────
     // Data
     // ─────────────────────────────────────────
+    // 10 s limit so a stuck request can't leave the page on "Loading…" forever
     const getJSON = async (url) => {
-        const res = await fetch(url);
+        const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
         if (!res.ok) throw new Error(`${res.status} ${url}`);
         return res.json();
     };
@@ -182,6 +183,14 @@
         creator.textContent = unavailable ? t("unavailable") : `${t("by")} ${stats.creator?.name || game.creator?.name || "?"}`;
         body.appendChild(creator);
 
+        const description = (stats?.description || game.description || "").trim();
+        if (!unavailable && description) {
+            const desc = document.createElement("p");
+            desc.className = "game-desc";
+            desc.textContent = description;
+            body.appendChild(desc);
+        }
+
         if (!unavailable) {
             const dl = document.createElement("dl");
             dl.className = "game-stats";
@@ -208,16 +217,16 @@
         $("gamesStatus").textContent = t(statusKey);
         $("gamesStatus").hidden = state.favorites.length > 0;
 
-        // Available games first, unavailable ones at the end
-        const ordered = [...state.favorites].sort((a, b) => {
-            const ua = state.stats[a.id]?.isContentRestricted ? 1 : 0;
-            const ub = state.stats[b.id]?.isContentRestricted ? 1 : 0;
-            return ua - ub;
-        });
+        // Most visited first; unavailable games at the end
+        const visits = (g) => {
+            const s = state.stats[g.id];
+            return s && !s.isContentRestricted && s.rootPlaceId ? s.visits || 0 : -1;
+        };
+        const ordered = [...state.favorites].sort((a, b) => visits(b) - visits(a));
         $("gameGrid").replaceChildren(...ordered.map(gameCard));
 
         $("createdSection").hidden = state.created.length === 0;
-        $("createdGrid").replaceChildren(...state.created.map(gameCard));
+        $("createdGrid").replaceChildren(...[...state.created].sort((a, b) => visits(b) - visits(a)).map(gameCard));
 
         renderUpdated();
     }
