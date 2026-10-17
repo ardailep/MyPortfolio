@@ -230,14 +230,12 @@
     setLang(saved || browserLang);
 
     // ─────────────────────────────────────────
-    // 1b. BACKGROUND VIDEO — only on larger screens (it's ~23 MB; phones get the static background)
+    // 1b. BACKGROUND VIDEO — always on computers; off on phones (it's ~23 MB, they get the static background)
     // ─────────────────────────────────────────
     const video = document.querySelector(".bg-video[data-src]");
     if (video) {
-        const saveData = navigator.connection && navigator.connection.saveData;
-        const bigScreen = window.matchMedia("(min-width: 768px)").matches;
-        const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (bigScreen && !saveData && !calm) {
+        const computer = window.matchMedia("(hover: hover) and (pointer: fine), (min-width: 1024px)").matches;
+        if (computer) {
             video.muted = true;
             video.setAttribute("autoplay", "");
             video.src = video.dataset.src;
