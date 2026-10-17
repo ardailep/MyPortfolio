@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chill · Swaxilep</title>
+    <meta name="description" content="Lofi radio, nothing else.">
+    <meta name="theme-color" content="#0d0a09">
+
+    <link rel="icon" type="image/png" href="shared/Icon.png">
+    <link rel="apple-touch-icon" href="shared/Icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=31">
+    <link rel="stylesheet" href="chill.css?v=2">
+</head>
+
+<body data-title-key="chill.meta.title">
+
+    <!-- Until the radio starts: the site's usual still background -->
+    <div class="bg" aria-hidden="true">
+        <div class="bg-image"></div>
+        <div class="bg-tint"></div>
+        <div class="bg-grain"></div>
+    </div>
+
+    <!-- The radio itself is the background once it plays -->
+    <div class="radio-bg" aria-hidden="true">
+        <div id="ytPlayer"></div>
+    </div>
+
+    <header class="page-top">
+        <a href="/" class="page-home">← swaxilep.com</a>
+    </header>
+
+    <button type="button" class="start" id="startBtn">
+        <span class="start-icon" aria-hidden="true"></span>
+        <span class="visually-hidden" data-i18n="chill.play">Play</span>
+    </button>
+
+    <div class="controls" id="controls" hidden>
+        <button type="button" class="ctrl" id="playBtn" aria-label="Pause">
+            <span class="play-icon" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="ctrl ctrl-station" id="nextBtn" title="Next station">
+            <span id="stationName">lofi hip hop radio</span>
+            <span class="ctrl-next" aria-hidden="true">›</span>
+        </button>
+        <input type="range" class="ctrl-volume" id="volume" min="0" max="100" value="70" aria-label="Volume">
+    </div>
+
+    <script src="letters-config.js?v=31"></script>
+    <script src="common.js?v=31"></script>
+    <script src="chill.js?v=3"></script>
+</body>
+
+</html>

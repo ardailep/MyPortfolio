@@ -1,0 +1,198 @@
+/* Chill page (/chill): the radio video is the whole background, with a small control bar on top */
+
+[hidden] {
+    display: none !important;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+body {
+    min-height: 100svh;
+    overflow: hidden;
+}
+
+/* YouTube stream scaled to cover the screen like a background video */
+.radio-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+body.is-on .radio-bg {
+    opacity: 1;
+}
+
+.radio-bg iframe,
+.radio-bg #ytPlayer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100vw, 177.78vh);
+    height: max(56.25vw, 100vh);
+    transform: translate(-50%, -50%);
+    border: 0;
+}
+
+.page-top {
+    position: relative;
+    z-index: 2;
+}
+
+/* Big play button in the middle, before the radio starts */
+.start {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    width: 88px;
+    height: 88px;
+    transform: translate(-50%, -50%);
+    border: 0;
+    border-radius: 50%;
+    background: var(--text);
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+}
+
+.start:hover {
+    background: #ffffff;
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.start-icon {
+    position: absolute;
+    left: 35px;
+    top: 27px;
+    border-style: solid;
+    border-width: 17px 0 17px 27px;
+    border-color: transparent transparent transparent var(--accent-ink);
+}
+
+/* Control bar, bottom left */
+.controls {
+    position: fixed;
+    left: var(--gutter);
+    bottom: 22px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(246, 236, 228, 0.16);
+    background: rgba(13, 10, 9, 0.78);
+}
+
+.ctrl {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    min-width: 40px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text);
+    font: 500 0.9rem var(--display);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.ctrl:hover {
+    background: rgba(246, 236, 228, 0.08);
+}
+
+#playBtn {
+    justify-content: center;
+    padding: 0;
+}
+
+/* pause = two bars (default while playing), play = triangle */
+.play-icon {
+    position: relative;
+    width: 14px;
+    height: 14px;
+}
+
+.play-icon::before,
+.play-icon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 4px;
+    height: 14px;
+    border-radius: 1px;
+    background: currentColor;
+}
+
+.play-icon::before {
+    left: 2px;
+}
+
+.play-icon::after {
+    left: 8px;
+}
+
+.is-paused .play-icon::after {
+    display: none;
+}
+
+.is-paused .play-icon::before {
+    left: 3px;
+    width: 0;
+    height: 0;
+    border-radius: 0;
+    background: none;
+    border-style: solid;
+    border-width: 7px 0 7px 11px;
+    border-color: transparent transparent transparent currentColor;
+}
+
+.ctrl-next {
+    font-size: 1.2rem;
+    line-height: 1;
+    color: var(--text-3);
+}
+
+.ctrl-volume {
+    width: 110px;
+    margin: 0 8px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .controls {
+        left: 12px;
+        right: 12px;
+        bottom: 14px;
+    }
+
+    .ctrl-station {
+        flex: 1;
+        min-width: 0;
+        justify-content: space-between;
+    }
+
+    .ctrl-station span:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .ctrl-volume {
+        width: 80px;
+    }
+}

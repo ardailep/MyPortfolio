@@ -5,7 +5,7 @@
     display: none !important;
 }
 
-.rb-top,
+
 .rb-wrap,
 .rb-foot {
     width: 100%;
@@ -13,26 +13,6 @@
     margin: 0 auto;
     padding-left: var(--gutter);
     padding-right: var(--gutter);
-}
-
-/* Top bar */
-.rb-top {
-    padding-top: 18px;
-    padding-bottom: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.rb-home {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--text-2);
-    transition: color 0.15s;
-}
-
-.rb-home:hover {
-    color: var(--text);
 }
 
 /* Profile */

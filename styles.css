@@ -1625,6 +1625,31 @@ ul {
 }
 
 /* =============================================
+   "← swaxilep.com" back link (Roblox, Chill, About, Letters)
+   ============================================= */
+.page-top {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 18px var(--gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.page-home {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-2);
+    white-space: nowrap;
+    transition: color 0.15s;
+}
+
+.page-home:hover {
+    color: var(--text);
+}
+
+/* =============================================
    LINK HUB (home page)
    ============================================= */
 .hub {
