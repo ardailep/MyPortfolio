@@ -464,7 +464,12 @@
     updateCount();
 
     function refreshComposeState() {
-        const alreadySent = load(SENT_FLAG) === "1" || letters.some(l => myId && l.user_id === myId);
+        // The database is the source of truth: if this visitor's letter was deleted, they may write again.
+        // The local flag only counts when the wall couldn't be loaded.
+        const wallLoaded = statusKey !== "letters.wall.error";
+        const hasLetter = Boolean(myId) && letters.some(l => l.user_id === myId);
+        const alreadySent = wallLoaded ? hasLetter : load(SENT_FLAG) === "1";
+        if (wallLoaded && !hasLetter) store(SENT_FLAG, "0");
         form.hidden = alreadySent;
         sentCard.hidden = !alreadySent;
     }
@@ -497,8 +502,10 @@
             if (mine) mine.scrollIntoView({ behavior: "smooth", block: "center" });
         } catch (err) {
             if (err && err.code === "already") {
+                // The database says this visitor already has a letter (e.g. one not in the loaded list).
                 store(SENT_FLAG, "1");
-                refreshComposeState();
+                form.hidden = true;
+                sentCard.hidden = false;
             } else {
                 console.error(err);
                 showError("letters.error.generic");
