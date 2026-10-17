@@ -5,6 +5,7 @@
     const NAME_MAX = 40;
     const MESSAGE_MAX = 1000;
     const SENT_FLAG = "letter-sent";
+    const FIELDS = "id, user_id, name, message, created_at, reply, replied_at";
 
     const store = (key, value) => { try { localStorage.setItem(key, value); } catch (e) { /* storage unavailable */ } };
     const load = (key) => { try { return localStorage.getItem(key); } catch (e) { return null; } };
@@ -12,40 +13,51 @@
     // ─────────────────────────────────────────
     // 1. BACKENDS
     // ─────────────────────────────────────────
-    // Each backend: list() → letters newest first, myId() → id of this visitor's letter owner (or null),
-    // send(name, message) → the saved letter. send() throws { code: "already" } for a second letter.
+    // Each backend: list() → letters newest first, myId() → current user id (or null),
+    // send(name, message) → saved letter (throws { code: "already" } on a second letter),
+    // isAdmin(), login(email, password), logout(), reply(id, text) → updated letter.
 
     const supabaseBackend = () => {
         const client = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
             auth: { persistSession: true, autoRefreshToken: true },
         });
 
-        const currentUserId = async () => {
+        const currentUser = async () => {
             const { data } = await client.auth.getSession();
-            return data.session ? data.session.user.id : null;
+            return data.session ? data.session.user : null;
+        };
+
+        const checkAdmin = async () => {
+            const user = await currentUser();
+            if (!user || user.is_anonymous) return false;
+            const { data } = await client.from("admins").select("user_id").eq("user_id", user.id).maybeSingle();
+            return Boolean(data);
         };
 
         return {
             async list() {
                 const { data, error } = await client
                     .from("letters")
-                    .select("id, user_id, name, message, created_at")
+                    .select(FIELDS)
                     .order("created_at", { ascending: false })
                     .limit(500);
                 if (error) throw error;
                 return data;
             },
-            myId: currentUserId,
+            async myId() {
+                const user = await currentUser();
+                return user ? user.id : null;
+            },
             async send(name, message) {
                 // An anonymous session is created only when someone actually sends a letter.
-                if (!(await currentUserId())) {
+                if (!(await currentUser())) {
                     const { error } = await client.auth.signInAnonymously();
                     if (error) throw error;
                 }
                 const { data, error } = await client
                     .from("letters")
                     .insert({ name, message })
-                    .select("id, user_id, name, message, created_at")
+                    .select(FIELDS)
                     .single();
                 if (error) {
                     if (error.code === "23505") throw { code: "already" };   // unique(user_id) violated
@@ -53,13 +65,37 @@
                 }
                 return data;
             },
+            isAdmin: checkAdmin,
+            async login(email, password) {
+                const { error } = await client.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                if (!(await checkAdmin())) {
+                    await client.auth.signOut();
+                    throw { code: "not-admin" };
+                }
+            },
+            async logout() {
+                await client.auth.signOut();
+            },
+            async reply(id, text) {
+                const { data, error } = await client
+                    .from("letters")
+                    .update({ reply: text || null, replied_at: text ? new Date().toISOString() : null })
+                    .eq("id", id)
+                    .select(FIELDS)
+                    .single();
+                if (error) throw error;
+                return data;
+            },
         };
     };
 
     const demoBackend = () => {
         const KEY = "letters-demo";
+        const ADMIN = "letters-demo-admin";
         const ME = "demo-visitor";
         const read = () => { try { return JSON.parse(load(KEY)) || []; } catch (e) { return []; } };
+        const write = (letters) => store(KEY, JSON.stringify(letters));
 
         return {
             async list() { return read(); },
@@ -67,8 +103,19 @@
             async send(name, message) {
                 const letters = read();
                 if (letters.some(l => l.user_id === ME)) throw { code: "already" };
-                const letter = { id: Date.now(), user_id: ME, name, message, created_at: new Date().toISOString() };
-                store(KEY, JSON.stringify([letter, ...letters]));
+                const letter = { id: Date.now(), user_id: ME, name, message, created_at: new Date().toISOString(), reply: null, replied_at: null };
+                write([letter, ...letters]);
+                return letter;
+            },
+            async isAdmin() { return load(ADMIN) === "1"; },
+            async login() { store(ADMIN, "1"); },
+            async logout() { store(ADMIN, "0"); },
+            async reply(id, text) {
+                const letters = read();
+                const letter = letters.find(l => l.id === id);
+                letter.reply = text || null;
+                letter.replied_at = text ? new Date().toISOString() : null;
+                write(letters);
                 return letter;
             },
         };
@@ -108,6 +155,7 @@
 
     let letters = [];
     let myId = null;
+    let isAdmin = false;
     let statusKey = "letters.wall.loading";
 
     const setStatus = (key) => {
@@ -116,7 +164,7 @@
         if (key) status.textContent = SITE.t(key);
     };
 
-    const envelopeFor = (letter, index) => {
+    const envelopeFor = (letter) => {
         const r = hash(letter.id);
         const tone = tones[Math.floor(hash(`${letter.id}-tone`) * tones.length)];
         const mine = myId && letter.user_id === myId;
@@ -133,7 +181,6 @@
         btn.style.setProperty("--back", tone.back);
         btn.style.setProperty("--flap", tone.flap);
         btn.setAttribute("aria-label", `${SITE.t("letters.from")}: ${letter.name}, ${formatDate(letter.created_at)}`);
-        btn.dataset.index = index;
 
         btn.innerHTML = `
             <span class="env-paper" aria-hidden="true"></span>
@@ -143,10 +190,13 @@
             <span class="env-name" aria-hidden="true"></span>
             <span class="env-date" aria-hidden="true"></span>`;
         btn.querySelector(".env-name").textContent = letter.name;
-        btn.querySelector(".env-date").textContent =
-            formatDate(letter.created_at, "short") + (mine ? ` · ${SITE.t("letters.yours")}` : "");
 
-        btn.addEventListener("click", () => openLetter(letter, btn));
+        const tags = [formatDate(letter.created_at, "short")];
+        if (mine) tags.push(SITE.t("letters.yours"));
+        if (letter.reply) tags.push(`${SITE.t("letters.replied")} ✓`);
+        btn.querySelector(".env-date").textContent = tags.join(" · ");
+
+        btn.addEventListener("click", () => openLetter(letter.id, btn));
         li.appendChild(btn);
         return li;
     };
@@ -161,39 +211,55 @@
     const loadWall = async () => {
         setStatus("letters.wall.loading");
         try {
-            [letters, myId] = await Promise.all([api.list(), api.myId()]);
+            [letters, myId, isAdmin] = await Promise.all([api.list(), api.myId(), api.isAdmin()]);
             renderWall();
         } catch (err) {
             console.error(err);
             setStatus("letters.wall.error");
         }
         refreshComposeState();
+        refreshAdminState();
     };
 
     // ─────────────────────────────────────────
-    // 3. OPENED LETTER
+    // 3. OPENED LETTER (+ reply)
     // ─────────────────────────────────────────
     const modal = document.getElementById("letterModal");
     const modalFrom = document.getElementById("letterFrom");
     const modalDate = document.getElementById("letterDate");
     const modalBody = document.getElementById("letterBody");
     const modalClose = document.getElementById("letterClose");
+    const replyBox = document.getElementById("letterReply");
+    const replyBody = document.getElementById("letterReplyBody");
+    const replyForm = document.getElementById("replyForm");
+    const replyText = document.getElementById("replyText");
+    const replySave = document.getElementById("replySave");
+    const replyStatus = document.getElementById("replyStatus");
     let openFrom = null;
-    let openLetterData = null;
+    let openId = null;
 
+    const openLetterData = () => letters.find(l => l.id === openId);
 
     const fillLetter = () => {
-        if (!openLetterData) return;
-        modalFrom.textContent = openLetterData.name;
-        modalBody.textContent = openLetterData.message;
-        modalDate.textContent = formatDate(openLetterData.created_at);
+        const letter = openLetterData();
+        if (!letter) return;
+        modalFrom.textContent = letter.name;
+        modalBody.textContent = letter.message;
+        modalDate.textContent = formatDate(letter.created_at);
         modalClose.setAttribute("aria-label", SITE.t("letters.close"));
+
+        replyBox.hidden = !letter.reply;
+        replyBody.textContent = letter.reply || "";
+        replyForm.hidden = !isAdmin;
     };
 
-    function openLetter(letter, trigger) {
-        openLetterData = letter;
+    function openLetter(id, trigger) {
+        openId = id;
         openFrom = trigger;
         fillLetter();
+        const letter = openLetterData();
+        replyText.value = (letter && letter.reply) || "";
+        replyStatus.textContent = "";
         modal.hidden = false;
         document.body.style.overflow = "hidden";
         modalClose.focus();
@@ -202,7 +268,7 @@
     const closeLetter = () => {
         modal.hidden = true;
         document.body.style.overflow = "";
-        openLetterData = null;
+        openId = null;
         if (openFrom) openFrom.focus();
     };
 
@@ -211,11 +277,75 @@
     document.addEventListener("keydown", (e) => {
         if (modal.hidden) return;
         if (e.key === "Escape") closeLetter();
-        if (e.key === "Tab") { e.preventDefault(); modalClose.focus(); }   // only one focusable element
+        if (e.key === "Tab") {
+            // keep focus inside the dialog
+            const focusables = Array.from(modal.querySelectorAll("button, textarea"))
+                .filter(el => !el.closest("[hidden]"));
+            const first = focusables[0], last = focusables[focusables.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+    });
+
+    replyForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!isAdmin || openId === null) return;
+        replySave.disabled = true;
+        replyStatus.textContent = SITE.t("letters.reply.saving");
+        try {
+            const updated = await api.reply(openId, replyText.value.trim().slice(0, MESSAGE_MAX));
+            letters = letters.map(l => (l.id === updated.id ? updated : l));
+            renderWall();
+            fillLetter();
+            replyStatus.textContent = SITE.t("letters.reply.saved");
+        } catch (err) {
+            console.error(err);
+            replyStatus.textContent = SITE.t("letters.error.generic");
+        } finally {
+            replySave.disabled = false;
+        }
     });
 
     // ─────────────────────────────────────────
-    // 4. COMPOSE
+    // 4. ADMIN LOGIN (hidden: /letters?admin)
+    // ─────────────────────────────────────────
+    const adminBar = document.getElementById("adminBar");
+    const adminLogin = document.getElementById("adminLogin");
+    const adminOn = document.getElementById("adminOn");
+    const adminError = document.getElementById("adminError");
+    const adminSubmit = document.getElementById("adminSubmit");
+    const wantsAdmin = new URLSearchParams(location.search).has("admin");
+
+    function refreshAdminState() {
+        adminBar.hidden = !(isAdmin || wantsAdmin);
+        adminLogin.hidden = isAdmin;
+        adminOn.hidden = !isAdmin;
+    }
+
+    adminLogin.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        adminError.hidden = true;
+        adminSubmit.disabled = true;
+        try {
+            await api.login(document.getElementById("adminEmail").value.trim(), document.getElementById("adminPassword").value);
+            document.getElementById("adminPassword").value = "";
+            await loadWall();
+        } catch (err) {
+            console.error(err);
+            adminError.textContent = SITE.t("letters.admin.error");
+            adminError.hidden = false;
+        } finally {
+            adminSubmit.disabled = false;
+        }
+    });
+
+    document.getElementById("adminLogout").addEventListener("click", async () => {
+        await api.logout();
+        await loadWall();
+    });
+
+    // ─────────────────────────────────────────
+    // 5. COMPOSE
     // ─────────────────────────────────────────
     const form = document.getElementById("letterForm");
     const sentCard = document.getElementById("sentCard");

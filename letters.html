@@ -16,7 +16,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=6">
+    <link rel="stylesheet" href="styles.css?v=15">
 </head>
 
 <body data-title-key="letters.meta.title">
@@ -53,9 +53,9 @@
         <!-- Intro + form -->
         <section class="letters-intro container">
             <div class="letters-copy">
-                <p class="eyebrow"><span class="dot"></span><span data-i18n="letters.eyebrow">Letter wall</span></p>
+                <p class="eyebrow"><span class="dot"></span><span data-i18n="letters.eyebrow">Letters</span></p>
                 <h1 class="letters-title" data-i18n="letters.title">Leave me a <em>letter.</em></h1>
-                <p class="letters-lede" data-i18n="letters.lede">Write your name and a message — it joins the wall below. Everyone gets exactly one letter, so make it count.</p>
+                <p class="letters-lede" data-i18n="letters.lede">Write your name and a message and it'll show up below. Everyone can send only one.</p>
                 <p class="demo-note" id="demoNote" data-i18n="letters.demo" hidden>Demo mode — letters are only saved in this browser until the database is connected.</p>
             </div>
 
@@ -72,7 +72,7 @@
                             <span class="field-count" id="letterCount">0 / 1000</span>
                         </span>
                         <textarea name="message" id="letterMessage" maxlength="1000" rows="6" required
-                            data-i18n-placeholder="letters.form.message.ph" placeholder="Say hi, share feedback, ask something…"></textarea>
+                            data-i18n-placeholder="letters.form.message.ph" placeholder="Write something…"></textarea>
                     </label>
                     <!-- honeypot: real visitors never see or fill this -->
                     <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -82,15 +82,15 @@
                     <div class="compose-foot">
                         <span class="compose-once" data-i18n="letters.form.once">You can only send one letter.</span>
                         <button type="submit" class="btn btn-primary" id="letterSend">
-                            <span data-i18n="letters.form.send">Seal &amp; send</span> <span aria-hidden="true">✉</span>
+                            <span data-i18n="letters.form.send">Send</span> <span aria-hidden="true">✉</span>
                         </button>
                     </div>
                 </form>
 
                 <div class="compose-card sent-card" id="sentCard" hidden>
                     <span class="sent-icon" aria-hidden="true">✦</span>
-                    <h2 data-i18n="letters.sent.title">Your letter is on the wall.</h2>
-                    <p data-i18n="letters.sent.text">Thanks for writing! You've used your one letter — find yours below.</p>
+                    <h2 data-i18n="letters.sent.title">Your letter was sent!</h2>
+                    <p data-i18n="letters.sent.text">Thanks for writing. You can see it with the others below.</p>
                 </div>
             </div>
         </section>
@@ -100,11 +100,29 @@
             <div class="container">
                 <header class="section-head">
                     <span class="section-index" id="letterTotal">00</span>
-                    <h2 data-i18n="letters.wall.title">The wall</h2>
+                    <h2 data-i18n="letters.wall.title">Letters</h2>
                 </header>
-                <p class="wall-hint" data-i18n="letters.wall.hint">Click an envelope to open the letter.</p>
+                <p class="wall-hint" data-i18n="letters.wall.hint">Click an envelope to read it.</p>
 
-                <p class="wall-status" id="wallStatus" data-i18n="letters.wall.loading">Collecting letters…</p>
+                <!-- Admin: only shown at /letters?admin or when already logged in as admin -->
+                <div class="admin-bar" id="adminBar" hidden>
+                    <form class="admin-login" id="adminLogin">
+                        <strong data-i18n="letters.admin.title">Admin login</strong>
+                        <input type="email" id="adminEmail" required autocomplete="username"
+                            data-i18n-placeholder="letters.admin.email" placeholder="Email">
+                        <input type="password" id="adminPassword" required autocomplete="current-password"
+                            data-i18n-placeholder="letters.admin.password" placeholder="Password">
+                        <button type="submit" class="btn btn-primary" id="adminSubmit"><span data-i18n="letters.admin.login">Log in</span></button>
+                        <p class="form-error" id="adminError" role="alert" hidden></p>
+                    </form>
+                    <div class="admin-on" id="adminOn" hidden>
+                        <span class="dot"></span>
+                        <span data-i18n="letters.admin.on">Logged in as admin. Open a letter to reply.</span>
+                        <button type="button" class="btn btn-ghost" id="adminLogout"><span data-i18n="letters.admin.logout">Log out</span></button>
+                    </div>
+                </div>
+
+                <p class="wall-status" id="wallStatus" data-i18n="letters.wall.loading">Loading letters…</p>
                 <ul class="wall" id="wall-grid"></ul>
             </div>
         </section>
@@ -127,13 +145,28 @@
             <p class="letter-date" id="letterDate"></p>
             <p class="letter-body" id="letterBody"></p>
             <p class="letter-sign"><span data-i18n="letters.from">From</span> — <strong id="letterFrom"></strong></p>
+
+            <div class="letter-reply" id="letterReply" hidden>
+                <p class="letter-reply-label" data-i18n="letters.reply.title">Reply from Swaxilep</p>
+                <p class="letter-reply-body" id="letterReplyBody"></p>
+            </div>
+
+            <form class="reply-form" id="replyForm" hidden>
+                <label class="reply-label" for="replyText" data-i18n="letters.reply.label">Your reply</label>
+                <textarea id="replyText" maxlength="1000" rows="4"
+                    data-i18n-placeholder="letters.reply.ph" placeholder="Write a reply…"></textarea>
+                <div class="reply-actions">
+                    <span class="reply-status" id="replyStatus" role="status"></span>
+                    <button type="submit" class="btn btn-primary" id="replySave"><span data-i18n="letters.reply.save">Save reply</span></button>
+                </div>
+            </form>
         </article>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="letters-config.js?v=6"></script>
-    <script src="common.js?v=6"></script>
-    <script src="letters.js?v=6"></script>
+    <script src="letters-config.js?v=15"></script>
+    <script src="common.js?v=15"></script>
+    <script src="letters.js?v=15"></script>
 </body>
 
 </html>
