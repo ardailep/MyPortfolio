@@ -5,7 +5,8 @@
     const NAME_MAX = 40;
     const MESSAGE_MAX = 1000;
     const SENT_FLAG = "letter-sent";
-    const FIELDS = "id, user_id, name, message, created_at, reply, replied_at";
+    const BASE_FIELDS = "id, user_id, name, message, created_at, reply, replied_at";
+    const FIELDS = `${BASE_FIELDS}, reply_gif`;
 
     const store = (key, value) => { try { localStorage.setItem(key, value); } catch (e) { /* storage unavailable */ } };
     const load = (key) => { try { return localStorage.getItem(key); } catch (e) { return null; } };
@@ -15,12 +16,23 @@
     // ─────────────────────────────────────────
     // Each backend: list() → letters newest first, myId() → current user id (or null),
     // send(name, message) → saved letter (throws { code: "already" } on a second letter),
-    // isAdmin(), login(email, password), logout(), reply(id, text) → updated letter.
+    // isAdmin(), login(email, password), logout(), reply(id, text, gif) → updated letter.
 
     const supabaseBackend = () => {
         const client = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
             auth: { persistSession: true, autoRefreshToken: true },
         });
+
+        // Until supabase-replies.sql is re-run the reply_gif column doesn't exist; fall back to the old columns.
+        let fields = FIELDS;
+        const withFields = async (run) => {
+            let res = await run(fields);
+            if (res.error && ["42703", "PGRST204"].includes(res.error.code) && fields !== BASE_FIELDS) {
+                fields = BASE_FIELDS;
+                res = await run(fields);
+            }
+            return res;
+        };
 
         const currentUser = async () => {
             const { data } = await client.auth.getSession();
@@ -36,11 +48,11 @@
 
         return {
             async list() {
-                const { data, error } = await client
+                const { data, error } = await withFields(f => client
                     .from("letters")
-                    .select(FIELDS)
+                    .select(f)
                     .order("created_at", { ascending: false })
-                    .limit(500);
+                    .limit(500));
                 if (error) throw error;
                 return data;
             },
@@ -54,11 +66,11 @@
                     const { error } = await client.auth.signInAnonymously();
                     if (error) throw error;
                 }
-                const { data, error } = await client
+                const { data, error } = await withFields(f => client
                     .from("letters")
                     .insert({ name, message })
-                    .select(FIELDS)
-                    .single();
+                    .select(f)
+                    .single());
                 if (error) {
                     if (error.code === "23505") throw { code: "already" };   // unique(user_id) violated
                     throw error;
@@ -77,13 +89,12 @@
             async logout() {
                 await client.auth.signOut();
             },
-            async reply(id, text) {
-                const { data, error } = await client
-                    .from("letters")
-                    .update({ reply: text || null, replied_at: text ? new Date().toISOString() : null })
-                    .eq("id", id)
-                    .select(FIELDS)
-                    .single();
+            async reply(id, text, gif) {
+                const { data, error } = await withFields(f => {
+                    const changes = { reply: text || null, replied_at: text || gif ? new Date().toISOString() : null };
+                    if (f.includes("reply_gif")) changes.reply_gif = gif || null;
+                    return client.from("letters").update(changes).eq("id", id).select(f).single();
+                });
                 if (error) throw error;
                 return data;
             },
@@ -110,11 +121,12 @@
             async isAdmin() { return load(ADMIN) === "1"; },
             async login() { store(ADMIN, "1"); },
             async logout() { store(ADMIN, "0"); },
-            async reply(id, text) {
+            async reply(id, text, gif) {
                 const letters = read();
                 const letter = letters.find(l => l.id === id);
                 letter.reply = text || null;
-                letter.replied_at = text ? new Date().toISOString() : null;
+                letter.reply_gif = gif || null;
+                letter.replied_at = text || gif ? new Date().toISOString() : null;
                 write(letters);
                 return letter;
             },
@@ -193,7 +205,7 @@
 
         const tags = [formatDate(letter.created_at, "short")];
         if (mine) tags.push(SITE.t("letters.yours"));
-        if (letter.reply) tags.push(`${SITE.t("letters.replied")} ✓`);
+        if (letter.reply || letter.reply_gif) tags.push(`${SITE.t("letters.replied")} ✓`);
         btn.querySelector(".env-date").textContent = tags.join(" · ");
 
         btn.addEventListener("click", () => openLetter(letter.id, btn));
@@ -235,8 +247,40 @@
     const replyText = document.getElementById("replyText");
     const replySave = document.getElementById("replySave");
     const replyStatus = document.getElementById("replyStatus");
+    const replyGifShown = document.getElementById("letterReplyGif");
+    const replyGif = document.getElementById("replyGif");
+    const replyGifClear = document.getElementById("replyGifClear");
+    const replyGifPreview = document.getElementById("replyGifPreview");
     let openFrom = null;
     let openId = null;
+    let gifOk = true;
+
+    // Turn a Giphy page link (giphy.com/gifs/name-ID, giphy.com/embed/ID) into its direct GIF address.
+    const normalizeGif = (value) => {
+        const url = value.trim();
+        if (!url) return "";
+        const giphy = url.match(/^https?:\/\/(?:www\.)?giphy\.com\/(?:gifs|embed|stickers)\/(?:[\w-]*-)?([A-Za-z0-9]+)\/?(?:[?#].*)?$/);
+        if (giphy) return `https://media.giphy.com/media/${giphy[1]}/giphy.gif`;
+        return url.replace(/^http:\/\//, "https://");
+    };
+
+    const showGifPreview = () => {
+        const url = normalizeGif(replyGif.value);
+        replyGifClear.hidden = !url;
+        replyStatus.textContent = "";
+        gifOk = !url;
+        if (!url) { replyGifPreview.hidden = true; replyGifPreview.removeAttribute("src"); return; }
+        replyGifPreview.onload = () => { gifOk = true; replyGifPreview.hidden = false; };
+        replyGifPreview.onerror = () => {
+            gifOk = false;
+            replyGifPreview.hidden = true;
+            replyStatus.textContent = SITE.t("letters.reply.gif.bad");
+        };
+        replyGifPreview.src = url;
+    };
+
+    replyGif.addEventListener("input", showGifPreview);
+    replyGifClear.addEventListener("click", () => { replyGif.value = ""; showGifPreview(); replyGif.focus(); });
 
     const openLetterData = () => letters.find(l => l.id === openId);
 
@@ -248,8 +292,12 @@
         modalDate.textContent = formatDate(letter.created_at);
         modalClose.setAttribute("aria-label", SITE.t("letters.close"));
 
-        replyBox.hidden = !letter.reply;
+        replyBox.hidden = !(letter.reply || letter.reply_gif);
         replyBody.textContent = letter.reply || "";
+        replyBody.hidden = !letter.reply;
+        replyGifShown.hidden = !letter.reply_gif;
+        if (letter.reply_gif) replyGifShown.src = letter.reply_gif;
+        else replyGifShown.removeAttribute("src");
         replyForm.hidden = !isAdmin;
     };
 
@@ -259,7 +307,8 @@
         fillLetter();
         const letter = openLetterData();
         replyText.value = (letter && letter.reply) || "";
-        replyStatus.textContent = "";
+        replyGif.value = (letter && letter.reply_gif) || "";
+        showGifPreview();
         modal.hidden = false;
         document.body.style.overflow = "hidden";
         modalClose.focus();
@@ -290,10 +339,12 @@
     replyForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         if (!isAdmin || openId === null) return;
+        const gif = normalizeGif(replyGif.value);
+        if (gif && !gifOk) { replyStatus.textContent = SITE.t("letters.reply.gif.bad"); replyGif.focus(); return; }
         replySave.disabled = true;
         replyStatus.textContent = SITE.t("letters.reply.saving");
         try {
-            const updated = await api.reply(openId, replyText.value.trim().slice(0, MESSAGE_MAX));
+            const updated = await api.reply(openId, replyText.value.trim().slice(0, MESSAGE_MAX), gif.slice(0, 500));
             letters = letters.map(l => (l.id === updated.id ? updated : l));
             renderWall();
             fillLetter();

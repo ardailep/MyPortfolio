@@ -16,7 +16,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=15">
+    <link rel="stylesheet" href="styles.css?v=16">
 </head>
 
 <body data-title-key="letters.meta.title">
@@ -149,12 +149,23 @@
             <div class="letter-reply" id="letterReply" hidden>
                 <p class="letter-reply-label" data-i18n="letters.reply.title">Reply from Swaxilep</p>
                 <p class="letter-reply-body" id="letterReplyBody"></p>
+                <img class="letter-reply-gif" id="letterReplyGif" alt="GIF" referrerpolicy="no-referrer" hidden>
             </div>
 
             <form class="reply-form" id="replyForm" hidden>
                 <label class="reply-label" for="replyText" data-i18n="letters.reply.label">Your reply</label>
                 <textarea id="replyText" maxlength="1000" rows="4"
                     data-i18n-placeholder="letters.reply.ph" placeholder="Write a reply…"></textarea>
+
+                <label class="reply-label reply-gif-label" for="replyGif" data-i18n="letters.reply.gif">GIF link (optional)</label>
+                <div class="reply-gif-row">
+                    <input type="url" id="replyGif" inputmode="url" autocomplete="off"
+                        data-i18n-placeholder="letters.reply.gif.ph" placeholder="Paste a Giphy or Tenor GIF link">
+                    <button type="button" class="reply-gif-clear" id="replyGifClear" aria-label="Remove GIF" hidden>✕</button>
+                </div>
+                <p class="reply-gif-hint" data-i18n="letters.reply.gif.hint">Giphy: paste the page link. Tenor: right-click the GIF → "Copy image address".</p>
+                <img class="reply-gif-preview" id="replyGifPreview" alt="" referrerpolicy="no-referrer" hidden>
+
                 <div class="reply-actions">
                     <span class="reply-status" id="replyStatus" role="status"></span>
                     <button type="submit" class="btn btn-primary" id="replySave"><span data-i18n="letters.reply.save">Save reply</span></button>
@@ -164,9 +175,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="letters-config.js?v=15"></script>
-    <script src="common.js?v=15"></script>
-    <script src="letters.js?v=15"></script>
+    <script src="letters-config.js?v=16"></script>
+    <script src="common.js?v=16"></script>
+    <script src="letters.js?v=16"></script>
 </body>
 
 </html>

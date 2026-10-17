@@ -1,11 +1,13 @@
--- Replies for the letter wall. Run this once in Supabase → SQL Editor (after supabase.sql).
+-- Replies for the letter wall. Run this in Supabase → SQL Editor (after supabase.sql).
+-- Safe to run again: it only adds what's missing (e.g. the GIF column added later).
 -- Before running: create your admin account in Authentication → Users → "Add user" (email + password,
 -- tick "Auto Confirm User"), then put that email in the last statement below.
 
 -- 1. Reply columns on letters
 alter table public.letters
     add column if not exists reply      text check (reply is null or char_length(reply) <= 1000),
-    add column if not exists replied_at timestamptz;
+    add column if not exists replied_at timestamptz,
+    add column if not exists reply_gif  text check (reply_gif is null or (reply_gif ~ '^https://' and char_length(reply_gif) <= 500));
 
 -- 2. Who counts as admin
 create table if not exists public.admins (
@@ -30,7 +32,7 @@ $$;
 -- 3. Column permissions: visitors may only write name + message; only the reply columns can ever be updated
 revoke insert, update on public.letters from anon, authenticated;
 grant insert (name, message) on public.letters to authenticated;
-grant update (reply, replied_at) on public.letters to authenticated;
+grant update (reply, reply_gif, replied_at) on public.letters to authenticated;
 
 -- 4. Only admins can write replies
 drop policy if exists "admin can reply" on public.letters;
