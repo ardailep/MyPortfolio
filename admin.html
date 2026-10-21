@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/site.css?v=45">
+    <link rel="stylesheet" href="assets/site.css?v=46">
 </head>
 
 <body data-page="admin" data-title-key="meta.admin">
@@ -52,6 +52,7 @@
                 <div class="tabs" role="tablist">
                     <button type="button" role="tab" id="tabPosts" aria-selected="true" aria-controls="postsPane" data-i18n="admin.tab.posts"></button>
                     <button type="button" role="tab" id="tabNotes" aria-selected="false" aria-controls="notesPane" data-i18n="admin.tab.notes"></button>
+                    <button type="button" role="tab" id="tabProfile" aria-selected="false" aria-controls="profilePane" data-i18n="admin.tab.profile"></button>
                 </div>
 
                 <!-- Posts -->
@@ -123,14 +124,19 @@
                     <p class="status" id="notesStatus" hidden></p>
                     <ul class="admin-list" id="noteList"></ul>
                 </div>
+
+                <!-- Profile (built by admin-profile.js) -->
+                <div id="profilePane" role="tabpanel" aria-labelledby="tabProfile" hidden></div>
             </div>
         </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="config.js?v=45"></script>
-    <script src="assets/site.js?v=45"></script>
-    <script src="assets/admin.js?v=45"></script>
+    <script src="config.js?v=46"></script>
+    <script src="assets/site.js?v=46"></script>
+    <script src="assets/profile.js?v=46"></script>
+    <script src="assets/admin.js?v=46"></script>
+    <script src="assets/admin-profile.js?v=46"></script>
 </body>
 
 </html>

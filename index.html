@@ -18,20 +18,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/site.css?v=45">
+    <link rel="stylesheet" href="assets/site.css?v=46">
 </head>
 
 <body data-page="profile" data-title-key="meta.home">
 
-    <main class="page">
+    <main class="page" id="profilePage">
         <div class="wrap">
 
             <header class="intro">
-                <img class="intro-photo" src="shared/Profile.png" alt="Teoman (Swaxilep)" width="104" height="104">
+                <img class="intro-photo" id="pPhoto" src="shared/Profile.png" alt="" width="104" height="104">
                 <div>
-                    <h1>Swaxilep <span>Teoman</span></h1>
-                    <p class="intro-headline" data-i18n="profile.headline"></p>
-                    <p class="intro-sub" data-i18n="profile.sub"></p>
+                    <h1><span id="pName"></span> <small id="pRealName"></small></h1>
+                    <p class="intro-headline" id="pHeadline"></p>
+                    <p class="intro-sub" id="pSub"></p>
                 </div>
             </header>
             <div class="intro-actions">
@@ -41,11 +41,7 @@
 
             <section class="section" id="about">
                 <h2 data-i18n="about.title"></h2>
-                <div class="section-body prose">
-                    <p data-i18n="about.p1"></p>
-                    <p data-i18n="about.p2"></p>
-                    <p data-i18n="about.p3"></p>
-                </div>
+                <div class="section-body prose" id="pAbout"></div>
             </section>
 
             <section class="section" id="posts">
@@ -57,48 +53,20 @@
                 </div>
             </section>
 
-            <section class="section">
+            <section class="section" id="experience">
                 <h2 data-i18n="exp.title"></h2>
-                <div class="section-body entries">
-                    <div class="entry">
-                        <h3 data-i18n="exp.1.title"></h3>
-                        <p class="muted" data-i18n="exp.1.sub"></p>
-                        <p class="entry-text" data-i18n="exp.1.text"></p>
-                    </div>
-                    <div class="entry">
-                        <h3 data-i18n="exp.2.title"></h3>
-                        <p class="muted" data-i18n="exp.2.sub"></p>
-                        <p class="entry-text" data-i18n="exp.2.text"></p>
-                    </div>
-                </div>
+                <div class="section-body entries" id="pExperience"></div>
             </section>
 
-            <section class="section">
+            <section class="section" id="education">
                 <h2 data-i18n="edu.title"></h2>
-                <div class="section-body entries">
-                    <div class="entry">
-                        <h3 data-i18n="edu.1.title"></h3>
-                        <p class="muted" data-i18n="edu.1.sub"></p>
-                    </div>
-                    <div class="entry">
-                        <h3 data-i18n="edu.2.title"></h3>
-                        <p class="muted" data-i18n="edu.2.sub"></p>
-                    </div>
-                </div>
+                <div class="section-body entries" id="pEducation"></div>
             </section>
 
-            <section class="section">
+            <section class="section" id="skills">
                 <h2 data-i18n="skills.title"></h2>
                 <div class="section-body">
-                    <ul class="skills">
-                        <li data-i18n="skill.modeling"></li>
-                        <li data-i18n="skill.environment"></li>
-                        <li data-i18n="skill.handpainted"></li>
-                        <li data-i18n="skill.sculpture"></li>
-                        <li>Blender</li>
-                        <li>Roblox Studio</li>
-                        <li>Luau</li>
-                    </ul>
+                    <ul class="skills" id="pSkills"></ul>
                 </div>
             </section>
 
@@ -112,10 +80,11 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="config.js?v=45"></script>
-    <script src="assets/site.js?v=45"></script>
-    <script src="assets/posts.js?v=45"></script>
-    <script src="assets/home.js?v=45"></script>
+    <script src="config.js?v=46"></script>
+    <script src="assets/site.js?v=46"></script>
+    <script src="assets/profile.js?v=46"></script>
+    <script src="assets/posts.js?v=46"></script>
+    <script src="assets/home.js?v=46"></script>
 </body>
 
 </html>

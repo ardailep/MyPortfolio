@@ -149,7 +149,7 @@ button, input, textarea { font: inherit; color: inherit; }
     flex-shrink: 0;
 }
 .intro h1 { font-size: 30px; letter-spacing: -0.02em; }
-.intro h1 span { font-weight: 400; color: var(--faint); font-size: 20px; }
+.intro h1 small { font-weight: 400; color: var(--faint); font-size: 20px; }
 .intro-headline { font-size: 17px; margin-top: 2px; }
 .intro-sub { color: var(--muted); }
 .intro-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
@@ -453,3 +453,43 @@ textarea.input { resize: vertical; min-height: 110px; line-height: 1.55; }
     overflow: hidden;
 }
 .badge-pin { background: #fff3e0; }
+
+/* Profile content comes from the database; hidden for a moment on a first visit until it arrives */
+.page.is-loading .wrap { visibility: hidden; }
+
+/* Admin → Profile tab */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pair > .field + .field { margin-top: 0; }
+.pair-item { position: relative; display: block; }
+.pair-tag {
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--faint);
+    pointer-events: none;
+}
+.pair-item .input { padding-right: 34px; }
+@media (max-width: 560px) { .pair { grid-template-columns: 1fr; } }
+
+.items { display: grid; gap: 12px; margin-bottom: 14px; }
+.item { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px 14px; background: #fcfcfc; }
+.item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.item .field + .field, .item .field:first-child { margin-top: 0; }
+.item .field + .field { margin-top: 10px; }
+.section-hint { margin: -8px 0 14px; }
+.photo-preview { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
+
+.save-bar {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    background: rgba(255, 255, 255, 0.95);
+    border-top: 1px solid var(--line);
+}

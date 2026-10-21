@@ -71,12 +71,13 @@
     // ─────────────────────────────────────────
     // 2. TABS
     // ─────────────────────────────────────────
-    const tabs = [[$("tabPosts"), $("postsPane")], [$("tabNotes"), $("notesPane")]];
+    const tabs = Array.from(document.querySelectorAll('.tabs [role="tab"]')).map(t => [t, $(t.getAttribute("aria-controls"))]);
     tabs.forEach(([tab]) => tab.addEventListener("click", () => {
         tabs.forEach(([t, pane]) => {
             t.setAttribute("aria-selected", String(t === tab));
             pane.hidden = t !== tab;
         });
+        document.dispatchEvent(new CustomEvent("admin:tab", { detail: tab.id }));
     }));
 
     // ─────────────────────────────────────────
