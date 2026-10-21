@@ -4,7 +4,7 @@
     const SITE = window.SITE;
     const db = SITE.db;
     const BUCKET = "post-images";
-    const POST_FIELDS = "id, title, body, image_url, tweet_url, published, created_at, updated_at";
+    const POST_FIELDS = "id, title, body, image_url, link_url, published, created_at, updated_at";
     const NOTE_FIELDS = "id, name, message, created_at, reply, reply_gif, replied_at";
     const $ = (id) => document.getElementById(id);
 
@@ -87,6 +87,7 @@
     const bodyInput = $("postBody");
     const imageInput = $("postImage");
     const tweetInput = $("postTweet");
+    const dateInput = $("postDate");
     const fileInput = $("postFile");
     const preview = $("imagePreview");
     const removeImage = $("imageRemove");
@@ -96,7 +97,20 @@
     const postError = $("postError");
     const postOk = $("postOk");
     let editingId = null;
+    let editingDate = null;   // created_at of the post being edited
     let posts = [];
+
+    // Share date: "YYYY-MM-DD" in the visitor's own time zone.
+    const localDay = (date) => {
+        const d = new Date(date);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    };
+    // Today → now; the post's unchanged day → keep its time; any other day → noon of that day.
+    const shareDate = (day) => {
+        if (!day || day === localDay(Date.now())) return editingDate && localDay(editingDate) === day ? editingDate : new Date().toISOString();
+        if (editingDate && localDay(editingDate) === day) return editingDate;
+        return new Date(`${day}T12:00:00`).toISOString();
+    };
 
     const setError = (text) => { postError.textContent = text || ""; postError.hidden = !text; };
     const flashOk = (text) => {
@@ -119,8 +133,10 @@
 
     const resetForm = () => {
         editingId = null;
+        editingDate = null;
         form.reset();
         published.checked = true;
+        dateInput.value = localDay(Date.now());
         $("formTitle").dataset.i18n = "admin.new";
         $("formTitle").textContent = SITE.t("admin.new");
         cancelBtn.hidden = true;
@@ -131,10 +147,12 @@
 
     const editPost = (post) => {
         editingId = post.id;
+        editingDate = post.created_at;
         titleInput.value = post.title;
         bodyInput.value = post.body;
         imageInput.value = post.image_url || "";
-        tweetInput.value = post.tweet_url || "";
+        tweetInput.value = post.link_url || "";
+        dateInput.value = localDay(post.created_at);
         published.checked = post.published;
         $("formTitle").dataset.i18n = "admin.editing";
         $("formTitle").textContent = SITE.t("admin.editing");
@@ -179,18 +197,20 @@
         const title = titleInput.value.trim().slice(0, 200);
         const image = imageInput.value.trim();
         const body = bodyInput.value.trim().slice(0, 20000);
-        const tweetRaw = tweetInput.value.trim();
-        const tweet = SITE.parseTweet(tweetRaw);
-        if (tweetRaw && !tweet) { setError(SITE.t("admin.tweet.bad")); tweetInput.focus(); return; }
-        if (!title && !body && !tweet) { setError(SITE.t("admin.required")); titleInput.focus(); return; }
+        const linkRaw = tweetInput.value.trim();
+        const tweet = SITE.parseTweet(linkRaw);
+        const link = tweet ? tweet.url : SITE.httpUrl(linkRaw);
+        if (linkRaw && !link) { setError(SITE.t("admin.tweet.bad")); tweetInput.focus(); return; }
+        if (!title && !body && !link) { setError(SITE.t("admin.required")); titleInput.focus(); return; }
         if (image && !SITE.safeUrl(image)) { setError(SITE.t("admin.image.bad")); imageInput.focus(); return; }
 
         const row = {
             title,
             body,
             image_url: image || null,
-            tweet_url: tweet ? tweet.url : null,
+            link_url: link || null,
             published: published.checked,
+            created_at: shareDate(dateInput.value),
         };
 
         saveBtn.disabled = true;
@@ -246,7 +266,7 @@
                 </div>`;
             li.querySelector("strong").textContent = post.title
                 || (post.body || "").split("\n").map(s => s.trim()).find(Boolean)
-                || (post.tweet_url ? `X · ${post.tweet_url.replace("https://", "")}` : "—");
+                || (post.link_url ? post.link_url.replace(/^https?:\/\//, "") : "—");
             li.querySelector('[data-act="edit"]').addEventListener("click", () => editPost(post));
             li.querySelector('[data-act="delete"]').addEventListener("click", async (e) => {
                 const btn = e.currentTarget;
@@ -388,4 +408,5 @@
         saveBtn.textContent = SITE.t("admin.save");
     });
     updateCount();
+    dateInput.value = localDay(Date.now());
 })();

@@ -361,3 +361,14 @@ textarea.input { resize: vertical; min-height: 110px; line-height: 1.55; }
     color: var(--faint);
     font-size: 13px;
 }
+
+.link-card {
+    display: grid;
+    gap: 2px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+.link-card:hover { background: var(--soft); }
+.link-card span { color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+.input-date { max-width: 220px; }

@@ -50,7 +50,7 @@
         if (!posts) return;
         activityList.innerHTML = posts.map(p => {
             const meta = [SITE.date(p.created_at)];
-            if (p.tweet_url) meta.push(SITE.t("post.tweet"));
+            if (SITE.parseTweet(p.link_url)) meta.push(SITE.t("post.tweet"));
             const excerpt = plain(p.body || "");
             return `<li><a href="/post?id=${p.id}">
                 <p class="muted small">${SITE.escape(meta.join(" · "))}</p>

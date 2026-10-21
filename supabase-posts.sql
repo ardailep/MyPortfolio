@@ -21,18 +21,18 @@ create table if not exists public.posts (
     title       text not null default '' check (char_length(title) <= 200),
     body        text not null default '' check (char_length(body) <= 20000),
     image_url   text check (image_url is null or (image_url ~ '^https://' and char_length(image_url) <= 1000)),
-    tweet_url   text check (tweet_url is null or tweet_url ~ '^https://x\.com/[A-Za-z0-9_]{1,15}/status/[0-9]+$'),
+    link_url    text check (link_url is null or (link_url ~ '^https?://' and char_length(link_url) <= 1000)),
     published   boolean not null default true,
     created_at  timestamptz not null default now(),
     updated_at  timestamptz not null default now()
 );
 
--- Upgrades for tables created by an earlier version of this file: optional titles, X (Twitter) post links.
+-- Upgrades for tables created by an earlier version of this file: optional titles, a link per post.
 alter table public.posts drop constraint if exists posts_title_check;
 alter table public.posts alter column title set default '';
 alter table public.posts add constraint posts_title_check check (char_length(title) <= 200);
-alter table public.posts add column if not exists tweet_url text
-    check (tweet_url is null or tweet_url ~ '^https://x\.com/[A-Za-z0-9_]{1,15}/status/[0-9]+$');
+alter table public.posts add column if not exists link_url text
+    check (link_url is null or (link_url ~ '^https?://' and char_length(link_url) <= 1000));
 
 alter table public.posts enable row level security;
 

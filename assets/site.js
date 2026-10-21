@@ -78,7 +78,7 @@
             "post.notfound": "This post doesn't exist or was removed.",
             "post.back": "← All posts",
             "posts.title": "Posts",
-            "posts.lede": "Updates, work in progress and things I've shared on X.",
+            "posts.lede": "Updates, work in progress and things I've shared.",
             "posts.loading": "Loading posts…",
             "posts.error": "Couldn't load the posts. Please try again later.",
 
@@ -118,9 +118,10 @@
             "admin.f.title": "Title (optional)",
             "admin.f.body": "Text",
             "admin.f.body.hint": "**bold**, *italic*, [link](https://…), “- ” for a list, “# ” for a heading. An empty line starts a new paragraph.",
-            "admin.f.tweet": "X (Twitter) post link (optional)",
-            "admin.f.tweet.ph": "https://x.com/swaxilep/status/…",
-            "admin.f.tweet.hint": "Paste the link of a post you shared on X and it's embedded here with its images.",
+            "admin.f.tweet": "Link (optional)",
+            "admin.f.tweet.ph": "https://…",
+            "admin.f.tweet.hint": "Any link works. X (Twitter) post links are embedded with their images; other links show as a link card.",
+            "admin.f.date": "Share date",
             "admin.f.image": "Image (optional)",
             "admin.f.upload": "Upload image",
             "admin.f.image.ph": "…or paste an image URL (https://)",
@@ -133,8 +134,8 @@
             "admin.uploading": "Uploading…",
             "admin.upload.error": "Upload failed. Did you run supabase-posts.sql? You can also paste an image URL.",
             "admin.upload.big": "That image is over 5 MB.",
-            "admin.required": "Fill in at least a title, some text or an X link.",
-            "admin.tweet.bad": "That isn't an X / Twitter post link (it should look like x.com/name/status/123…).",
+            "admin.required": "Fill in at least a title, some text or a link.",
+            "admin.tweet.bad": "The link has to start with http:// or https://",
             "admin.image.bad": "The image URL has to start with https://",
             "admin.error": "Something went wrong: {msg}",
             "admin.posts.list": "Your posts",
@@ -217,7 +218,7 @@
             "post.notfound": "Bu gönderi yok ya da kaldırılmış.",
             "post.back": "← Tüm gönderiler",
             "posts.title": "Gönderiler",
-            "posts.lede": "Güncellemeler, devam eden işler ve X'te paylaştıklarım.",
+            "posts.lede": "Güncellemeler, devam eden işler ve paylaştıklarım.",
             "posts.loading": "Gönderiler yükleniyor…",
             "posts.error": "Gönderiler yüklenemedi. Lütfen daha sonra tekrar dene.",
 
@@ -257,9 +258,10 @@
             "admin.f.title": "Başlık (isteğe bağlı)",
             "admin.f.body": "Metin",
             "admin.f.body.hint": "**kalın**, *italik*, [link](https://…), liste için “- ”, başlık için “# ”. Boş satır yeni paragraf başlatır.",
-            "admin.f.tweet": "X (Twitter) gönderi linki (isteğe bağlı)",
-            "admin.f.tweet.ph": "https://x.com/swaxilep/status/…",
-            "admin.f.tweet.hint": "X'te paylaştığın bir gönderinin linkini yapıştır; görselleriyle birlikte buraya gömülür.",
+            "admin.f.tweet": "Link (isteğe bağlı)",
+            "admin.f.tweet.ph": "https://…",
+            "admin.f.tweet.hint": "Her link olur. X (Twitter) gönderi linkleri görselleriyle gömülür, diğer linkler kart olarak görünür.",
+            "admin.f.date": "Paylaşım tarihi",
             "admin.f.image": "Görsel (isteğe bağlı)",
             "admin.f.upload": "Görsel yükle",
             "admin.f.image.ph": "…ya da görsel linki yapıştır (https://)",
@@ -272,8 +274,8 @@
             "admin.uploading": "Yükleniyor…",
             "admin.upload.error": "Yükleme başarısız. supabase-posts.sql dosyasını çalıştırdın mı? Görsel linki de yapıştırabilirsin.",
             "admin.upload.big": "Bu görsel 5 MB'tan büyük.",
-            "admin.required": "En azından bir başlık, metin ya da X linki gir.",
-            "admin.tweet.bad": "Bu bir X / Twitter gönderi linki değil (x.com/isim/status/123… gibi olmalı).",
+            "admin.required": "En azından bir başlık, metin ya da link gir.",
+            "admin.tweet.bad": "Link http:// ya da https:// ile başlamalı.",
             "admin.image.bad": "Görsel linki https:// ile başlamalı.",
             "admin.error": "Bir şeyler ters gitti: {msg}",
             "admin.posts.list": "Gönderilerin",
@@ -377,6 +379,7 @@
     }).join("");
 
     SITE.safeUrl = (url) => (/^https:\/\/[^\s"'<>]+$/.test(url || "") ? url : "");
+    SITE.httpUrl = (url) => (/^https?:\/\/[^\s"'<>]+$/.test(url || "") ? url : "");
 
     // X / Twitter post links → { user, id, url } (url is the canonical x.com form stored in the database).
     SITE.parseTweet = (value) => {
