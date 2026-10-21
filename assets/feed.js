@@ -7,8 +7,9 @@
     let posts = null;
     let statusKey = "posts.loading";
 
-    let view = "list";
-    try { if (localStorage.getItem("posts-view") === "grid") view = "grid"; } catch (e) { /* storage unavailable */ }
+    // Grid by default; a visitor who switched to the list keeps it.
+    let view = "grid";
+    try { if (localStorage.getItem("posts-view") === "list") view = "list"; } catch (e) { /* storage unavailable */ }
 
     const render = () => {
         status.hidden = Boolean(posts && posts.length);
