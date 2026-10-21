@@ -33,7 +33,7 @@
             "profile.note": "Leave a note",
 
             "about.title": "About",
-            "about.p1": "Hi! I'm Teoman. I'm 20, and I'm a designer, modeler and animator. I've been making 3D assets, environments and character animations for games and digital projects for several years now.",
+            "about.p1": "Hi! I'm Teoman. I'm 20, and I'm a designer and 3D modeler. I've been making 3D assets and environments for games and digital projects for several years now.",
             "about.p2": "I'm also studying Sculpture at Anadolu University, so I work on physical pieces as well as digital ones.",
             "about.p3": "I mostly go for a stylized, hand-painted look. I usually work in Blender and Roblox Studio, and I know enough Luau to script my own things in Roblox.",
 
@@ -42,9 +42,9 @@
             "activity.empty": "No posts yet.",
 
             "exp.title": "Experience",
-            "exp.1.title": "3D Artist & Animator",
+            "exp.1.title": "3D Artist",
             "exp.1.sub": "Games and digital projects · Blender",
-            "exp.1.text": "3D assets, environments and character animations, mostly in a stylized, hand-painted look.",
+            "exp.1.text": "3D assets and environments, mostly in a stylized, hand-painted look.",
             "exp.2.title": "Roblox Developer",
             "exp.2.sub": "Roblox Studio · Luau",
             "exp.2.text": "I build games and environments in Roblox Studio and script my own systems in Luau.",
@@ -57,7 +57,6 @@
 
             "skills.title": "Skills",
             "skill.modeling": "3D Modeling",
-            "skill.animation": "Animation",
             "skill.environment": "Environment Design",
             "skill.handpainted": "Hand-painted Textures",
             "skill.sculpture": "Sculpture",
@@ -173,7 +172,7 @@
             "profile.note": "Not bırak",
 
             "about.title": "Hakkında",
-            "about.p1": "Selam! Ben Teoman. 20 yaşındayım; tasarımcı, modelci ve animatörüm. Birkaç yıldır oyunlar ve dijital projeler için 3D modeller, ortamlar ve karakter animasyonları yapıyorum.",
+            "about.p1": "Selam! Ben Teoman. 20 yaşındayım; tasarımcı ve 3D modelciyim. Birkaç yıldır oyunlar ve dijital projeler için 3D modeller ve ortamlar yapıyorum.",
             "about.p2": "Bir yandan da Anadolu Üniversitesi'nde Heykel okuyorum, yani hem elle hem de bilgisayarda üretiyorum.",
             "about.p3": "Genelde stilize, el boyaması tarzında çalışıyorum. En çok Blender ve Roblox Studio kullanıyorum; Roblox'ta kendi işlerimi kodlayacak kadar da Luau biliyorum.",
 
@@ -182,9 +181,9 @@
             "activity.empty": "Henüz gönderi yok.",
 
             "exp.title": "Deneyim",
-            "exp.1.title": "3D Sanatçı ve Animatör",
+            "exp.1.title": "3D Sanatçı",
             "exp.1.sub": "Oyunlar ve dijital projeler · Blender",
-            "exp.1.text": "Çoğunlukla stilize, el boyaması tarzında 3D modeller, ortamlar ve karakter animasyonları.",
+            "exp.1.text": "Çoğunlukla stilize, el boyaması tarzında 3D modeller ve ortamlar.",
             "exp.2.title": "Roblox Geliştirici",
             "exp.2.sub": "Roblox Studio · Luau",
             "exp.2.text": "Roblox Studio'da oyun ve ortam yapıyorum, kendi sistemlerimi Luau ile kodluyorum.",
@@ -197,7 +196,6 @@
 
             "skills.title": "Yetenekler",
             "skill.modeling": "3D Modelleme",
-            "skill.animation": "Animasyon",
             "skill.environment": "Ortam Tasarımı",
             "skill.handpainted": "El Boyaması Doku",
             "skill.sculpture": "Heykel",
