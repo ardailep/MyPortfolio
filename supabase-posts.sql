@@ -23,6 +23,7 @@ create table if not exists public.posts (
     image_url   text check (image_url is null or (image_url ~ '^https://' and char_length(image_url) <= 1000)),
     link_url    text check (link_url is null or (link_url ~ '^https?://' and char_length(link_url) <= 1000)),
     published   boolean not null default true,
+    pinned      boolean not null default false,
     created_at  timestamptz not null default now(),
     updated_at  timestamptz not null default now()
 );
@@ -33,6 +34,7 @@ alter table public.posts alter column title set default '';
 alter table public.posts add constraint posts_title_check check (char_length(title) <= 200);
 alter table public.posts add column if not exists link_url text
     check (link_url is null or (link_url ~ '^https?://' and char_length(link_url) <= 1000));
+alter table public.posts add column if not exists pinned boolean not null default false;
 
 alter table public.posts enable row level security;
 

@@ -1,25 +1,38 @@
 // Posts: loading from Supabase and rendering them (text, image and/or an embedded X post). Used by /, /posts and /post.
 (() => {
     const SITE = window.SITE;
-    const FIELDS = "id, title, body, image_url, link_url, published, created_at, updated_at";
+    const BASE_FIELDS = "id, title, body, image_url, link_url, published, created_at, updated_at";
+    let hasPinned = true;   // false until supabase-posts.sql has added the "pinned" column
 
+    // Runs a query with the pinned column, and again without it if the column doesn't exist yet.
+    const withFields = async (run) => {
+        let res = await run(hasPinned ? `${BASE_FIELDS}, pinned` : BASE_FIELDS);
+        if (res.error && hasPinned && ["42703", "PGRST204"].includes(res.error.code)) {
+            hasPinned = false;
+            res = await run(BASE_FIELDS);
+        }
+        if (res.error) throw res.error;
+        return res.data;
+    };
+
+    // Pinned posts first, then newest first.
     const list = async (limit = 100) => {
         if (!SITE.db) return [];
-        const { data, error } = await SITE.db.from("posts").select(FIELDS)
-            .eq("published", true)
-            .order("created_at", { ascending: false })
-            .limit(limit);
-        if (error) throw error;
-        return data;
+        return withFields(fields => {
+            let q = SITE.db.from("posts").select(fields).eq("published", true);
+            if (hasPinned) q = q.order("pinned", { ascending: false });
+            return q.order("created_at", { ascending: false }).limit(limit);
+        });
     };
 
     // Admins can also open their own drafts (RLS lets them read unpublished rows).
     const get = async (id) => {
         if (!SITE.db) return null;
-        const { data, error } = await SITE.db.from("posts").select(FIELDS).eq("id", id).maybeSingle();
-        if (error) throw error;
-        return data;
+        return withFields(fields => SITE.db.from("posts").select(fields).eq("id", id).maybeSingle());
     };
+
+    const plain = (md) => String(md || "").replace(/[#*`>]/g, "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/\s+/g, " ").trim();
+    const pinBadge = () => `<span class="badge badge-pin">📌 ${SITE.escape(SITE.t("post.pinned"))}</span>`;
 
     const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, ""); } catch (e) { return url; } };
 
@@ -80,6 +93,7 @@
         const image = SITE.safeUrl(post.image_url);
         const link = `/post?id=${post.id}`;
         const meta = [`<a href="${link}" title="${SITE.escape(SITE.date(post.created_at))}">${SITE.escape(SITE.date(post.created_at))}</a>`];
+        if (post.pinned && !full) meta.unshift(pinBadge());
         if (SITE.parseTweet(post.link_url)) meta.push(SITE.escape(SITE.t("post.tweet")));
         if (!post.published) meta.push(`<span class="badge">${SITE.escape(SITE.t("post.draft"))}</span>`);
 
@@ -112,8 +126,29 @@
         return el;
     };
 
+    // Grid view: a compact tile linking to the post (image on top when there is one).
+    const tile = (post) => {
+        const el = document.createElement("a");
+        el.className = "tile";
+        el.href = `/post?id=${post.id}`;
+        const image = SITE.safeUrl(post.image_url);
+        const meta = [SITE.escape(SITE.date(post.created_at))];
+        if (SITE.parseTweet(post.link_url)) meta.push(SITE.escape(SITE.t("post.tweet")));
+        const excerpt = post.title ? plain(post.body) : "";
+        el.innerHTML = `
+            ${image
+                ? `<div class="tile-image"><img src="${image}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
+                : `<div class="tile-image tile-text"><span>${SITE.escape(plain(post.body) || title(post))}</span></div>`}
+            <div class="tile-body">
+                <p class="post-meta">${post.pinned ? pinBadge() : ""}<span>${meta.join(" · ")}</span></p>
+                <strong>${SITE.escape(title(post))}</strong>
+                ${excerpt ? `<p class="excerpt">${SITE.escape(excerpt)}</p>` : ""}
+            </div>`;
+        return el;
+    };
+
     // True when the posts table (or its link_url column) hasn't been created yet — supabase-posts.sql not run.
     const isMissingTable = (err) => Boolean(err && ["42P01", "42703", "PGRST205", "PGRST204", "PGRST200"].includes(err.code));
 
-    SITE.posts = { list, get, card, title, isMissingTable };
+    SITE.posts = { list, get, card, tile, title, plain, pinBadge, isMissingTable };
 })();

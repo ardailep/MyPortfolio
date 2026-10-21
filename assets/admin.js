@@ -4,7 +4,7 @@
     const SITE = window.SITE;
     const db = SITE.db;
     const BUCKET = "post-images";
-    const POST_FIELDS = "id, title, body, image_url, link_url, published, created_at, updated_at";
+    const POST_FIELDS = "id, title, body, image_url, link_url, published, pinned, created_at, updated_at";
     const NOTE_FIELDS = "id, name, message, created_at, reply, reply_gif, replied_at";
     const $ = (id) => document.getElementById(id);
 
@@ -92,6 +92,7 @@
     const preview = $("imagePreview");
     const removeImage = $("imageRemove");
     const published = $("postPublished");
+    const pinned = $("postPinned");
     const saveBtn = $("postSave");
     const cancelBtn = $("postCancel");
     const postError = $("postError");
@@ -154,6 +155,7 @@
         tweetInput.value = post.link_url || "";
         dateInput.value = localDay(post.created_at);
         published.checked = post.published;
+        pinned.checked = Boolean(post.pinned);
         $("formTitle").dataset.i18n = "admin.editing";
         $("formTitle").textContent = SITE.t("admin.editing");
         cancelBtn.hidden = false;
@@ -210,6 +212,7 @@
             image_url: image || null,
             link_url: link || null,
             published: published.checked,
+            pinned: pinned.checked,
             created_at: shareDate(dateInput.value),
         };
 
@@ -255,11 +258,12 @@
                 <div class="admin-row">
                     <div>
                         <strong></strong>
-                        <p class="muted small">${SITE.escape(SITE.date(post.created_at))}
+                        <p class="muted small">${post.pinned ? `<span class="badge badge-pin">📌 ${SITE.escape(SITE.t("post.pinned"))}</span> · ` : ""}${SITE.escape(SITE.date(post.created_at))}
                             ${post.published ? "" : ` · <span class="badge">${SITE.escape(SITE.t("post.draft"))}</span>`}</p>
                     </div>
                     <div class="admin-actions">
                         <a class="btn btn-sm" href="/post?id=${post.id}" target="_blank" rel="noopener">${SITE.escape(SITE.t("admin.view"))}</a>
+                        <button type="button" class="btn btn-sm" data-act="pin">${SITE.escape(SITE.t(post.pinned ? "admin.unpin" : "admin.pin"))}</button>
                         <button type="button" class="btn btn-sm" data-act="edit">${SITE.escape(SITE.t("admin.edit"))}</button>
                         <button type="button" class="btn btn-danger btn-sm" data-act="delete">${SITE.escape(SITE.t("admin.delete"))}</button>
                     </div>
@@ -268,6 +272,19 @@
                 || (post.body || "").split("\n").map(s => s.trim()).find(Boolean)
                 || (post.link_url ? post.link_url.replace(/^https?:\/\//, "") : "—");
             li.querySelector('[data-act="edit"]').addEventListener("click", () => editPost(post));
+            li.querySelector('[data-act="pin"]').addEventListener("click", async (e) => {
+                const btn = e.currentTarget;
+                btn.disabled = true;
+                const { data, error } = await db.from("posts").update({ pinned: !post.pinned }).eq("id", post.id).select("id");
+                if (error || !data || !data.length) {
+                    console.error(error);
+                    btn.disabled = false;
+                    window.alert(isMissingTable(error) ? SITE.t("admin.posts.missing") : errText(error || "not saved"));
+                    return;
+                }
+                if (editingId === post.id) pinned.checked = !post.pinned;
+                await loadPosts();
+            });
             li.querySelector('[data-act="delete"]').addEventListener("click", async (e) => {
                 const btn = e.currentTarget;
                 if (!window.confirm(SITE.t("admin.delete.post"))) return;
@@ -291,8 +308,10 @@
     };
 
     async function loadPosts() {
-        setPostsStatus(SITE.t("blog.loading"));
-        const { data, error } = await db.from("posts").select(POST_FIELDS).order("created_at", { ascending: false });
+        setPostsStatus(SITE.t("posts.loading"));
+        const { data, error } = await db.from("posts").select(POST_FIELDS)
+            .order("pinned", { ascending: false })
+            .order("created_at", { ascending: false });
         if (error) {
             console.error(error);
             posts = [];

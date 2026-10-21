@@ -42,8 +42,7 @@
     let posts = null;
     let statusKey = "posts.loading";
 
-    const plain = (md) => md.replace(/[#*`>]/g, "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/\s+/g, " ").trim();
-
+    // Each row shows the post's photo behind the text, fading out towards the top.
     const renderActivity = () => {
         activityStatus.hidden = Boolean(posts && posts.length);
         activityStatus.textContent = SITE.t(statusKey);
@@ -51,11 +50,15 @@
         activityList.innerHTML = posts.map(p => {
             const meta = [SITE.date(p.created_at)];
             if (SITE.parseTweet(p.link_url)) meta.push(SITE.t("post.tweet"));
-            const excerpt = plain(p.body || "");
-            return `<li><a href="/post?id=${p.id}">
-                <p class="muted small">${SITE.escape(meta.join(" · "))}</p>
-                <strong>${SITE.escape(SITE.posts.title(p))}</strong>
-                ${excerpt && p.title ? `<p class="excerpt">${SITE.escape(excerpt)}</p>` : ""}
+            const excerpt = SITE.posts.plain(p.body);
+            const image = SITE.safeUrl(p.image_url);
+            return `<li><a href="/post?id=${p.id}" class="post-row${image ? " has-image" : ""}">
+                ${image ? `<span class="row-bg" style="background-image:url('${SITE.escape(image)}')" aria-hidden="true"></span>` : ""}
+                <span class="row-content">
+                    <span class="post-meta">${p.pinned ? SITE.posts.pinBadge() : ""}<span>${SITE.escape(meta.join(" · "))}</span></span>
+                    <strong>${SITE.escape(SITE.posts.title(p))}</strong>
+                    ${excerpt && p.title ? `<span class="excerpt">${SITE.escape(excerpt)}</span>` : ""}
+                </span>
             </a></li>`;
         }).join("");
     };

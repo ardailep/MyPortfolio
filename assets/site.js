@@ -73,6 +73,10 @@
             "post.copied": "Link copied",
             "post.edited": "edited",
             "post.draft": "Draft",
+            "post.pinned": "Pinned",
+            "posts.view": "View",
+            "posts.view.list": "List",
+            "posts.view.grid": "Grid",
             "post.tweet": "on X",
             "post.tweet.title": "Post on X",
             "post.notfound": "This post doesn't exist or was removed.",
@@ -127,6 +131,9 @@
             "admin.f.image.ph": "…or paste an image URL (https://)",
             "admin.f.remove": "Remove image",
             "admin.f.published": "Published (untick to keep it as a draft)",
+            "admin.f.pinned": "Pin to the top",
+            "admin.pin": "Pin",
+            "admin.unpin": "Unpin",
             "admin.save": "Save",
             "admin.cancel": "Cancel",
             "admin.saving": "Saving…",
@@ -213,6 +220,10 @@
             "post.copied": "Link kopyalandı",
             "post.edited": "düzenlendi",
             "post.draft": "Taslak",
+            "post.pinned": "Sabitlendi",
+            "posts.view": "Görünüm",
+            "posts.view.list": "Liste",
+            "posts.view.grid": "Grid",
             "post.tweet": "X'te",
             "post.tweet.title": "X gönderisi",
             "post.notfound": "Bu gönderi yok ya da kaldırılmış.",
@@ -267,6 +278,9 @@
             "admin.f.image.ph": "…ya da görsel linki yapıştır (https://)",
             "admin.f.remove": "Görseli kaldır",
             "admin.f.published": "Yayında (taslak olarak tutmak için işareti kaldır)",
+            "admin.f.pinned": "En üste sabitle",
+            "admin.pin": "Sabitle",
+            "admin.unpin": "Sabitlemeyi kaldır",
             "admin.save": "Kaydet",
             "admin.cancel": "Vazgeç",
             "admin.saving": "Kaydediliyor…",
@@ -442,6 +456,7 @@
 
         document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = SITE.t(el.dataset.i18n); });
         document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = SITE.t(el.dataset.i18nPlaceholder); });
+        document.querySelectorAll("[data-i18n-label]").forEach(el => { el.setAttribute("aria-label", SITE.t(el.dataset.i18nLabel)); });
         document.querySelectorAll(".lang-switch button").forEach(btn => btn.setAttribute("aria-pressed", String(btn.dataset.lang === next)));
         try { localStorage.setItem("lang", next); } catch (e) { /* storage unavailable */ }
 

@@ -17,16 +17,28 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/site.css?v=43">
+    <link rel="stylesheet" href="assets/site.css?v=44">
 </head>
 
 <body data-page="posts" data-title-key="meta.posts">
 
     <main class="page">
         <div class="wrap">
-            <header class="page-head">
-                <h1 data-i18n="posts.title"></h1>
-                <p data-i18n="posts.lede"></p>
+            <header class="page-head page-head-row">
+                <div>
+                    <h1 data-i18n="posts.title"></h1>
+                    <p data-i18n="posts.lede"></p>
+                </div>
+                <div class="view-switch" role="group" data-i18n-label="posts.view">
+                    <button type="button" data-view="list" aria-pressed="true">
+                        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" /></svg>
+                        <span data-i18n="posts.view.list"></span>
+                    </button>
+                    <button type="button" data-view="grid" aria-pressed="false">
+                        <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="5.5" height="5.5" rx="1" /><rect x="11.5" y="3" width="5.5" height="5.5" rx="1" /><rect x="3" y="11.5" width="5.5" height="5.5" rx="1" /><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1" /></svg>
+                        <span data-i18n="posts.view.grid"></span>
+                    </button>
+                </div>
             </header>
             <p class="status" id="feedStatus" data-i18n="posts.loading"></p>
             <div class="feed" id="feed"></div>
@@ -34,10 +46,10 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="config.js?v=43"></script>
-    <script src="assets/site.js?v=43"></script>
-    <script src="assets/posts.js?v=43"></script>
-    <script src="assets/feed.js?v=43"></script>
+    <script src="config.js?v=44"></script>
+    <script src="assets/site.js?v=44"></script>
+    <script src="assets/posts.js?v=44"></script>
+    <script src="assets/feed.js?v=44"></script>
 </body>
 
 </html>
