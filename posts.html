@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts · Swaxilep</title>
+    <meta name="description" content="Swaxilep (Teoman) — 3D artist and game developer, sculpture student at Anadolu University. Posts, notes and contact.">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta property="og:title" content="Posts · Swaxilep">
+    <meta property="og:image" content="https://swaxilep.com/shared/Profile.png">
+    <meta property="og:url" content="https://swaxilep.com/posts">
+
+    <link rel="icon" type="image/png" href="shared/Icon.png">
+    <link rel="apple-touch-icon" href="shared/Icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/site.css?v=41">
+</head>
+
+<body data-page="posts" data-title-key="meta.posts">
+
+    <main class="page">
+        <div class="wrap">
+            <header class="page-head">
+                <h1 data-i18n="posts.title"></h1>
+                <p data-i18n="posts.lede"></p>
+            </header>
+            <p class="status" id="feedStatus" data-i18n="posts.loading"></p>
+            <div class="feed" id="feed"></div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+    <script src="config.js?v=41"></script>
+    <script src="assets/site.js?v=41"></script>
+    <script src="assets/posts.js?v=41"></script>
+    <script src="assets/feed.js?v=41"></script>
+</body>
+
+</html>

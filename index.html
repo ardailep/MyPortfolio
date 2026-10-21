@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swaxilep (Teoman) · 3D Artist &amp; Game Developer</title>
     <meta name="description" content="Swaxilep (Teoman) — 3D artist and game developer, sculpture student at Anadolu University. Posts, notes and contact.">
-    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff">
 
     <meta property="og:title" content="Swaxilep (Teoman)">
     <meta property="og:description" content="3D artist and game developer. Posts, notes and contact.">
@@ -16,143 +15,108 @@
 
     <link rel="icon" type="image/png" href="shared/Icon.png">
     <link rel="apple-touch-icon" href="shared/Icon.png">
-    <link rel="stylesheet" href="assets/site.css?v=40">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/site.css?v=41">
 </head>
 
 <body data-page="profile" data-title-key="meta.home">
 
-    <main class="layout">
-        <div class="main-col">
+    <main class="page">
+        <div class="wrap">
 
-            <!-- Profile -->
-            <section class="card profile-card">
-                <div class="cover" aria-hidden="true"></div>
-                <div class="profile-body">
-                    <img class="profile-photo" src="shared/Profile.png" alt="Teoman (Swaxilep)" width="152" height="152">
-                    <div class="profile-top">
-                        <div>
-                            <h1 class="profile-name">Swaxilep <small>(Teoman)</small></h1>
-                            <p class="profile-headline" data-i18n="profile.headline"></p>
-                            <p class="profile-meta muted">
-                                <span>Blender · Roblox Studio · Luau</span><span class="dot"></span><a href="#" id="contactOpen" data-i18n="profile.contact"></a>
-                            </p>
-                            <p class="profile-meta" id="views" hidden></p>
-                        </div>
-                        <div class="profile-org">
-                            <span class="org-logo" aria-hidden="true">AÜ</span>
-                            <span data-i18n="profile.edu"></span>
-                        </div>
-                    </div>
-                    <div class="profile-actions">
-                        <a href="/notes" class="btn btn-primary" data-i18n="profile.note"></a>
-                        <button type="button" class="btn btn-outline" id="contactOpen2" data-i18n="profile.contact"></button>
-                        <a href="/blog" class="btn btn-plain" data-i18n="profile.posts"></a>
-                    </div>
+            <header class="intro">
+                <img class="intro-photo" src="shared/Profile.png" alt="Teoman (Swaxilep)" width="104" height="104">
+                <div>
+                    <h1>Swaxilep <span>Teoman</span></h1>
+                    <p class="intro-headline" data-i18n="profile.headline"></p>
+                    <p class="intro-sub" data-i18n="profile.sub"></p>
                 </div>
-            </section>
+            </header>
+            <div class="intro-actions">
+                <a href="#contact" class="btn btn-primary" data-i18n="profile.contact"></a>
+                <a href="/notes" class="btn" data-i18n="profile.note"></a>
+            </div>
 
-            <!-- About -->
-            <section class="card" id="about">
+            <section class="section" id="about">
                 <h2 data-i18n="about.title"></h2>
-                <div class="prose">
+                <div class="section-body prose">
                     <p data-i18n="about.p1"></p>
                     <p data-i18n="about.p2"></p>
                     <p data-i18n="about.p3"></p>
                 </div>
             </section>
 
-            <!-- Latest posts -->
-            <section class="card" id="activity">
+            <section class="section" id="posts">
                 <h2 data-i18n="activity.title"></h2>
-                <p class="status" id="activityStatus" data-i18n="blog.loading"></p>
-                <ul class="activity-list" id="activityList"></ul>
-                <div class="card-foot"><a href="/blog" data-i18n="activity.all"></a></div>
+                <div class="section-body">
+                    <p class="status" id="activityStatus" data-i18n="posts.loading"></p>
+                    <ul class="post-rows" id="activityList"></ul>
+                    <p class="section-foot"><a href="/posts" class="text-link" data-i18n="activity.all"></a></p>
+                </div>
             </section>
 
-            <!-- Experience -->
-            <section class="card">
+            <section class="section">
                 <h2 data-i18n="exp.title"></h2>
-                <div class="entry">
-                    <span class="org-logo" aria-hidden="true">3D</span>
-                    <div>
+                <div class="section-body entries">
+                    <div class="entry">
                         <h3 data-i18n="exp.1.title"></h3>
-                        <p data-i18n="exp.1.sub"></p>
-                        <p class="muted">Blender</p>
+                        <p class="muted" data-i18n="exp.1.sub"></p>
                         <p class="entry-text" data-i18n="exp.1.text"></p>
                     </div>
-                </div>
-                <div class="entry">
-                    <span class="org-logo" aria-hidden="true">R</span>
-                    <div>
+                    <div class="entry">
                         <h3 data-i18n="exp.2.title"></h3>
-                        <p>Roblox</p>
-                        <p class="muted">Roblox Studio · Luau</p>
+                        <p class="muted" data-i18n="exp.2.sub"></p>
                         <p class="entry-text" data-i18n="exp.2.text"></p>
                     </div>
                 </div>
             </section>
 
-            <!-- Education -->
-            <section class="card">
+            <section class="section">
                 <h2 data-i18n="edu.title"></h2>
-                <div class="entry">
-                    <span class="org-logo" aria-hidden="true">AÜ</span>
-                    <div>
+                <div class="section-body entries">
+                    <div class="entry">
                         <h3 data-i18n="edu.1.title"></h3>
-                        <p data-i18n="edu.1.sub"></p>
+                        <p class="muted" data-i18n="edu.1.sub"></p>
+                    </div>
+                    <div class="entry">
+                        <h3 data-i18n="edu.2.title"></h3>
+                        <p class="muted" data-i18n="edu.2.sub"></p>
                     </div>
                 </div>
             </section>
 
-            <!-- Skills -->
-            <section class="card">
+            <section class="section">
                 <h2 data-i18n="skills.title"></h2>
-                <ul class="chips">
-                    <li data-i18n="skill.modeling"></li>
-                    <li data-i18n="skill.animation"></li>
-                    <li data-i18n="skill.environment"></li>
-                    <li data-i18n="skill.handpainted"></li>
-                    <li data-i18n="skill.sculpture"></li>
-                    <li>Blender</li>
-                    <li>Roblox Studio</li>
-                    <li>Luau</li>
-                </ul>
+                <div class="section-body">
+                    <ul class="skills">
+                        <li data-i18n="skill.modeling"></li>
+                        <li data-i18n="skill.animation"></li>
+                        <li data-i18n="skill.environment"></li>
+                        <li data-i18n="skill.handpainted"></li>
+                        <li data-i18n="skill.sculpture"></li>
+                        <li>Blender</li>
+                        <li>Roblox Studio</li>
+                        <li>Luau</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section" id="contact">
+                <h2 data-i18n="contact.title"></h2>
+                <div class="section-body">
+                    <ul class="contact-list" id="contactList"></ul>
+                </div>
             </section>
         </div>
-
-        <aside class="side-col">
-            <section class="card" id="contact">
-                <h2 class="card-title" data-i18n="contact.title"></h2>
-                <ul class="contact-list" data-contact-list></ul>
-            </section>
-
-            <section class="card">
-                <h2 class="card-title" data-i18n="notes.recent"></h2>
-                <p class="status" id="recentStatus" data-i18n="notes.loading"></p>
-                <ul class="note-list" id="recentNotes"></ul>
-                <div class="card-foot"><a href="/notes" data-i18n="notes.all"></a></div>
-            </section>
-        </aside>
     </main>
 
-    <!-- Contact info dialog -->
-    <div class="dialog" id="contactDialog" role="dialog" aria-modal="true" aria-labelledby="contactTitle" hidden>
-        <div class="card dialog-card">
-            <div class="dialog-head">
-                <h2 id="contactTitle" data-i18n="profile.contact"></h2>
-                <button type="button" class="icon-btn" id="contactClose" data-i18n-label="contact.close" aria-label="Close">✕</button>
-            </div>
-            <div class="dialog-body">
-                <ul class="contact-list" data-contact-list data-with-site></ul>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="config.js?v=40"></script>
-    <script src="assets/site.js?v=40"></script>
-    <script src="assets/posts.js?v=40"></script>
-    <script src="assets/home.js?v=40"></script>
+    <script src="config.js?v=41"></script>
+    <script src="assets/site.js?v=41"></script>
+    <script src="assets/posts.js?v=41"></script>
+    <script src="assets/home.js?v=41"></script>
 </body>
 
 </html>

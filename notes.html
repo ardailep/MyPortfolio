@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes · Swaxilep</title>
     <meta name="description" content="Swaxilep (Teoman) — 3D artist and game developer, sculpture student at Anadolu University. Posts, notes and contact.">
-    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff">
 
     <meta property="og:title" content="Notes · Swaxilep">
     <meta property="og:description" content="Leave Swaxilep a note.">
@@ -16,18 +15,22 @@
 
     <link rel="icon" type="image/png" href="shared/Icon.png">
     <link rel="apple-touch-icon" href="shared/Icon.png">
-    <link rel="stylesheet" href="assets/site.css?v=40">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/site.css?v=41">
 </head>
 
 <body data-page="notes" data-title-key="meta.notes">
 
-    <main class="layout">
-        <div class="main-col">
-            <!-- Write a note -->
-            <section class="card">
-                <h1 class="card-title" data-i18n="notes.title"></h1>
-                <p class="muted card-sub" data-i18n="notes.lede"></p>
+    <main class="page">
+        <div class="wrap">
+            <header class="page-head">
+                <h1 data-i18n="notes.title"></h1>
+                <p data-i18n="notes.lede"></p>
+            </header>
 
+            <div class="panel">
                 <form id="noteForm" novalidate>
                     <label class="field">
                         <span class="field-label" data-i18n="notes.name"></span>
@@ -48,37 +51,29 @@
                     <p class="form-error" id="noteError" role="alert" hidden></p>
 
                     <div class="form-foot">
-                        <span class="muted small" data-i18n="notes.once"></span>
+                        <span class="hint" data-i18n="notes.once"></span>
                         <button type="submit" class="btn btn-primary" id="noteSend" data-i18n="notes.send"></button>
                     </div>
                 </form>
 
                 <div class="sent" id="noteSent" hidden>
-                    <span class="sent-icon" aria-hidden="true">✓</span>
-                    <div>
-                        <h2 data-i18n="notes.sent.title"></h2>
-                        <p class="muted" data-i18n="notes.sent.text"></p>
-                    </div>
+                    <h2 data-i18n="notes.sent.title"></h2>
+                    <p data-i18n="notes.sent.text"></p>
                 </div>
-            </section>
+            </div>
 
-            <!-- All notes -->
-            <section class="card">
+            <div class="notes-head">
                 <h2 id="noteTotal" data-i18n="notes.title"></h2>
-                <p class="status" id="noteStatus" data-i18n="notes.loading"></p>
-                <ul class="note-list" id="noteList"></ul>
-            </section>
+            </div>
+            <p class="status" id="noteStatus" data-i18n="notes.loading"></p>
+            <ul class="note-list" id="noteList"></ul>
         </div>
-
-        <aside class="side-col">
-            <div data-mini-profile></div>
-        </aside>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="config.js?v=40"></script>
-    <script src="assets/site.js?v=40"></script>
-    <script src="assets/notes.js?v=40"></script>
+    <script src="config.js?v=41"></script>
+    <script src="assets/site.js?v=41"></script>
+    <script src="assets/notes.js?v=41"></script>
 </body>
 
 </html>

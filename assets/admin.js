@@ -4,7 +4,7 @@
     const SITE = window.SITE;
     const db = SITE.db;
     const BUCKET = "post-images";
-    const POST_FIELDS = "id, title, body, image_url, published, created_at, updated_at";
+    const POST_FIELDS = "id, title, body, image_url, tweet_url, published, created_at, updated_at";
     const NOTE_FIELDS = "id, name, message, created_at, reply, reply_gif, replied_at";
     const $ = (id) => document.getElementById(id);
 
@@ -21,7 +21,7 @@
     const showView = (admin) => {
         loginCard.hidden = admin;
         panel.hidden = !admin;
-        const link = document.querySelector('.topnav [data-nav="admin"]');
+        const link = document.querySelector('.nav [data-nav="admin"]');
         if (link) link.hidden = false;
         if (admin) { loadPosts(); loadNotes(); }
     };
@@ -86,6 +86,7 @@
     const titleInput = $("postTitle");
     const bodyInput = $("postBody");
     const imageInput = $("postImage");
+    const tweetInput = $("postTweet");
     const fileInput = $("postFile");
     const preview = $("imagePreview");
     const removeImage = $("imageRemove");
@@ -133,6 +134,7 @@
         titleInput.value = post.title;
         bodyInput.value = post.body;
         imageInput.value = post.image_url || "";
+        tweetInput.value = post.tweet_url || "";
         published.checked = post.published;
         $("formTitle").dataset.i18n = "admin.editing";
         $("formTitle").textContent = SITE.t("admin.editing");
@@ -176,13 +178,18 @@
         setError(null);
         const title = titleInput.value.trim().slice(0, 200);
         const image = imageInput.value.trim();
-        if (!title) { setError(SITE.t("admin.title.required")); titleInput.focus(); return; }
+        const body = bodyInput.value.trim().slice(0, 20000);
+        const tweetRaw = tweetInput.value.trim();
+        const tweet = SITE.parseTweet(tweetRaw);
+        if (tweetRaw && !tweet) { setError(SITE.t("admin.tweet.bad")); tweetInput.focus(); return; }
+        if (!title && !body && !tweet) { setError(SITE.t("admin.required")); titleInput.focus(); return; }
         if (image && !SITE.safeUrl(image)) { setError(SITE.t("admin.image.bad")); imageInput.focus(); return; }
 
         const row = {
             title,
-            body: bodyInput.value.trim().slice(0, 20000),
+            body,
             image_url: image || null,
+            tweet_url: tweet ? tweet.url : null,
             published: published.checked,
         };
 
@@ -212,7 +219,7 @@
     // ─────────────────────────────────────────
     const postList = $("postList");
     const postsStatus = $("postsStatus");
-    const isMissingTable = (err) => Boolean(err && ["42P01", "PGRST205", "PGRST200"].includes(err.code));
+    const isMissingTable = (err) => Boolean(err && ["42P01", "42703", "PGRST204", "PGRST205", "PGRST200"].includes(err.code));
     let postsStatusText = null;
 
     const setPostsStatus = (text) => {
@@ -232,12 +239,14 @@
                             ${post.published ? "" : ` · <span class="badge">${SITE.escape(SITE.t("post.draft"))}</span>`}</p>
                     </div>
                     <div class="admin-actions">
-                        <a class="btn btn-plain btn-sm" href="/post?id=${post.id}" target="_blank" rel="noopener">${SITE.escape(SITE.t("admin.view"))}</a>
-                        <button type="button" class="btn btn-outline btn-sm" data-act="edit">${SITE.escape(SITE.t("admin.edit"))}</button>
+                        <a class="btn btn-sm" href="/post?id=${post.id}" target="_blank" rel="noopener">${SITE.escape(SITE.t("admin.view"))}</a>
+                        <button type="button" class="btn btn-sm" data-act="edit">${SITE.escape(SITE.t("admin.edit"))}</button>
                         <button type="button" class="btn btn-danger btn-sm" data-act="delete">${SITE.escape(SITE.t("admin.delete"))}</button>
                     </div>
                 </div>`;
-            li.querySelector("strong").textContent = post.title;
+            li.querySelector("strong").textContent = post.title
+                || (post.body || "").split("\n").map(s => s.trim()).find(Boolean)
+                || (post.tweet_url ? `X · ${post.tweet_url.replace("https://", "")}` : "—");
             li.querySelector('[data-act="edit"]').addEventListener("click", () => editPost(post));
             li.querySelector('[data-act="delete"]').addEventListener("click", async (e) => {
                 const btn = e.currentTarget;

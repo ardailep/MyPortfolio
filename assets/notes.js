@@ -36,27 +36,23 @@
         const gif = SITE.safeUrl(n.reply_gif);
         const reply = n.reply || gif ? `
             <div class="note-reply">
-                <img class="avatar avatar-sm" src="shared/Profile.png" alt="">
-                <div class="note-bubble">
+                <p class="note-head">
                     <span class="note-name">${SITE.escape(SITE.t("notes.reply"))}</span>
-                    ${n.replied_at ? `<span class="muted small"> · ${SITE.escape(SITE.ago(n.replied_at))}</span>` : ""}
-                    ${n.reply ? `<p class="note-text">${SITE.escape(n.reply)}</p>` : ""}
-                    ${gif ? `<img class="note-gif" src="${gif}" alt="GIF" loading="lazy" referrerpolicy="no-referrer">` : ""}
-                </div>
+                    ${n.replied_at ? `<span class="muted small">${SITE.escape(SITE.ago(n.replied_at))}</span>` : ""}
+                </p>
+                ${n.reply ? `<p class="note-text">${SITE.escape(n.reply)}</p>` : ""}
+                ${gif ? `<img class="note-gif" src="${gif}" alt="GIF" loading="lazy" referrerpolicy="no-referrer">` : ""}
             </div>` : "";
 
         return `
-            <li class="note${mine ? " is-mine" : ""}">
-                <span class="avatar avatar-letter" aria-hidden="true">${SITE.escape(SITE.initial(n.name))}</span>
-                <div class="note-main">
-                    <div class="note-bubble">
-                        <span class="note-name">${SITE.escape(n.name)}</span>
-                        ${mine ? `<span class="badge">${SITE.escape(SITE.t("notes.you"))}</span>` : ""}
-                        <span class="muted small" title="${SITE.escape(SITE.date(n.created_at))}"> · ${SITE.escape(SITE.ago(n.created_at))}</span>
-                        <p class="note-text">${SITE.escape(n.message)}</p>
-                    </div>
-                    ${reply}
-                </div>
+            <li class="note">
+                <p class="note-head">
+                    <span class="note-name">${SITE.escape(n.name)}</span>
+                    ${mine ? `<span class="badge">${SITE.escape(SITE.t("notes.you"))}</span>` : ""}
+                    <span class="muted small" title="${SITE.escape(SITE.date(n.created_at))}">${SITE.escape(SITE.ago(n.created_at))}</span>
+                </p>
+                <p class="note-text">${SITE.escape(n.message)}</p>
+                ${reply}
             </li>`;
     };
 

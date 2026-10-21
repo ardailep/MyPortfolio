@@ -1,7 +1,7 @@
-// Blog posts: loading from Supabase and rendering LinkedIn-style post cards. Used by the profile, /blog and /post.
+// Posts: loading from Supabase and rendering them (text, image and/or an embedded X post). Used by /, /posts and /post.
 (() => {
     const SITE = window.SITE;
-    const FIELDS = "id, title, body, image_url, published, created_at, updated_at";
+    const FIELDS = "id, title, body, image_url, tweet_url, published, created_at, updated_at";
 
     const list = async (limit = 100) => {
         if (!SITE.db) return [];
@@ -21,60 +21,90 @@
         return data;
     };
 
-    const card = (post, { full = false } = {}) => {
-        const el = document.createElement("article");
-        el.className = "card post";
-        const edited = post.updated_at && new Date(post.updated_at) - new Date(post.created_at) > 60000;
-        const image = SITE.safeUrl(post.image_url);
+    // Posts may have no title (e.g. a shared X post): fall back to the first line of text.
+    const title = (post) => {
+        if (post.title) return post.title;
+        const first = (post.body || "").replace(/[#*`>]/g, "").split("\n").map(s => s.trim()).find(Boolean);
+        if (first) return first.length > 80 ? `${first.slice(0, 80)}…` : first;
+        return SITE.t("post.tweet.title");
+    };
 
-        el.innerHTML = `
-            <header class="post-head">
-                <a href="/"><img class="avatar" src="shared/Profile.png" alt="" width="48" height="48"></a>
-                <div>
-                    <a href="/" class="post-author">Swaxilep</a>
-                    <p class="muted small post-headline">${SITE.escape(SITE.t("profile.headline"))}</p>
-                    <p class="muted small">
-                        <a href="/post?id=${post.id}" class="post-time" title="${SITE.escape(SITE.date(post.created_at))}">${SITE.escape(SITE.ago(post.created_at))}</a>${edited ? ` · ${SITE.escape(SITE.t("post.edited"))}` : ""}
-                        ${post.published ? "" : ` · <span class="badge">${SITE.escape(SITE.t("post.draft"))}</span>`}
-                    </p>
-                </div>
-            </header>
-            <h2 class="post-title">${full ? "" : `<a href="/post?id=${post.id}">`}${SITE.escape(post.title)}${full ? "" : "</a>"}</h2>
-            <div class="post-body rich${full ? "" : " is-clamped"}">${SITE.richText(post.body)}</div>
-            ${full ? "" : `<button type="button" class="link-btn post-more" hidden>${SITE.escape(SITE.t("post.more"))}</button>`}
-            ${image ? `<a class="post-image" href="/post?id=${post.id}"><img src="${image}" alt="" loading="lazy" referrerpolicy="no-referrer"></a>` : ""}
-            <footer class="post-actions">
-                <button type="button" class="action-btn post-share">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a3 3 0 1 1 4.2 4.2l-2 2-1.4-1.4 2-2a1 1 0 1 0-1.4-1.4L12 13.4a1 1 0 0 1-1.4 0Zm2.8-2.8a1 1 0 0 1 0 1.4l-3.5 3.5a3 3 0 1 1-4.2-4.2l2-2 1.4 1.4-2 2a1 1 0 1 0 1.4 1.4L12 10.6a1 1 0 0 1 1.4 0Z"/></svg>
-                    <span>${SITE.escape(SITE.t("post.share"))}</span>
-                </button>
-            </footer>`;
-
-        if (full && image) el.querySelector(".post-image").removeAttribute("href");
-
-        // "…see more" only when the clamped text actually overflows.
-        const body = el.querySelector(".post-body");
-        const more = el.querySelector(".post-more");
-        if (more) {
-            requestAnimationFrame(() => { more.hidden = body.scrollHeight <= body.clientHeight + 2; });
-            more.addEventListener("click", () => {
-                const open = body.classList.toggle("is-clamped") === false;
-                more.textContent = SITE.t(open ? "post.less" : "post.more");
+    // X's embed script turns <blockquote class="twitter-tweet"> into the real post. Loaded once, only when needed.
+    let widgets = null;
+    const loadWidgets = () => {
+        if (!widgets) {
+            widgets = new Promise((resolve, reject) => {
+                const s = document.createElement("script");
+                s.src = "https://platform.twitter.com/widgets.js";
+                s.async = true;
+                s.charset = "utf-8";
+                s.onload = () => resolve(window.twttr);
+                s.onerror = reject;
+                document.head.appendChild(s);
             });
         }
+        return widgets;
+    };
+    const embedTweets = (root) => {
+        const boxes = root.querySelectorAll(".post-tweet[data-tweet-id]");
+        if (!boxes.length) return;
+        loadWidgets().then(twttr => twttr.ready(() => boxes.forEach(box => {
+            twttr.widgets.createTweet(box.dataset.tweetId, box, { dnt: true, theme: "light", lang: SITE.lang, conversation: "none" })
+                .then(node => { if (node) box.querySelector(".tweet-fallback").remove(); });
+        }))).catch(() => { /* fallback link stays */ });
+    };
+
+    const tweetHtml = (url) => {
+        const tweet = SITE.parseTweet(url);
+        if (!tweet) return "";
+        const href = `https://twitter.com/${tweet.user}/status/${tweet.id}`;
+        return `<div class="post-tweet" data-tweet-id="${tweet.id}">
+            <a class="tweet-fallback" href="${href}" target="_blank" rel="noopener">${SITE.escape(SITE.t("post.tweet.title"))} · @${SITE.escape(tweet.user)} ↗</a>
+        </div>`;
+    };
+
+    const card = (post, { full = false } = {}) => {
+        const el = document.createElement("article");
+        el.className = "post" + (full ? " post-full" : "");
+        const edited = post.updated_at && new Date(post.updated_at) - new Date(post.created_at) > 60000;
+        const image = SITE.safeUrl(post.image_url);
+        const link = `/post?id=${post.id}`;
+        const meta = [`<a href="${link}" title="${SITE.escape(SITE.date(post.created_at))}">${SITE.escape(SITE.date(post.created_at))}</a>`];
+        if (edited) meta.push(SITE.escape(SITE.t("post.edited")));
+        if (post.tweet_url) meta.push(SITE.escape(SITE.t("post.tweet")));
+        if (!post.published) meta.push(`<span class="badge">${SITE.escape(SITE.t("post.draft"))}</span>`);
+
+        el.innerHTML = `
+            <p class="post-meta">${meta.join("<span>·</span>")}</p>
+            ${post.title ? `<h2 class="post-title">${full ? "" : `<a href="${link}">`}${SITE.escape(post.title)}${full ? "" : "</a>"}</h2>` : ""}
+            ${post.body ? `<div class="post-body rich${full ? "" : " is-clamped"}">${SITE.richText(post.body)}</div>` : ""}
+            ${image ? `<div class="post-image"><img src="${image}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>` : ""}
+            ${tweetHtml(post.tweet_url)}
+            <div class="post-foot">
+                ${full ? "" : `<a href="${link}" class="link-btn post-more" hidden>${SITE.escape(SITE.t("post.more"))}</a>`}
+                <button type="button" class="link-btn post-share">${SITE.escape(SITE.t("post.share"))}</button>
+            </div>`;
+
+        // "Read more" only when the clamped text actually overflows.
+        const body = el.querySelector(".post-body.is-clamped");
+        const more = el.querySelector(".post-more");
+        if (body && more) requestAnimationFrame(() => { more.hidden = body.scrollHeight <= body.clientHeight + 2; });
 
         const share = el.querySelector(".post-share");
         share.addEventListener("click", async () => {
-            const url = `${location.origin}/post?id=${post.id}`;
+            const url = `${location.origin}${link}`;
             try { await navigator.clipboard.writeText(url); } catch (e) { window.prompt("", url); return; }
-            share.lastElementChild.textContent = SITE.t("post.copied");
-            setTimeout(() => { share.lastElementChild.textContent = SITE.t("post.share"); }, 2000);
+            share.textContent = SITE.t("post.copied");
+            setTimeout(() => { share.textContent = SITE.t("post.share"); }, 2000);
         });
+
+        // Embed after the card is in the page.
+        requestAnimationFrame(() => embedTweets(el));
         return el;
     };
 
-    // True when the posts table hasn't been created yet (supabase-posts.sql not run).
-    const isMissingTable = (err) => Boolean(err && ["42P01", "PGRST205", "PGRST200"].includes(err.code));
+    // True when the posts table (or its tweet_url column) hasn't been created yet — supabase-posts.sql not run.
+    const isMissingTable = (err) => Boolean(err && ["42P01", "42703", "PGRST205", "PGRST204", "PGRST200"].includes(err.code));
 
-    SITE.posts = { list, get, card, isMissingTable };
+    SITE.posts = { list, get, card, title, isMissingTable };
 })();
