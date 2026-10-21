@@ -4,75 +4,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swaxilep</title>
-    <meta name="description" content="Swaxilep (Teoman) — 3D artist and game developer. About, notes and Roblox.">
-    <meta name="theme-color" content="#0d0a09">
+    <title>Swaxilep (Teoman) · 3D Artist &amp; Game Developer</title>
+    <meta name="description" content="Swaxilep (Teoman) — 3D artist and game developer, sculpture student at Anadolu University. Posts, notes and contact.">
+    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 
-    <meta property="og:title" content="Swaxilep">
-    <meta property="og:description" content="3D artist and game developer. About, notes and Roblox.">
+    <meta property="og:title" content="Swaxilep (Teoman)">
+    <meta property="og:description" content="3D artist and game developer. Posts, notes and contact.">
     <meta property="og:image" content="https://swaxilep.com/shared/Profile.png">
     <meta property="og:url" content="https://swaxilep.com">
 
     <link rel="icon" type="image/png" href="shared/Icon.png">
     <link rel="apple-touch-icon" href="shared/Icon.png">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=33">
+    <link rel="stylesheet" href="assets/site.css?v=40">
 </head>
 
-<body data-title-key="hub.meta.title">
+<body data-page="profile" data-title-key="meta.home">
 
-    <!-- Background -->
-    <div class="bg" aria-hidden="true">
-        <div class="bg-image"></div>
-        <video class="bg-video" muted loop playsinline preload="none" data-src="shared/background.mp4?v=33">
-        </video>
-        <div class="bg-tint"></div>
-        <div class="bg-grain"></div>
-    </div>
+    <main class="layout">
+        <div class="main-col">
 
-    <main class="hub">
-        <div class="hub-top">
-            <div class="lang-switch" role="group" aria-label="Language">
-                <button type="button" data-lang="en" aria-pressed="true">EN</button>
-                <button type="button" data-lang="tr" aria-pressed="false">TR</button>
-            </div>
+            <!-- Profile -->
+            <section class="card profile-card">
+                <div class="cover" aria-hidden="true"></div>
+                <div class="profile-body">
+                    <img class="profile-photo" src="shared/Profile.png" alt="Teoman (Swaxilep)" width="152" height="152">
+                    <div class="profile-top">
+                        <div>
+                            <h1 class="profile-name">Swaxilep <small>(Teoman)</small></h1>
+                            <p class="profile-headline" data-i18n="profile.headline"></p>
+                            <p class="profile-meta muted">
+                                <span>Blender · Roblox Studio · Luau</span><span class="dot"></span><a href="#" id="contactOpen" data-i18n="profile.contact"></a>
+                            </p>
+                            <p class="profile-meta" id="views" hidden></p>
+                        </div>
+                        <div class="profile-org">
+                            <span class="org-logo" aria-hidden="true">AÜ</span>
+                            <span data-i18n="profile.edu"></span>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <a href="/notes" class="btn btn-primary" data-i18n="profile.note"></a>
+                        <button type="button" class="btn btn-outline" id="contactOpen2" data-i18n="profile.contact"></button>
+                        <a href="/blog" class="btn btn-plain" data-i18n="profile.posts"></a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About -->
+            <section class="card" id="about">
+                <h2 data-i18n="about.title"></h2>
+                <div class="prose">
+                    <p data-i18n="about.p1"></p>
+                    <p data-i18n="about.p2"></p>
+                    <p data-i18n="about.p3"></p>
+                </div>
+            </section>
+
+            <!-- Latest posts -->
+            <section class="card" id="activity">
+                <h2 data-i18n="activity.title"></h2>
+                <p class="status" id="activityStatus" data-i18n="blog.loading"></p>
+                <ul class="activity-list" id="activityList"></ul>
+                <div class="card-foot"><a href="/blog" data-i18n="activity.all"></a></div>
+            </section>
+
+            <!-- Experience -->
+            <section class="card">
+                <h2 data-i18n="exp.title"></h2>
+                <div class="entry">
+                    <span class="org-logo" aria-hidden="true">3D</span>
+                    <div>
+                        <h3 data-i18n="exp.1.title"></h3>
+                        <p data-i18n="exp.1.sub"></p>
+                        <p class="muted">Blender</p>
+                        <p class="entry-text" data-i18n="exp.1.text"></p>
+                    </div>
+                </div>
+                <div class="entry">
+                    <span class="org-logo" aria-hidden="true">R</span>
+                    <div>
+                        <h3 data-i18n="exp.2.title"></h3>
+                        <p>Roblox</p>
+                        <p class="muted">Roblox Studio · Luau</p>
+                        <p class="entry-text" data-i18n="exp.2.text"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education -->
+            <section class="card">
+                <h2 data-i18n="edu.title"></h2>
+                <div class="entry">
+                    <span class="org-logo" aria-hidden="true">AÜ</span>
+                    <div>
+                        <h3 data-i18n="edu.1.title"></h3>
+                        <p data-i18n="edu.1.sub"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills -->
+            <section class="card">
+                <h2 data-i18n="skills.title"></h2>
+                <ul class="chips">
+                    <li data-i18n="skill.modeling"></li>
+                    <li data-i18n="skill.animation"></li>
+                    <li data-i18n="skill.environment"></li>
+                    <li data-i18n="skill.handpainted"></li>
+                    <li data-i18n="skill.sculpture"></li>
+                    <li>Blender</li>
+                    <li>Roblox Studio</li>
+                    <li>Luau</li>
+                </ul>
+            </section>
         </div>
 
-        <header class="hub-head">
-            <img class="hub-photo" src="shared/Profile.png?v=33" alt="Photo of Teoman (Swaxilep)" width="1381" height="1440">
-            <h1 class="hub-name">Swaxilep</h1>
-            <p class="hub-sub">Teoman · <span data-i18n="hub.role">3D artist &amp; game developer</span></p>
-            <p class="eyebrow hub-meta">
-                <span data-i18n="hero.eyebrow">Portfolio · 2026</span>
-                <span class="visitor-count" id="visitorCount" hidden></span>
-            </p>
-        </header>
+        <aside class="side-col">
+            <section class="card" id="contact">
+                <h2 class="card-title" data-i18n="contact.title"></h2>
+                <ul class="contact-list" data-contact-list></ul>
+            </section>
 
-        <nav class="hub-links" aria-label="Pages">
-            <a href="/about" class="hub-link">
-                <span class="hub-link-title" data-i18n="hub.about">About / Links</span>
-            </a>
-            <a href="/letters" class="hub-link">
-                <span class="hub-link-title" data-i18n="hub.note">Leave a note</span>
-            </a>
-            <a href="/roblox" class="hub-link">
-                <span class="hub-link-title">Roblox</span>
-            </a>
-            <a href="/chill" class="hub-link">
-                <span class="hub-link-title" data-i18n="hub.music">Chill</span>
-            </a>
-        </nav>
-
-        <p class="hub-foot" data-i18n="footer.copy">© 2026 Swaxilep. All rights reserved.</p>
+            <section class="card">
+                <h2 class="card-title" data-i18n="notes.recent"></h2>
+                <p class="status" id="recentStatus" data-i18n="notes.loading"></p>
+                <ul class="note-list" id="recentNotes"></ul>
+                <div class="card-foot"><a href="/notes" data-i18n="notes.all"></a></div>
+            </section>
+        </aside>
     </main>
 
-    <script src="letters-config.js?v=33"></script>
-    <script src="common.js?v=33"></script>
+    <!-- Contact info dialog -->
+    <div class="dialog" id="contactDialog" role="dialog" aria-modal="true" aria-labelledby="contactTitle" hidden>
+        <div class="card dialog-card">
+            <div class="dialog-head">
+                <h2 id="contactTitle" data-i18n="profile.contact"></h2>
+                <button type="button" class="icon-btn" id="contactClose" data-i18n-label="contact.close" aria-label="Close">✕</button>
+            </div>
+            <div class="dialog-body">
+                <ul class="contact-list" data-contact-list data-with-site></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+    <script src="config.js?v=40"></script>
+    <script src="assets/site.js?v=40"></script>
+    <script src="assets/posts.js?v=40"></script>
+    <script src="assets/home.js?v=40"></script>
 </body>
 
 </html>

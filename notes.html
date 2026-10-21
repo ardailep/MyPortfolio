@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes · Swaxilep</title>
+    <meta name="description" content="Swaxilep (Teoman) — 3D artist and game developer, sculpture student at Anadolu University. Posts, notes and contact.">
+    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+
+    <meta property="og:title" content="Notes · Swaxilep">
+    <meta property="og:description" content="Leave Swaxilep a note.">
+    <meta property="og:image" content="https://swaxilep.com/shared/Profile.png">
+    <meta property="og:url" content="https://swaxilep.com/notes">
+
+    <link rel="icon" type="image/png" href="shared/Icon.png">
+    <link rel="apple-touch-icon" href="shared/Icon.png">
+    <link rel="stylesheet" href="assets/site.css?v=40">
+</head>
+
+<body data-page="notes" data-title-key="meta.notes">
+
+    <main class="layout">
+        <div class="main-col">
+            <!-- Write a note -->
+            <section class="card">
+                <h1 class="card-title" data-i18n="notes.title"></h1>
+                <p class="muted card-sub" data-i18n="notes.lede"></p>
+
+                <form id="noteForm" novalidate>
+                    <label class="field">
+                        <span class="field-label" data-i18n="notes.name"></span>
+                        <input class="input" type="text" name="name" id="noteName" maxlength="40" autocomplete="nickname" required
+                            data-i18n-placeholder="notes.name.ph">
+                    </label>
+                    <label class="field">
+                        <span class="field-label">
+                            <span data-i18n="notes.message"></span>
+                            <span id="noteCount">0 / 1000</span>
+                        </span>
+                        <textarea class="input" name="message" id="noteMessage" maxlength="1000" rows="4" required
+                            data-i18n-placeholder="notes.message.ph"></textarea>
+                    </label>
+                    <!-- honeypot: real visitors never see or fill this -->
+                    <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                    <p class="form-error" id="noteError" role="alert" hidden></p>
+
+                    <div class="form-foot">
+                        <span class="muted small" data-i18n="notes.once"></span>
+                        <button type="submit" class="btn btn-primary" id="noteSend" data-i18n="notes.send"></button>
+                    </div>
+                </form>
+
+                <div class="sent" id="noteSent" hidden>
+                    <span class="sent-icon" aria-hidden="true">✓</span>
+                    <div>
+                        <h2 data-i18n="notes.sent.title"></h2>
+                        <p class="muted" data-i18n="notes.sent.text"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All notes -->
+            <section class="card">
+                <h2 id="noteTotal" data-i18n="notes.title"></h2>
+                <p class="status" id="noteStatus" data-i18n="notes.loading"></p>
+                <ul class="note-list" id="noteList"></ul>
+            </section>
+        </div>
+
+        <aside class="side-col">
+            <div data-mini-profile></div>
+        </aside>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+    <script src="config.js?v=40"></script>
+    <script src="assets/site.js?v=40"></script>
+    <script src="assets/notes.js?v=40"></script>
+</body>
+
+</html>

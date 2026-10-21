@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin · Swaxilep</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+
+    <link rel="icon" type="image/png" href="shared/Icon.png">
+    <link rel="stylesheet" href="assets/site.css?v=40">
+</head>
+
+<body data-page="admin" data-title-key="meta.admin">
+
+    <main class="layout layout-narrow">
+        <div class="main-col">
+
+            <p class="card status-card" id="adminStatus" hidden></p>
+
+            <!-- Login -->
+            <section class="card" id="loginCard" hidden>
+                <h1 class="card-title" data-i18n="admin.login.title"></h1>
+                <form id="loginForm">
+                    <label class="field">
+                        <span class="field-label" data-i18n="admin.email"></span>
+                        <input class="input" type="email" id="loginEmail" required autocomplete="username">
+                    </label>
+                    <label class="field">
+                        <span class="field-label" data-i18n="admin.password"></span>
+                        <input class="input" type="password" id="loginPassword" required autocomplete="current-password">
+                    </label>
+                    <p class="form-error" id="loginError" role="alert" hidden></p>
+                    <div class="form-foot">
+                        <span></span>
+                        <button type="submit" class="btn btn-primary" id="loginSubmit" data-i18n="admin.login"></button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Panel -->
+            <div id="panel" class="main-col" hidden>
+                <section class="card">
+                    <div class="admin-head">
+                        <h1 class="card-title" style="margin:0" data-i18n="admin.title"></h1>
+                        <button type="button" class="btn btn-plain btn-sm" id="logout" data-i18n="admin.logout"></button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <div class="tabs" role="tablist">
+                        <button type="button" role="tab" id="tabPosts" aria-selected="true" aria-controls="postsPane" data-i18n="admin.tab.posts"></button>
+                        <button type="button" role="tab" id="tabNotes" aria-selected="false" aria-controls="notesPane" data-i18n="admin.tab.notes"></button>
+                    </div>
+
+                    <!-- Posts -->
+                    <div id="postsPane" role="tabpanel" aria-labelledby="tabPosts">
+                        <form id="postForm" novalidate>
+                            <h2 class="card-title" id="formTitle" data-i18n="admin.new"></h2>
+                            <label class="field">
+                                <span class="field-label" data-i18n="admin.f.title"></span>
+                                <input class="input" type="text" id="postTitle" maxlength="200" required>
+                            </label>
+                            <label class="field">
+                                <span class="field-label">
+                                    <span data-i18n="admin.f.body"></span>
+                                    <span id="bodyCount">0 / 20000</span>
+                                </span>
+                                <textarea class="input" id="postBody" maxlength="20000" rows="10"></textarea>
+                                <span class="muted small" data-i18n="admin.f.body.hint"></span>
+                            </label>
+                            <div class="field">
+                                <span class="field-label" data-i18n="admin.f.image"></span>
+                                <div class="image-row">
+                                    <label class="btn btn-outline btn-sm file-btn">
+                                        <span data-i18n="admin.f.upload"></span>
+                                        <input type="file" id="postFile" accept="image/*">
+                                    </label>
+                                    <input class="input" type="url" id="postImage" inputmode="url" autocomplete="off" data-i18n-placeholder="admin.f.image.ph">
+                                    <button type="button" class="btn btn-plain btn-sm" id="imageRemove" data-i18n="admin.f.remove" hidden></button>
+                                </div>
+                                <img class="image-preview" id="imagePreview" alt="" referrerpolicy="no-referrer" hidden>
+                            </div>
+                            <label class="check">
+                                <input type="checkbox" id="postPublished" checked>
+                                <span data-i18n="admin.f.published"></span>
+                            </label>
+
+                            <p class="form-error" id="postError" role="alert" hidden></p>
+
+                            <div class="form-foot">
+                                <span class="form-ok" id="postOk" role="status"></span>
+                                <div class="admin-actions">
+                                    <button type="button" class="btn btn-plain" id="postCancel" data-i18n="admin.cancel" hidden></button>
+                                    <button type="submit" class="btn btn-primary" id="postSave" data-i18n="admin.save"></button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <h2 class="card-title" style="margin-top:28px" data-i18n="admin.posts.list"></h2>
+                        <p class="status" id="postsStatus" hidden></p>
+                        <ul class="admin-list" id="postList"></ul>
+                    </div>
+
+                    <!-- Notes -->
+                    <div id="notesPane" role="tabpanel" aria-labelledby="tabNotes" hidden>
+                        <p class="status" id="notesStatus" hidden></p>
+                        <ul class="admin-list" id="noteList"></ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+    <script src="config.js?v=40"></script>
+    <script src="assets/site.js?v=40"></script>
+    <script src="assets/admin.js?v=40"></script>
+</body>
+
+</html>
