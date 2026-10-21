@@ -167,7 +167,7 @@
         } catch (err) {
             console.error(err);
             postOk.textContent = "";
-            setError(SITE.t("admin.upload.error"));
+            setError(`${SITE.t("admin.upload.error")} (${(err && err.message) || err})`);
         } finally {
             saveBtn.disabled = false;
         }
