@@ -477,4 +477,28 @@
             .then(n => { visitors = Number(n); renderVisitors(); })
             .catch(() => { /* counter not set up — stays hidden */ });
     }
+
+    // ─────────────────────────────────────────
+    // 7. BLOCK RIGHT-CLICK, DEVTOOLS SHORTCUTS, VIEW SOURCE & IMAGE DRAG
+    // ─────────────────────────────────────────
+    const isField = (el) => Boolean(el && el.closest && el.closest("input, textarea"));
+
+    document.addEventListener("contextmenu", (e) => {
+        if (!isField(e.target)) e.preventDefault();   // keep the paste menu in form fields
+    }, true);
+    document.addEventListener("dragstart", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); }, true);
+
+    document.addEventListener("keydown", (e) => {
+        const key = (e.key || "").toUpperCase();
+        const ctrl = e.ctrlKey || e.metaKey;
+        if (
+            key === "F12" ||
+            (ctrl && e.shiftKey && ["I", "J", "C", "K", "E", "M"].includes(key)) ||   // inspector, consoles, element picker, device mode
+            (ctrl && e.altKey && ["I", "J", "C", "U"].includes(key)) ||               // macOS variants
+            (ctrl && ["U", "S"].includes(key))                                         // view source, save page
+        ) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }, true);
 })();
